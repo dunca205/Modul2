@@ -6,7 +6,19 @@ namespace Json
     {
         public static bool IsJsonString(string input)
         {
-            throw new NotImplementedException();
+           return
+                HasContent(input) && IsDoubleQuoted(input);
         }
-    }
+
+        private static bool HasContent(string input)
+        {
+            return !string.IsNullOrEmpty(input);
+        }
+
+        private static bool IsDoubleQuoted(string input)
+        {
+            const int minimumLengthRequired = 2;
+            return input.Length >= minimumLengthRequired && input[0] == '"' && input[^1] == '"';
+        }
+}
 }
