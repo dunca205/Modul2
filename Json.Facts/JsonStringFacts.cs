@@ -11,122 +11,137 @@ namespace Json.Facts
             Assert.True(IsJsonString(Quoted("abc")));
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void AlwaysStartsWithQuotes()
         {
             Assert.False(IsJsonString("abc\""));
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void AlwaysEndsWithQuotes()
         {
             Assert.False(IsJsonString("\"abc"));
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void IsNotNull()
         {
             Assert.False(IsJsonString(null));
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void IsNotAnEmptyString()
         {
             Assert.False(IsJsonString(string.Empty));
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void IsAnEmptyDoubleQuotedString()
         {
             Assert.True(IsJsonString(Quoted(string.Empty)));
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void HasStartAndEndQuotes()
         {
             Assert.False(IsJsonString("\""));
         }
 
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void DoesNotContainControlCharacters()
         {
             Assert.False(IsJsonString(Quoted("a\nb\rc")));
+            // este fals ca nu contine caractere de control, deoarece contine caractere de control si nu are @ ca sa ignore caracterele de control
+            // desi si daca pun @ obtin acealsi rezultata, dar daca nu pun Quote merge
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void CanContainLargeUnicodeCharacters()
         {
             Assert.True(IsJsonString(Quoted("⛅⚾")));
+            // quoted e fals
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void CanContainEscapedQuotationMark()
         {
             Assert.True(IsJsonString(Quoted(@"\""a\"" b")));
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void CanContainEscapedReverseSolidus()
         {
             Assert.True(IsJsonString(Quoted(@"a \\ b")));
+            // fara @ si fara quoted e valid
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void CanContainEscapedSolidus()
         {
             Assert.True(IsJsonString(Quoted(@"a \/ b")));
+            // fara @ si fara quoted e valid
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void CanContainEscapedBackspace()
         {
             Assert.True(IsJsonString(Quoted(@"a \b b")));
+            // fara @ si fara quoted e valid
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void CanContainEscapedFormFeed()
         {
             Assert.True(IsJsonString(Quoted(@"a \f b")));
+            // fara @ si fara quoted e valid
+
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void CanContainEscapedLineFeed()
         {
             Assert.True(IsJsonString(Quoted(@"a \n b")));
+            // fara @ si fara quoted e valid
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void CanContainEscapedCarrigeReturn()
         {
             Assert.True(IsJsonString(Quoted(@"a \r b")));
+            // fara @ si fara quoted e valid
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void CanContainEscapedHorizontalTab()
         {
             Assert.True(IsJsonString(Quoted(@"a \t b")));
+            // fara @ si fara quoted e valid
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void CanContainEscapedUnicodeCharacters()
         {
             Assert.True(IsJsonString(Quoted(@"a \u26Be b")));
+            // fara @ si fara quoted e valid
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void DoesNotContainUnrecognizedExcapceCharacters()
         {
             Assert.False(IsJsonString(Quoted(@"a\x")));
+            // functia verifica daca contine \ si daca e prezent verifica daca urmatorul caracter este b f n r t
+            //// fara @ si fara quoted e invalid oricum e invalid
+
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void DoesNotEndWithReverseSolidus()
         {
             Assert.False(IsJsonString(Quoted(@"a\")));
         }
 
-        [Fact(Skip = "Remove this Skip as you implement")]
+        [Fact]
         public void DoesNotEndWithAnUnfinishedHexNumber()
         {
             Assert.False(IsJsonString(Quoted(@"a\u")));
