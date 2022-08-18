@@ -6,8 +6,7 @@ namespace Json
     {
         public static bool IsJsonString(string input)
         {
-            bool inputCheck = HasContent(input) && IsDoubleQuoted(input) && (!ContainsControlCharacters(input));
-            return HasContent(input) && IsDoubleQuoted(input) && !ContainsControlCharacters(input);
+            return HasContent(input) && IsDoubleQuoted(input) && IsValidJsonString(input);
         }
 
         private static bool HasContent(string input)
@@ -21,28 +20,78 @@ namespace Json
             return input.Length >= minimumLengthRequired && input[0] == '"' && input[^1] == '"';
         }
 
-        private static bool ContainsControlCharacters(string input)
+        private static bool IsValidJsonString(string input)
         {
-            char[] escapeChars = { '\b', '\f', '\n', '\r', '\t', '\"', '\\', '/' };
-            char[] chars = { 'b', 'f', 'n', 'r', 't', '"', '/' };
-            string[] escapeChar = { "\b", "\f", "\f", "\r", "\t", "\"", "\\", "\\/" }; // trece cele mai multe teste
-            string[] escapeCharu = { "\u0022", "\u005C", "\u002F", "\u0008", "\u000C", "\u000A", "\u000D", "\u0009" };
-            string[] escapeCharU = { "U+0022", "U+005C", "U+002F", "U+0008", "U+000C", "U+000A", "U+000D", "U+0009" };
+            string unquotedInputData = input[1..^1];
+            int currentIndex = 0;
 
-            bool contains = false;
-            for (int i = 1; i < input.Length; i++)
+            while (currentIndex < unquotedInputData.Length)
             {
-                for (int j = 0; j < escapeChar.Length; j++)
+                int incrementIndex = 1;
+                if (!IsControlCharacter(unquotedInputData, currentIndex))
                 {
-                    if (input[i].Equals(escapeChar[j]))
-                    {
-                        contains = true;
-                        return contains;
-                    }
+                    return false;
+                }
+
+                if (unquotedInputData[currentIndex] == '\\' && (currentIndex == unquotedInputData.Length - 1 || !IsEscapableCharacter(unquotedInputData, currentIndex, ref incrementIndex)))
+                {
+                    return false;
+                }
+
+                currentIndex += incrementIndex;
+            }
+
+            return true;
+        }
+
+        private static bool IsControlCharacter(string unquotedInputData, int currentIndex)
+        {
+            const int ControlCharUpperLimit = 31;
+            return unquotedInputData[currentIndex] > Convert.ToChar(ControlCharUpperLimit);
+        }
+
+        private static bool IsValidUnicode(string unquotedInputData, int index)
+        {
+            const int NumberOfHexCharacters = 4;
+            string getHex = "";
+            int unquoteInputLenght = unquotedInputData.Length - NumberOfHexCharacters;
+            if (unquoteInputLenght < NumberOfHexCharacters)
+            {
+                return false;
+            }
+
+            for (int i = index; i < index + NumberOfHexCharacters; i++)
+            {
+                if (IsValidHEXValue(unquotedInputData[i]))
+                {
+                    getHex = getHex + unquotedInputData[i];
                 }
             }
 
-            return contains;
+            return getHex.Length == NumberOfHexCharacters;
+        }
+
+        private static bool IsEscapableCharacter(string unquotedInputData, int currentIndex,  ref int incrementIndex)
+        {
+            const string EscapableCharacters = "\"\\/bfnrt";
+            const int HexLength = 4;
+            incrementIndex = 1;
+            int nextCharacter = currentIndex + incrementIndex;
+
+            if (unquotedInputData[nextCharacter] == 'u' && unquotedInputData.Length > currentIndex + HexLength)
+            {
+                const int Pass2Positions = 2;
+                return IsValidUnicode(unquotedInputData, currentIndex + Pass2Positions);
+            }
+
+            incrementIndex++;
+            return EscapableCharacters.Contains(unquotedInputData[nextCharacter]);
+        }
+
+        private static bool IsValidHEXValue(char currentCharacter)
+        {
+            const string HexCharacters = "0123456789abcdef";
+            return HexCharacters.Contains(char.ToLower(currentCharacter));
         }
     }
 }
