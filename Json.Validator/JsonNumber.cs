@@ -14,6 +14,7 @@ namespace Json
 
         private static int CharacterCount(string input, char character)
         {
+            input = input.ToLower();
             int counchar = 0;
             for (int i = 0; i < input.Length; i++)
             {
@@ -26,32 +27,80 @@ namespace Json
             return counchar;
         }
 
-        private static bool IsInteger(string input)
+        private static string Integer(string input, int dotIndex, int exponentIndex)
         {
-            if (input.Contains('-'))
+            if (dotIndex == -1 && exponentIndex == -1)
             {
-                if (input.StartsWith('-') || (CharacterCount(input, '-') == 1))
+                return input;
+            }
+
+            return string.Empty;
+        }
+
+        private static string Fraction(string input, int dotIndex, int exponentIndex)
+        {
+            if (dotIndex > -1 && exponentIndex > -1 && exponentIndex > dotIndex)
+            {
+                return input.Substring(dotIndex, exponentIndex - dotIndex); // extrage pana la e
+            }
+
+            if (dotIndex != -1)
+            {
+                return input.Substring(dotIndex, input.Length - dotIndex);
+            }
+
+            return string.Empty;
+        }
+
+        private static string Exponent(string input, int dotIndex, int exponentIndex)
+        {
+            if (exponentIndex != -1)
+            {
+                return input.Substring(exponentIndex, input.Length - exponentIndex);
+            }
+
+            return string.Empty;
+        }
+
+        private static bool CanBeInteger(string integer)
+        {
+            if (integer != string.Empty)
+            {
+                if (integer.Contains('-'))
                 {
-                    return IsInteger(input.Substring(1, input.Length - 1));
+                    if (integer.StartsWith('-') && (CharacterCount(integer, '-') == 1))
+                    {
+                        return CanBeInteger(integer.Substring(1, integer.Length - 1));
+                    }
+
+                    return false;
                 }
 
-                return false;
+                if (integer.StartsWith('0') && integer.Length > 1)
+                {
+                    return false;
+                }
+
+                if (integer == "0")
+                {
+                    return true;
+                }
             }
 
-            if (input.StartsWith('0') && input.Length > 1)
-            {
-                return false;
-            }
-
-            if (input == "0")
-            {
-                return true;
-            }
-
-            return IsInputNumber(input);
+            return integer.Length > 0;
         }
 
         private static bool IsValidNumber(string input)
+        {
+            var dotIndex = input.IndexOf('.');
+            var exponentIndex = input.IndexOfAny(new[] { 'e', 'E' });
+
+            return CanBeFractional(Fraction(input, dotIndex, exponentIndex))
+            && CanBeExponential(Exponent(input, dotIndex, exponentIndex))
+            && CanBeInteger(Integer(input, dotIndex, exponentIndex));
+        }
+
+      /*  private static bool IsValidNumber(string input)
         {
             input = input.ToLower();
 
@@ -76,59 +125,42 @@ namespace Json
             }
 
             return IsInteger(input);
-        }
+        }*/
 
-        private static bool CanBeExponential(string input)
+        private static bool CanBeExponential(string exponent)
         {
-            string[] subs = input.Split('e');
-            bool validFirstPart = false;
-            bool validSecondPart = IsInputNumber(subs[1]);
-            if (subs[0].Contains('.'))
+            if (CharacterCount(exponent, 'e') > 1)
             {
-                validFirstPart = CanBeFractional(subs[0]);
-                return validFirstPart && IsValidNumber(subs[1]);
+                return false;
             }
 
-            if (!subs[0].StartsWith('0'))
+            if (exponent != string.Empty)
             {
-                validFirstPart = IsInputNumber(subs[0]);
+                exponent = exponent[1..];
+                if (exponent.StartsWith('+') || exponent.StartsWith('-'))
+                {
+                    return IsInputNumber(exponent[1..]);
+                }
+
+                return IsInputNumber(exponent);
             }
 
-            if (subs[0].StartsWith('-'))
-            {
-                validFirstPart = CanBeExponential(subs[0].Substring(1, subs[0].Length - 1));
-            }
-
-            if ((subs[1].StartsWith('+') || subs[1].StartsWith('-')) && subs[1].Length > 1)
-            {
-                validSecondPart = IsInputNumber(subs[1].Substring(1, subs.Length - 1));
-            }
-
-            return validFirstPart && validSecondPart;
+            return true;
         }
 
         private static bool CanBeFractional(string input)
         {
-            string[] subs = input.Split('.');
-            bool validFirstPart = false;
-            bool validSecondPart = false;
-
-            if (subs[0].StartsWith('0') && subs[0].Length == 1)
+            if (CharacterCount(input, '.') > 1)
             {
-                validFirstPart = true;
+                return false;
             }
 
-            if (!subs[0].StartsWith('0'))
+            if (input != "")
             {
-                validFirstPart = IsInputNumber(subs[0]);
+                return IsInputNumber(input.Substring(1, input.Length - 1));
             }
 
-            if (subs[1].Length > 0 && (!subs[1].EndsWith('0')))
-            {
-                validSecondPart = IsInputNumber(subs[1]);
-            }
-
-            return validFirstPart && validSecondPart;
+            return true;
         }
 
         private static bool IsInputNumber(string input)
@@ -142,7 +174,7 @@ namespace Json
                 }
             }
 
-            return true;
+            return input.Length > 0;
         }
     }
 }
