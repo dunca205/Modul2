@@ -52,15 +52,13 @@ namespace Json.Facts
         public void DoesNotContainControlCharacters()
         {
             Assert.False(IsJsonString(Quoted("a\nb\rc")));
-            // este fals ca nu contine caractere de control, deoarece contine caractere de control si nu are @ ca sa ignore caracterele de control
-            // desi si daca pun @ obtin acealsi rezultata, dar daca nu pun Quote merge
         }
 
         [Fact]
         public void CanContainLargeUnicodeCharacters()
         {
             Assert.True(IsJsonString(Quoted("⛅⚾")));
-            // quoted e fals
+
         }
 
         [Fact]
@@ -73,66 +71,59 @@ namespace Json.Facts
         public void CanContainEscapedReverseSolidus()
         {
             Assert.True(IsJsonString(Quoted(@"a \\ b")));
-            // fara @ si fara quoted e valid
         }
 
         [Fact]
         public void CanContainEscapedSolidus()
         {
             Assert.True(IsJsonString(Quoted(@"a \/ b")));
-            // fara @ si fara quoted e valid
         }
 
         [Fact]
         public void CanContainEscapedBackspace()
         {
             Assert.True(IsJsonString(Quoted(@"a \b b")));
-            // fara @ si fara quoted e valid
         }
 
         [Fact]
         public void CanContainEscapedFormFeed()
         {
             Assert.True(IsJsonString(Quoted(@"a \f b")));
-            // fara @ si fara quoted e valid
-
         }
 
         [Fact]
         public void CanContainEscapedLineFeed()
         {
             Assert.True(IsJsonString(Quoted(@"a \n b")));
-            // fara @ si fara quoted e valid
         }
 
         [Fact]
         public void CanContainEscapedCarrigeReturn()
         {
             Assert.True(IsJsonString(Quoted(@"a \r b")));
-            // fara @ si fara quoted e valid
         }
 
         [Fact]
         public void CanContainEscapedHorizontalTab()
         {
             Assert.True(IsJsonString(Quoted(@"a \t b")));
-            // fara @ si fara quoted e valid
         }
 
         [Fact]
         public void CanContainEscapedUnicodeCharacters()
         {
             Assert.True(IsJsonString(Quoted(@"a \u26Be b")));
-            // fara @ si fara quoted e valid
+        }
+        [Fact]
+        public void DoesNotContainInvalidUnicodeCharacter()
+        {
+            Assert.False(IsJsonString(Quoted(@"a \u26BM b")));
         }
 
         [Fact]
         public void DoesNotContainUnrecognizedExcapceCharacters()
         {
             Assert.False(IsJsonString(Quoted(@"a\x")));
-            // functia verifica daca contine \ si daca e prezent verifica daca urmatorul caracter este b f n r t
-            //// fara @ si fara quoted e invalid oricum e invalid
-
         }
 
         [Fact]

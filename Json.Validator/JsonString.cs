@@ -6,7 +6,7 @@ namespace Json
     {
         public static bool IsJsonString(string input)
         {
-            return HasContent(input) && IsDoubleQuoted(input) && IsValidJsonString(input);
+            return HasContent(input) && IsDoubleQuoted(input) && !IsControlCharacter(input) && IsSpecialCharacters(input);
         }
 
         private static bool HasContent(string input)
@@ -20,7 +20,22 @@ namespace Json
             return input.Length >= minimumLengthRequired && input[0] == '"' && input[^1] == '"';
         }
 
-        private static bool IsValidJsonString(string input)
+        private static bool IsControlCharacter(string input)
+        {
+            string unquotedInputData = input[1..^1];
+            const int ControlCharUpperLimit = 31;
+            for (int i = 0; i < unquotedInputData.Length; i++)
+            {
+                if (unquotedInputData[i] < Convert.ToChar(ControlCharUpperLimit))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsSpecialCharacters(string input)
         {
             string unquotedInputData = input[1..^1];
             int currentIndex = 0;
@@ -28,12 +43,8 @@ namespace Json
             while (currentIndex < unquotedInputData.Length)
             {
                 int incrementIndex = 1;
-                if (!IsControlCharacter(unquotedInputData, currentIndex))
-                {
-                    return false;
-                }
 
-                if (unquotedInputData[currentIndex] == '\\' && (currentIndex == unquotedInputData.Length - 1 || !IsEscapableCharacter(unquotedInputData, currentIndex, ref incrementIndex)))
+                if (unquotedInputData[currentIndex] == '\\' && (currentIndex == unquotedInputData.Length - 1 || !IsEscapeCharacter(unquotedInputData, currentIndex, ref incrementIndex)))
                 {
                     return false;
                 }
@@ -42,12 +53,6 @@ namespace Json
             }
 
             return true;
-        }
-
-        private static bool IsControlCharacter(string unquotedInputData, int currentIndex)
-        {
-            const int ControlCharUpperLimit = 31;
-            return unquotedInputData[currentIndex] > Convert.ToChar(ControlCharUpperLimit);
         }
 
         private static bool IsValidUnicode(string unquotedInputData, int index)
@@ -71,7 +76,7 @@ namespace Json
             return getHex.Length == NumberOfHexCharacters;
         }
 
-        private static bool IsEscapableCharacter(string unquotedInputData, int currentIndex,  ref int incrementIndex)
+        private static bool IsEscapeCharacter(string unquotedInputData, int currentIndex, ref int incrementIndex)
         {
             const string EscapableCharacters = "\"\\/bfnrt";
             const int HexLength = 4;
