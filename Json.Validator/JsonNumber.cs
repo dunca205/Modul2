@@ -16,12 +16,12 @@ namespace Json
         {
             if (dotIndex != -1)
             {
-                return input[0..dotIndex];
+                return input[..dotIndex];
             }
 
             if (exponentIndex != -1)
             {
-                return input[0..exponentIndex];
+                return input[..exponentIndex];
             }
 
             return input;
@@ -34,13 +34,6 @@ namespace Json
                 return input[dotIndex..];
             }
 
-           /* if (dotIndex != -1 && exponentIndex != -1 && dotIndex < exponentIndex)
-                // daca nu pun aceasta conditie .. in cazul "22e3.3" .. imi da eroare pt ca nu poate sa exteaga de la punct la exponent in sens invers 
-                // iar cand se verifica exponentul va da fals pt ca dupa exponentul nu este valid
-            {
-                return input[dotIndex..exponentIndex];
-            }*/
-
             return string.Empty;
         }
 
@@ -48,7 +41,7 @@ namespace Json
         {
             if (exponentIndex != -1)
             {
-                input = input[exponentIndex..input.Length];
+                input = input[exponentIndex..];
                 return input;
             }
 
@@ -60,7 +53,6 @@ namespace Json
             if (integer.StartsWith('-'))
             {
                 integer = integer[1..];
-                return CanBeInteger(integer);
             }
 
             if (integer.StartsWith('0') && integer.Length > 1)
@@ -102,7 +94,7 @@ namespace Json
             var exponentIndex = input.IndexOfAny(new[] { 'e', 'E' });
             if (exponentIndex != -1)
             {
-                input = input[0..exponentIndex];
+                input = input[..exponentIndex];
             }
 
             return input == "" || IsInputNumber(input[1..]);
