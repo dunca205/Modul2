@@ -29,17 +29,17 @@ namespace Json
 
         private static string Fraction(string input, int dotIndex, int exponentIndex)
         {
-            if (dotIndex != -1 && exponentIndex == -1)
+            if (dotIndex != -1)
             {
                 return input[dotIndex..];
             }
 
-            if (dotIndex != -1 && exponentIndex != -1 && dotIndex < exponentIndex)
+           /* if (dotIndex != -1 && exponentIndex != -1 && dotIndex < exponentIndex)
                 // daca nu pun aceasta conditie .. in cazul "22e3.3" .. imi da eroare pt ca nu poate sa exteaga de la punct la exponent in sens invers 
                 // iar cand se verifica exponentul va da fals pt ca dupa exponentul nu este valid 
             {
                 return input[dotIndex..exponentIndex];
-            }
+            }*/
 
             return string.Empty;
         }
@@ -99,6 +99,12 @@ namespace Json
 
         private static bool CanBeFractional(string input)
         {
+            var exponentIndex = input.IndexOfAny(new[] { 'e', 'E' });
+            if (exponentIndex != -1)
+            {
+                input = input[0..exponentIndex];
+            }
+
             return input == "" || IsInputNumber(input[1..]);
         }
 
