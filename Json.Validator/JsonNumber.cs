@@ -36,7 +36,7 @@ namespace Json
 
            /* if (dotIndex != -1 && exponentIndex != -1 && dotIndex < exponentIndex)
                 // daca nu pun aceasta conditie .. in cazul "22e3.3" .. imi da eroare pt ca nu poate sa exteaga de la punct la exponent in sens invers 
-                // iar cand se verifica exponentul va da fals pt ca dupa exponentul nu este valid 
+                // iar cand se verifica exponentul va da fals pt ca dupa exponentul nu este valid
             {
                 return input[dotIndex..exponentIndex];
             }*/

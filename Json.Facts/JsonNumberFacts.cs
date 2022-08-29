@@ -120,6 +120,12 @@ namespace Json.Facts
         {
             Assert.True(IsJsonNumber("12.34E3"));
         }
+        [Fact]
+        public void TheExponentCanHaveLeadingZeros()
+        {
+            Assert.True(IsJsonNumber("0.01e-00"));
+
+        }
 
         [Fact]
         public void TheExponentDoesNotAllowLetters()
