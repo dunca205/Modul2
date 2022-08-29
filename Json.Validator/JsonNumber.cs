@@ -31,13 +31,20 @@ namespace Json
         {
             if (dotIndex != -1)
             {
-                return input[dotIndex..];
+              input = input[dotIndex..];
+
+              if (exponentIndex > dotIndex)
+                {
+                    input = input[.. (exponentIndex - dotIndex)];
+                }
+
+              return input;
             }
 
             return string.Empty;
         }
 
-        private static string Exponent(string input, int dotIndex, int exponentIndex)
+        private static string Exponent(string input, int exponentIndex)
         {
             if (exponentIndex != -1)
             {
@@ -69,7 +76,7 @@ namespace Json
             var exponentIndex = input.IndexOfAny(new[] { 'e', 'E' });
 
             return CanBeFractional(Fraction(input, dotIndex, exponentIndex))
-            && CanBeExponential(Exponent(input, dotIndex, exponentIndex))
+            && CanBeExponential(Exponent(input, exponentIndex))
             && CanBeInteger(Integer(input, dotIndex, exponentIndex));
         }
 
@@ -91,12 +98,6 @@ namespace Json
 
         private static bool CanBeFractional(string input)
         {
-            var exponentIndex = input.IndexOfAny(new[] { 'e', 'E' });
-            if (exponentIndex != -1)
-            {
-                input = input[..exponentIndex];
-            }
-
             return input == "" || IsInputNumber(input[1..]);
         }
 
