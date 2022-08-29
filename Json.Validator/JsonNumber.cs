@@ -12,41 +12,33 @@ namespace Json
             return !string.IsNullOrEmpty(input);
         }
 
-        private static int CharacterCount(string input, char character)
-        {
-            input = input.ToLower();
-            int counchar = 0;
-            for (int i = 0; i < input.Length; i++)
-            {
-                if (input[i].Equals(character))
-                {
-                    counchar++;
-                }
-            }
-
-            return counchar;
-        }
-
         private static string Integer(string input, int dotIndex, int exponentIndex)
         {
-            if (dotIndex == -1 && exponentIndex == -1)
+            if (dotIndex != -1)
             {
-                return input;
+                return input[0..dotIndex];
             }
 
-            return string.Empty;
+            if (exponentIndex != -1)
+            {
+                return input[0..exponentIndex];
+            }
+
+            return input;
         }
 
         private static string Fraction(string input, int dotIndex, int exponentIndex)
         {
-            if (dotIndex > -1 && exponentIndex > -1 && exponentIndex > dotIndex)
+            if (dotIndex != -1 && exponentIndex == -1)
             {
-                return input.Substring(dotIndex, exponentIndex - dotIndex); // extrage pana la e
+                return input[dotIndex..];
             }
 
-            if (dotIndex != -1)
+            if (dotIndex != -1 && exponentIndex != -1 && dotIndex < exponentIndex)
+                // daca nu pun aceasta conditie .. in cazul "22e3.3" .. imi da eroare pt ca nu poate sa exteaga de la punct la exponent in sens invers 
+                // iar cand se verifica exponentul va da fals pt ca dupa exponentul nu este valid 
             {
-                return input.Substring(dotIndex, input.Length - dotIndex);
+                return input[dotIndex..exponentIndex];
             }
 
             return string.Empty;
@@ -56,27 +48,19 @@ namespace Json
         {
             if (exponentIndex != -1)
             {
-                return input.Substring(exponentIndex, input.Length - exponentIndex);
+                input = input[exponentIndex..input.Length];
+                return input;
             }
 
             return string.Empty;
         }
 
         private static bool CanBeInteger(string integer)
+        {
+            if (integer.StartsWith('-'))
             {
-            if (integer == string.Empty)
-            {
-                return true;
-            }
-
-            if (integer.Contains('-'))
-            {
-                if (integer.StartsWith('-') && (CharacterCount(integer, '-') == 1))
-                {
-                    return CanBeInteger(integer.Substring(1, integer.Length - 1));
-                }
-
-                return false;
+                integer = integer[1..];
+                return CanBeInteger(integer);
             }
 
             if (integer.StartsWith('0') && integer.Length > 1)
@@ -98,12 +82,7 @@ namespace Json
         }
 
         private static bool CanBeExponential(string exponent)
-            {
-            if (CharacterCount(exponent, 'e') > 1)
-            {
-                return false;
-            }
-
+        {
             if (exponent == string.Empty)
             {
                 return true;
@@ -112,7 +91,7 @@ namespace Json
             exponent = exponent[1..];
             if (exponent.StartsWith('+') || exponent.StartsWith('-'))
             {
-                return IsInputNumber(exponent[1..]);
+                exponent = exponent[1..];
             }
 
             return IsInputNumber(exponent);
@@ -120,12 +99,7 @@ namespace Json
 
         private static bool CanBeFractional(string input)
         {
-            if (CharacterCount(input, '.') > 1)
-            {
-                return false;
-            }
-
-            return input != "" ? IsInputNumber(input.Substring(1, input.Length - 1)) : true;
+            return input == "" || IsInputNumber(input[1..]);
         }
 
         private static bool IsInputNumber(string input)
