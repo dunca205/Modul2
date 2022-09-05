@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SoccerGame\Team.csproj" />
     <ProjectReference Include="..\TeamRanking\TeamRanking.csproj" />
+    <ProjectReference Include="..\Team\Team.csproj" />
   </ItemGroup>
 
 </Project>

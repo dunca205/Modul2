@@ -13,7 +13,7 @@ namespace Soccer
             this.teamPoints = teamPoints;
         }
 
-        public bool IsDifferentTeam(Team team)
+        public bool IsDifferentTeamName(Team team)
         {
             return this.teamName != team.teamName;
         }
