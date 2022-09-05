@@ -1,0 +1,14 @@
+    private static bool IsControlCharacter(string input)
+        {
+            string unquotedInputData = input[1..^1];
+            const int ControlCharUpperLimit = 31;
+            for (int i = 0; i < unquotedInputData.Length; i++)
+            {
+                if (unquotedInputData[i] < Convert.ToChar(ControlCharUpperLimit))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }

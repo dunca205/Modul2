@@ -1,0 +1,163 @@
+using System;
+
+namespace Json
+{
+    public static class JsonString
+    {
+        public static bool IsJsonString(string input)
+        {
+            bool inputCheck = HasContent(input) && IsDoubleQuoted(input) && (!ContainsControlCharacters(input));
+            return IsValidJsonString(input);
+        }
+
+        private static bool HasContent(string input)
+        {
+            return !string.IsNullOrEmpty(input);
+        }
+
+        private static bool IsDoubleQuoted(string input)
+        {
+            const int minimumLengthRequired = 2;
+            return input.Length >= minimumLengthRequired && input[0] == '"' && input[^1] == '"';
+        }
+
+        private static bool IsValidJsonString(string inputData)
+        {
+            const int ControlCharUpperLimit = 31;
+            const int MinimumQuotationMarks = 2;
+
+            if (!HasContent(inputData) || !IsDoubleQuoted(inputData))
+            {
+                return false;
+            }
+
+            string unquotedInputData = inputData.Substring(1, inputData.Length - MinimumQuotationMarks);
+
+            int currentIndex = 0;
+
+            while (currentIndex < unquotedInputData.Length)
+            {
+                int incrementIndex = 1;
+
+                if (unquotedInputData[currentIndex] <= Convert.ToChar(ControlCharUpperLimit) || unquotedInputData[currentIndex] == '\"')
+                {
+                    return false;
+                }
+
+                if (unquotedInputData[currentIndex] == '\\' && (currentIndex == unquotedInputData.Length - 1 || !IsEscapableCharacter(unquotedInputData, currentIndex, out incrementIndex)))
+                {
+                    return false;
+                }
+
+                currentIndex += incrementIndex;
+            }
+
+            return true;
+        }
+
+        private static bool IsQuoted(string inputData)
+        {
+            const int MinimumQuotationMarks = 2;
+
+            if (inputData == null)
+            {
+                return false;
+            }
+
+            if (inputData.Length < MinimumQuotationMarks)
+            {
+                return false;
+            }
+
+            return inputData[0] == '\"' && inputData[inputData.Length - 1] == '\"';
+        }
+
+        private static bool IsEscapableCharacter(string unquotedInputData, int currentIndex, out int incrementIndex)
+        {
+            const int NumberOfHexCharacters = 4;
+            incrementIndex = 1;
+            int nextCharacter = currentIndex + incrementIndex;
+
+            const string EscapableCharacters = "\"\\/bfnrt";
+            const string HexCharacters = "0123456789abcdef";
+
+            if (unquotedInputData[nextCharacter] == 'u' && unquotedInputData.Length > nextCharacter + NumberOfHexCharacters)
+            {
+                string lowerCaseUnquotedInputData = unquotedInputData.ToLower();
+
+                for (int i = 1; i <= NumberOfHexCharacters; i++)
+                {
+                    if (HexCharacters.IndexOf(lowerCaseUnquotedInputData[nextCharacter + i]) == -1)
+                    {
+                        return false;
+                    }
+                }
+
+                incrementIndex += NumberOfHexCharacters;
+                return true;
+            }
+
+            incrementIndex++;
+            return EscapableCharacters.IndexOf(unquotedInputData[nextCharacter]) >= 0;
+        }
+
+        private static bool ContainsControlCharacters(string input)
+        {
+            char[] escapeChars = { '\b', '\f', '\n', '\r', '\t', '\"', '\\', '/' };
+            char[] chars = { 'b', 'f', 'n', 'r', 't', '\"', '/', 'u', '\\' };
+
+            string[] escapeChar = { "\b", "\f", "\r", "\t", "\"", "\n", "\\", "/" }; // trece cele mai multe teste
+            string[] escapeCharu = { "\u0022", "\u005C", "\u002F", "\u0008", "\u000C", "\u000A", "\u000D", "\u0009" };
+            string[] escapeCharU = { "U+0022", "U+005C", "U+002F", "U+0008", "U+000C", "U+000A", "U+000D", "U+0009" };
+
+            bool isEscaping = false;
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                // valid character range: \u0020 - \uffff
+                if (input[i] > '\u0020')
+                {
+                    // it's a control character
+                    return true;
+                }
+
+                if (isEscaping)
+                {
+                    for (int k = 0; k < chars.Length; k++)
+                    { // current char is escaped, check if it's a known char
+                        if (!chars[k].Equals(input[i]))
+                        {
+                            // invalid escaped char
+                            return true;
+                        }
+                    }
+                }
+
+                if (input[i] == '"' && i > 0 && i < input.Length - 1 && !isEscaping)
+                {
+                    // it's an unescaped double quote inside the string
+                    return true;
+                }
+
+                isEscaping = input[i] == '\\' && !isEscaping;
+            }
+
+            return false;
+        }
+
+        private static bool CharactersCanBeLessThan32ASCIIValue(string input)
+        {
+            const int invalidDecimal = 32;
+            for (int i = 0; i < input.Length; i++)
+            {
+                long asciiValue = Convert.ToInt64(input[i]);
+                if (asciiValue < invalidDecimal)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+}

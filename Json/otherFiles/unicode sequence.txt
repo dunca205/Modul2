@@ -1,0 +1,16 @@
+private static bool IsUnicodeSequence(string unquotedInputData)
+        {
+          //  string unquotedInputData = input[1..^1];
+            const int HexLength = 4;
+            for (int i = 0; i < unquotedInputData.Length; i++)
+            {
+                    int nextChar = i + 1;
+                    if (unquotedInputData[i] == '\\' && unquotedInputData[nextChar] == 'u' && unquotedInputData.Length - i >= HexLength)
+                    {
+                        const int Pass2Positions = 2;
+                        return IsValidUnicode(unquotedInputData, i + Pass2Positions);
+                    }
+            }
+
+            return false;
+        }
