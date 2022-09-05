@@ -1,20 +1,27 @@
-namespace SoccerFacts
+namespace Soccer
 {
-    public class TeamFacts
+    public class RankingFacts
     {
         [Fact]
-        public void HasMorePoints()
+        public void AddANewTeam_InitialRankingWillHaveOneMoreTeam()
         {
-            var Team1 = new Soccer.Team(teamName: "CFRCJ", teamPoints: 15);
-            var Team2 = new Soccer.Team(teamName: "UCluj", teamPoints: 11);
-            Assert.True(Team1.ComparePoints(Team2));
+            Team [] echipe = new Team[2];
+            echipe[0] = new Team(teamName: "S", teamPoints: 2);
+            echipe[1] = new Team(teamName: "A", teamPoints: 3);
+            Ranking teams= new Ranking(echipe);
+            Team steaua = new Team(teamName: "Steaua", teamPoints: 10);
+            Assert.NotEqual(echipe, teams.AddNewTeam(steaua));
+         
         }
         [Fact]
-        public void IsDifferentTeam()
+        public void AddAnExistingTeam_InitialRankingWillBeTheSame()
         {
-            var Team1 = new Soccer.Team(teamName: "CFRCJ", teamPoints: 15);
-            Soccer.Team Team2 = new Soccer.Team(teamName: "UCluj", teamPoints: 11);
-            Assert.True(Team1.IsDifferentTeam(Team2));
+            Team[] echipe = new Team[2];
+            echipe[0] = new Team(teamName: "S", teamPoints: 2);
+            echipe[1] = new Team(teamName: "A", teamPoints: 3);
+            Ranking teams = new Ranking(echipe);
+            Assert.Equal(echipe, teams.AddNewTeam(echipe[0]));
+
         }
     }
 }

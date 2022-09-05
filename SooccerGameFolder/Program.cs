@@ -1,28 +1,36 @@
-﻿using System;
-
-namespace Soccer
+﻿namespace Soccer
 {
-    public class Team
+    public class Ranking
     {
-        private readonly string teamName;
-        private readonly int teamPoints;
+        private Team[] SoccerTeams;
 
-        public Team(string teamName, int teamPoints)
+        public Ranking(Team[] SoccerTeam)
         {
-            this.teamName = teamName;
-            this.teamPoints = teamPoints;
+            this.SoccerTeams = SoccerTeam;
+            
         }
-
-        public bool IsDifferentTeam(Team team)
+     
+        public Team[] AddNewTeam(Team teamToAdd)
         {
-            return this.teamName != team.teamName;
-        }
+            bool isDifferentTeam = true;
+            for (int i = 0; i < SoccerTeams.Length; i++)
+            {
+                if (!this.SoccerTeams[i].IsDifferentTeam(teamToAdd))
+                {
+                    isDifferentTeam = false;
+                }
+            }
 
-        public bool ComparePoints(Team that)
-        {
-            return this.teamPoints > that.teamPoints;
-        }
+            if (isDifferentTeam)
+            {
+                int initialLength = SoccerTeams.Length;
+                Array.Resize(ref SoccerTeams, initialLength + 1);
+               this. SoccerTeams[SoccerTeams.Length - 1] = teamToAdd;
+            }
 
+            return this.SoccerTeams;
+
+        }
         static void Main()
         {
         }
