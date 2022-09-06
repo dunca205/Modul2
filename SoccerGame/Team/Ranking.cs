@@ -18,34 +18,22 @@ namespace Soccer
            soccerTeams[soccerTeams.Length - 1] = teamToAdd;
         }
 
-        public Team TeamAtPosition(Team position)
+        public Team TeamAtPosition(int position)
         {
-            Team team = new Team(teamName: "", teamPoints: 0, teamPosition: 0);
-            for (int i = 0; i < soccerTeams.Length - 1; i++)
-            {
-                if (position.IsSamePosition(soccerTeams[i]))
-                {
-                    team = soccerTeams[i];
-                }
-            }
-
-            return team;
+            return soccerTeams[position - 1];
         }
 
-        public int TeamAtName(Team teamToFind)
+        public int PositionForCertainTeam(Team team)
         {
-            int indexPosition = 0;
-
             for (int i = 0; i < soccerTeams.Length; i++)
             {
-                if (!soccerTeams[i].IsSameTeamName(teamToFind))
+                if (team.Equals(soccerTeams[i]))
                 {
-                    teamToFind = soccerTeams[i];
-                    indexPosition = i + 1;
+                    return i + 1;
                 }
             }
 
-            return indexPosition;
+            return -1;
         }
 
         static void Main()
