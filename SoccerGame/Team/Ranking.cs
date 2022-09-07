@@ -18,6 +18,27 @@ namespace Soccer
            soccerTeams[soccerTeams.Length - 1] = teamToAdd;
         }
 
+        public void SortRanking()
+        {
+            for (int i = 0; i < soccerTeams.Length; i++)
+            {
+                for (int j = 0; j < soccerTeams.Length - 1; j++)
+                {
+                    if (soccerTeams[j].ComparePoints(soccerTeams[j + 1]))
+                    {
+                        Swap(j, j + 1);
+                    }
+                }
+            }
+        }
+
+        public void Swap(int index1, int index2)
+        {
+            Team temp = soccerTeams[index1];
+            soccerTeams[index1] = soccerTeams[index2];
+            soccerTeams[index2] = temp;
+        }
+
         public Team TeamAtPosition(int position)
         {
             return soccerTeams[position - 1];

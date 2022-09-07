@@ -19,7 +19,7 @@ namespace Soccer
 
             oldRanking.Add(teamSteaua);
 
-            Assert.NotEqual(oldRanking, newRanking);
+            Assert.Equal(oldRanking, newRanking);
         }
         [Fact]
         public void FindTeamAtCertainPosition()
@@ -40,6 +40,24 @@ namespace Soccer
             initialTeams[2] = new Team(teamName: "Steaua", teamPoints: 2);
             Ranking Ranking = new Ranking(initialTeams);
             Assert.Equal(3, Ranking.PositionForCertainTeam(initialTeams[2]));
+
+        }
+        [Fact]
+        public void BubbleSortRanking()
+        {
+            Team[] initialTeams = new Team[3];
+            initialTeams[0] = new Team(teamName: "FCSB", teamPoints: 2);
+            initialTeams[1] = new Team(teamName: "Dinamo", teamPoints: 3);
+            initialTeams[2] = new Team(teamName: "Steaua", teamPoints: 1);
+            Ranking unsorted = new Ranking(initialTeams);
+            unsorted.SortRanking();
+
+            Team[] afterSort = new Team[3];
+            afterSort[0] = new Team(teamName: "Dinamo", teamPoints: 3);
+            afterSort[1] = new Team(teamName: "FCSB", teamPoints: 2);
+            afterSort[2] = new Team(teamName: "Steaua", teamPoints: 1);
+            Ranking sorted = new Ranking(afterSort);
+            Assert.Equal(unsorted, sorted);
 
         }
 
