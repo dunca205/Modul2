@@ -61,6 +61,8 @@ namespace Soccer
                     }
                 }
             }
+
+            SortRanking();
         }
 
         public int PositionForCertainTeam(Team team)
