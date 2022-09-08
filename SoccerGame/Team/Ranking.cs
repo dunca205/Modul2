@@ -32,7 +32,7 @@ namespace Soccer
             return soccerTeams[position - 1];
         }
 
-        public void UpdateRanking(Team team1, Team team2, int newScoreTeam1, int newScoreTeam2)
+        public void UpdateMatchScore(Team team1, Team team2, int newScoreTeam1, int newScoreTeam2)
         {
                 for (int i = 0; i < soccerTeams.Length; i++)
                 {

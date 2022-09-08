@@ -43,7 +43,7 @@ namespace Soccer
             ranking.Add(initialTeams[0]);
             ranking.Add(initialTeams[1]);
             ranking.Add(initialTeams[2]);
-            ranking.UpdateRanking(initialTeams[1], initialTeams[2], 0,4);
+            ranking.UpdateMatchScore(initialTeams[1], initialTeams[2], 0,4);
 
             Assert.True(initialTeams[2].ComparePoints(initialTeams[1]));
         }
