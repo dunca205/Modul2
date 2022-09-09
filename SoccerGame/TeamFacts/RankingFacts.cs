@@ -34,7 +34,7 @@ namespace Soccer
         }
 
         [Fact]
-        public void UpdateMatchScore()
+        public void UpdateMatchScoreWhenNobodyWon()
         {
             var fcsb = new Team(teamName: "FCSB", teamPoints: 2);
             var dinamo = new Team(teamName: "Dinamo", teamPoints: 3);
@@ -51,7 +51,7 @@ namespace Soccer
             Assert.Equal(1, ranking.PositionForCertainTeam(dinamo)); 
         }
         [Fact]
-        public void newtestUpdateMatchScore()
+        public void UpdateMatchScoreWhenOneTeamWon()
         {
             var fcsb = new Team(teamName: "FCSB", teamPoints: 1300);
             var dinamo = new Team(teamName: "Dinamo", teamPoints: 1500);
