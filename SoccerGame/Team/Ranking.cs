@@ -11,7 +11,7 @@ namespace Soccer
             soccerTeams = new Team[0];
         }
 
-        private void Swap(ref Team lessPoints, ref Team morePoints)
+        private void Swap(Team lessPoints, Team morePoints)
         {
             int positionForLessPointsTeam = PositionForCertainTeam(lessPoints); // pozitia echipei cu mai putine puncte
             int positionForMorePointsTeam = PositionForCertainTeam(morePoints); // pozitia echipei cu mai multe puncte
@@ -28,7 +28,7 @@ namespace Soccer
                 {
                     if (soccerTeams[j + 1].ComparePoints(soccerTeams[j]))
                     {
-                        Swap(ref soccerTeams[j + 1], ref soccerTeams[j]);
+                        Swap(soccerTeams[j + 1], soccerTeams[j]);
                     }
                 }
             }
