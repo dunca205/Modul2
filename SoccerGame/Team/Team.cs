@@ -5,7 +5,7 @@ namespace Soccer
     public class Team
     {
         private readonly string teamName;
-        private int teamPoints;
+        private double teamPoints;
 
         public Team(string teamName, int teamPoints)
         {
@@ -18,9 +18,23 @@ namespace Soccer
             return this.teamPoints > that.teamPoints;
         }
 
-        public void UpdateScore(int newScore)
+        public void UpdateScore(Team concurentTeam, int teamAwayNewPoints, int newpoints)
         {
-            teamPoints += newScore;
+            const int winPoints = 3;
+            const int equalityPoints = 1;
+            if (newpoints == teamAwayNewPoints && newpoints == 1)
+            {
+                this.teamPoints += equalityPoints;
+            }
+            else if
+            (newpoints > teamAwayNewPoints)
+            {
+                this.teamPoints += winPoints;
+            }
+            else if (teamAwayNewPoints > newpoints)
+            {
+                this.teamPoints -= winPoints;
+            }
         }
     }
 }

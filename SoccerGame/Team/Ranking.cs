@@ -11,35 +11,10 @@ namespace Soccer
             soccerTeams = new Team[0];
         }
 
-        private void Swap(Team lessPoints, Team morePoints)
-        {
-            int positionForLessPointsTeam = PositionForCertainTeam(lessPoints); // pozitia echipei cu mai putine puncte
-            int positionForMorePointsTeam = PositionForCertainTeam(morePoints); // pozitia echipei cu mai multe puncte
-            Team temp = soccerTeams[positionForLessPointsTeam - 1]; // temp primeste val echipei cu mai putine puncte
-            soccerTeams[positionForLessPointsTeam - 1] = morePoints; // pe pozitia echipei cu mai putine puncte punem echipa cu mai multe puncte(Team lessPoints devine Team MorePoints)
-            soccerTeams[positionForMorePointsTeam - 1] = temp; // pe pozitia pe care se afla echipa cu mai multe puncte punem echipa cu mai putine puncte
-        }
-
-        private void SortRanking()
-        {
-            for (int i = 0; i < soccerTeams.Length - 1; i++)
-            {
-                for (int j = 0; j < soccerTeams.Length - 1; j++)
-                {
-                    if (soccerTeams[j + 1].ComparePoints(soccerTeams[j]))
-                    {
-                        Swap(soccerTeams[j + 1], soccerTeams[j]);
-                    }
-                }
-            }
-        }
-
         public void Add(Team teamToAdd)
-#pragma warning restore SA1202 // Elements should be ordered by access
         {
-           int initialLength = soccerTeams.Length;
-           Array.Resize(ref soccerTeams, initialLength + 1);
-           soccerTeams[soccerTeams.Length - 1] = teamToAdd;
+            Array.Resize(ref soccerTeams, soccerTeams.Length + 1);
+            soccerTeams[^1] = teamToAdd;
         }
 
         public Team TeamAtPosition(int position)
@@ -47,17 +22,17 @@ namespace Soccer
             return soccerTeams[position - 1];
         }
 
-        public void UpdateMatchScore(Team team1, Team team2, int newScoreTeam1, int newScoreTeam2)
+        public void UpdateMatchScore(Team teamHome, Team teamAway, int newScoreTeamHome, int newScoreTeamAway)
         {
             for (int i = 0; i < soccerTeams.Length; i++)
             {
-                if (soccerTeams[i].Equals(team1))
+                if (soccerTeams[i].Equals(teamHome))
                 {
-                    soccerTeams[i].UpdateScore(newScoreTeam1);
+                    soccerTeams[i].UpdateScore(teamAway, newScoreTeamAway, newScoreTeamHome);
                 }
-                else if (soccerTeams[i].Equals(team2))
+                else if (soccerTeams[i].Equals(teamAway))
                 {
-                    soccerTeams[i].UpdateScore(newScoreTeam2);
+                    soccerTeams[i].UpdateScore(teamHome, newScoreTeamHome, newScoreTeamAway);
                 }
             }
 
@@ -77,8 +52,32 @@ namespace Soccer
             return -1;
         }
 
-        static void Main()
+        private static void Main()
         {
+        }
+
+        private void Swap(int positionWithLessPoints, int positionWithMorePoints)
+        {
+            Team temp = soccerTeams[positionWithLessPoints];
+            soccerTeams[positionWithLessPoints] = soccerTeams[positionWithMorePoints];
+            soccerTeams[positionWithMorePoints] = temp;
+        }
+
+        private void SortRanking()
+        {
+            bool swaped = true;
+            for (int i = 0; i < soccerTeams.Length - 1 && swaped; i++)
+            {
+                    swaped = false;
+                    for (int j = i; j < soccerTeams.Length - 1; j++)
+                    {
+                        if (soccerTeams[j + 1].ComparePoints(soccerTeams[j]))
+                        {
+                            Swap(j + 1, j);
+                            swaped = true;
+                        }
+                    }
+            }
         }
     }
 }
