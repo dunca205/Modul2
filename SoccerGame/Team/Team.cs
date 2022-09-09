@@ -18,23 +18,22 @@ namespace Soccer
             return this.teamPoints > that.teamPoints;
         }
 
-        public void UpdateScore(Team concurentTeam, int teamAwayNewPoints, int newpoints)
+        public void AddWin()
         {
             const int winPoints = 3;
-            const int equalityPoints = 1;
-            if (newpoints == teamAwayNewPoints && newpoints == 1)
-            {
-                this.teamPoints += equalityPoints;
-            }
-            else if
-            (newpoints > teamAwayNewPoints)
-            {
-                this.teamPoints += winPoints;
-            }
-            else if (teamAwayNewPoints > newpoints)
-            {
-                this.teamPoints -= winPoints;
-            }
+            this.teamPoints += winPoints;
+        }
+
+        public void AddDraw()
+        {
+            const int drawPoints = 1;
+            this.teamPoints += drawPoints;
+        }
+
+        public void TakePoints()
+        {
+            const int loss = 3;
+            this.teamPoints -= loss;
         }
     }
 }

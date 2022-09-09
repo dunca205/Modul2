@@ -67,5 +67,21 @@ namespace Soccer
             Assert.Equal(1, ranking.PositionForCertainTeam(dinamo));
         }
 
+        [Fact]
+        public void UpdateMatchWhenOneTeamLost()
+        {
+            var fcsb = new Team(teamName: "FCSB", teamPoints: 1300);
+            var dinamo = new Team(teamName: "Dinamo", teamPoints: 1300);
+            Ranking ranking = new Ranking();
+            ranking.Add(fcsb); 
+            ranking.Add(dinamo); 
+
+            ranking.UpdateMatchScore(fcsb, dinamo, 1, 2);
+
+            Assert.Equal(1 , ranking.PositionForCertainTeam(dinamo));
+
+        }
+
+
     }
 }

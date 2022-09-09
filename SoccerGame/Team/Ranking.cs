@@ -28,11 +28,11 @@ namespace Soccer
             {
                 if (soccerTeams[i].Equals(teamHome))
                 {
-                    soccerTeams[i].UpdateScore(teamAway, newScoreTeamAway, newScoreTeamHome);
+                    DecideScore(PositionForCertainTeam(soccerTeams[i]) - 1, newScoreTeamHome, newScoreTeamAway);
                 }
                 else if (soccerTeams[i].Equals(teamAway))
                 {
-                    soccerTeams[i].UpdateScore(teamHome, newScoreTeamHome, newScoreTeamAway);
+                    DecideScore(PositionForCertainTeam(soccerTeams[i]) - 1, newScoreTeamAway, newScoreTeamHome);
                 }
             }
 
@@ -54,6 +54,23 @@ namespace Soccer
 
         private static void Main()
         {
+        }
+
+        private void DecideScore(int position, int newScore1, int newScore2)
+        {
+            if (newScore1 > newScore2)
+            {
+                soccerTeams[position].AddWin();
+            }
+
+            if (newScore1 == newScore2)
+            {
+                soccerTeams[position].AddDraw();
+            }
+            else
+            {
+                soccerTeams[position].TakePoints();
+            }
         }
 
         private void Swap(int positionWithLessPoints, int positionWithMorePoints)

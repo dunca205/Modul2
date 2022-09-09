@@ -11,14 +11,21 @@ namespace Soccer
             Assert.True(cfrCluj.ComparePoints(uCluj));
         }
         [Fact]
-        public void UpddateScoreForOneTeam()
+        public void CheckPointsAfterMatchWin()
         {
             var cfrCluj = new Team(teamName: "CFRCJ", teamPoints: 15);
-            var uCluj = new Team(teamName: "UCluj", teamPoints: 14);
-            cfrCluj.UpdateScore(uCluj, 1, 0);
-            
-            Assert.False(cfrCluj.ComparePoints(uCluj));
-
+            var uCluj = new Team(teamName: "UCluj", teamPoints: 15);
+            cfrCluj.AddWin();
+            Assert.True(cfrCluj.ComparePoints(uCluj));
         }
+        [Fact]
+        public void CheckPointsAfterMatchLoss()
+        {
+            var cfrCluj = new Team(teamName: "CFRCJ", teamPoints: 15);
+            var uCluj = new Team(teamName: "UCluj", teamPoints: 15);
+            cfrCluj.TakePoints();
+            Assert.True(uCluj.ComparePoints(cfrCluj));
+        }
+
     }
 }
