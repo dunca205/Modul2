@@ -20,12 +20,9 @@ namespace Json
                 return false;
           }
 
-          foreach (char ch in text)
+          if (text[0] < start || text[0] > end)
           {
-             if (ch < start || ch > end)
-             {
-                    return false;
-             }
+                return false;
           }
 
           return true;
