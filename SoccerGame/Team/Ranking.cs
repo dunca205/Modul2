@@ -34,7 +34,7 @@ namespace Soccer
                 soccerTeams[PositionForCertainTeam(teamAway) - 1].AddWin();
             }
 
-          if (newScoreTeamAway == newScoreTeamHome && newScoreTeamAway != 0)
+          if (newScoreTeamAway == newScoreTeamHome)
             {
                 soccerTeams[PositionForCertainTeam(teamHome) - 1].AddDraw();
                 soccerTeams[PositionForCertainTeam(teamAway) - 1].AddDraw();
