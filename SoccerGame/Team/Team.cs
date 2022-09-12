@@ -29,11 +29,5 @@ namespace Soccer
             const int drawPoints = 1;
             this.teamPoints += drawPoints;
         }
-
-        public void TakePoints()
-        {
-            const int loss = 3;
-            this.teamPoints -= loss;
-        }
     }
 }

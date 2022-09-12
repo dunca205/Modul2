@@ -56,21 +56,19 @@ namespace Soccer
         {
         }
 
-        private void DecideScore(int position, int newScore1, int newScore2)
+        private void DecideScore(int teamPosition, int teamPositionNewScore, int competingTeamNewScore)
         {
-            if (newScore1 > newScore2)
+            if (teamPositionNewScore > competingTeamNewScore)
             {
-                soccerTeams[position].AddWin();
+                soccerTeams[teamPosition].AddWin();
             }
 
-            if (newScore1 == newScore2)
+            if (teamPositionNewScore != competingTeamNewScore)
             {
-                soccerTeams[position].AddDraw();
+                return;
             }
-            else
-            {
-                soccerTeams[position].TakePoints();
-            }
+
+            soccerTeams[teamPosition].AddDraw();
         }
 
         private void Swap(int positionWithLessPoints, int positionWithMorePoints)
