@@ -25,20 +25,20 @@ namespace Soccer
         public void UpdateMatchScore(Team teamHome, Team teamAway, int newScoreTeamHome, int newScoreTeamAway)
         {
           if (newScoreTeamHome > newScoreTeamAway)
-            {
+          {
                 soccerTeams[PositionForCertainTeam(teamHome) - 1].AddWin();
-            }
+          }
 
           if (newScoreTeamAway > newScoreTeamHome)
-            {
+          {
                 soccerTeams[PositionForCertainTeam(teamAway) - 1].AddWin();
-            }
+          }
 
           if (newScoreTeamAway == newScoreTeamHome)
-            {
+          {
                 soccerTeams[PositionForCertainTeam(teamHome) - 1].AddDraw();
                 soccerTeams[PositionForCertainTeam(teamAway) - 1].AddDraw();
-            }
+          }
 
           SortRanking();
         }
