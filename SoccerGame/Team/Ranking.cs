@@ -24,19 +24,23 @@ namespace Soccer
 
         public void UpdateMatchScore(Team teamHome, Team teamAway, int newScoreTeamHome, int newScoreTeamAway)
         {
-            for (int i = 0; i < soccerTeams.Length; i++)
+          if (newScoreTeamHome > newScoreTeamAway)
             {
-                if (soccerTeams[i].Equals(teamHome))
-                {
-                    DecideScore(PositionForCertainTeam(soccerTeams[i]) - 1, newScoreTeamHome, newScoreTeamAway);
-                }
-                else if (soccerTeams[i].Equals(teamAway))
-                {
-                    DecideScore(PositionForCertainTeam(soccerTeams[i]) - 1, newScoreTeamAway, newScoreTeamHome);
-                }
+                soccerTeams[PositionForCertainTeam(teamHome) - 1].AddWin();
             }
 
-            SortRanking();
+          if (newScoreTeamAway > newScoreTeamHome)
+            {
+                soccerTeams[PositionForCertainTeam(teamAway) - 1].AddWin();
+            }
+
+          if (newScoreTeamAway == newScoreTeamHome && newScoreTeamAway != 0)
+            {
+                soccerTeams[PositionForCertainTeam(teamHome) - 1].AddDraw();
+                soccerTeams[PositionForCertainTeam(teamAway) - 1].AddDraw();
+            }
+
+          SortRanking();
         }
 
         public int PositionForCertainTeam(Team team)
@@ -54,21 +58,6 @@ namespace Soccer
 
         private static void Main()
         {
-        }
-
-        private void DecideScore(int teamPosition, int teamPositionNewScore, int competingTeamNewScore)
-        {
-            if (teamPositionNewScore > competingTeamNewScore)
-            {
-                soccerTeams[teamPosition].AddWin();
-            }
-
-            if (teamPositionNewScore != competingTeamNewScore)
-            {
-                return;
-            }
-
-            soccerTeams[teamPosition].AddDraw();
         }
 
         private void Swap(int positionWithLessPoints, int positionWithMorePoints)
