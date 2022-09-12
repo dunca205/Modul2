@@ -20,12 +20,7 @@ namespace Json
                 return false;
           }
 
-          if (text[0] < start || text[0] > end)
-          {
-                return false;
-          }
-
-          return true;
+          return text[0] < start || text[0] > end;
        }
 
        static void Main(string[] args)
