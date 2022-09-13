@@ -12,8 +12,8 @@ namespace Json
             Assert.True(digit.Match("12")); // true
             Assert.True(digit.Match("92")); // true
             Assert.False(digit.Match("a9")); // false
-            Assert.False( digit.Match("")); // false
-            Assert.False (digit.Match(null)); // false
+            Assert.False(digit.Match("")); // false
+            Assert.False(digit.Match(null)); // false
         }
 
         [Fact]
