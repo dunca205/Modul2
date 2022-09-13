@@ -4,6 +4,6 @@ namespace Json
 {
      public interface IPattern
     {
-        public bool Match(string text);
+       public IMatch Match(string text); // modifica functia match din ipattern sa retunreze imatch
     }
 }
