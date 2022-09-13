@@ -2,7 +2,7 @@
 
 namespace Json
 {
- public class Range
+ public class Range : IPattern
 {
        private readonly char start;
        private readonly char end;

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Json", "Json.csproj", "{93B2552B-7E1D-40E8-BE65-C57F91844293}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonFacts", "..\JsonFacts\JsonFacts.csproj", "{18B855CA-E4A1-49C0-8F90-34806A112373}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonFacts", "..\JsonFacts\JsonFacts.csproj", "{18B855CA-E4A1-49C0-8F90-34806A112373}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -19,8 +19,6 @@ namespace Json
             Assert.False(range.Match("1ab"));
             Assert.False(range.Match(null));
             Assert.False(range.Match(string.Empty));
-
         }
-
     }
 }
