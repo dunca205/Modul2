@@ -18,7 +18,7 @@ namespace Json
                 IMatch match = pat.Match(text);
                 if (match.Succes())
                 {
-                    return new SuccesMatch(text);
+                    return new SuccesMatch(match.RemainingText());
                 }
             }
 

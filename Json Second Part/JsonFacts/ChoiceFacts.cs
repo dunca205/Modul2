@@ -11,7 +11,7 @@ namespace Json
 
             IMatch match = digit.Match("012");
             Assert.True(match.Succes());
-            Assert.Equal("2", match.RemainingText());
+            Assert.Equal("12", match.RemainingText());
         }
     }
 }
