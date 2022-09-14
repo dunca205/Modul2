@@ -13,9 +13,9 @@ namespace Json
         this.end = end;
        }
 
-       public bool Match(string text)
+       public IMatch Match(string text)
        {
-            return !string.IsNullOrEmpty(text) && (text[0] >= start) && (text[0] <= end);
+            return !string.IsNullOrEmpty(text) && (text[0] >= start) && (text[0] <= end) ? new FailedMatch(text) : new SuccesMatch(text[1..1]);
        }
 
        static void Main(string[] args)
