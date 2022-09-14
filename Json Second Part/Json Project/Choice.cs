@@ -4,9 +4,9 @@ namespace Json
 {
     public class Choice : IPattern
     {
-        private readonly IMatch[] pattern;
+        private readonly IPattern[] pattern;
 
-        public Choice(params IMatch[] patterns)
+        public Choice(params IPattern[] patterns)
         {
             this.pattern = patterns;
         }
@@ -15,7 +15,8 @@ namespace Json
         {
             foreach (var pat in pattern)
             {
-                if (pat.Succes(text))
+                IMatch match = pat.Match(text);
+                if (match.Succes())
                 {
                     return new SuccesMatch(text);
                 }

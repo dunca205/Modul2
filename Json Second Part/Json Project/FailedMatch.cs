@@ -11,12 +11,12 @@ namespace Json
             this.text = text;
         }
 
-        public string RemainingText(string text)
+        public string RemainingText()
         {
             return text;
         }
 
-        public bool Succes(string text)
+        public bool Succes()
         {
             return false;
         }

@@ -4,8 +4,8 @@ namespace Json
 {
     public interface IMatch
     {
-        public bool Succes(string text);
+        public bool Succes();
 
-        public string RemainingText(string text);
+        public string RemainingText();
     }
 }
