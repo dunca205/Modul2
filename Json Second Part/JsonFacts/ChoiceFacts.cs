@@ -1,4 +1,3 @@
-using Xunit;
 namespace Json
 {
     public class ChoiceFacts

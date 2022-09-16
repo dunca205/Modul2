@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace Json
+﻿namespace Json
 {
-     public interface IPattern
-     {
-       public IMatch Match(string text); // modifica functia match din ipattern sa retunreze i
-     }
+    public interface IPattern
+    {
+        public IMatch Match(string text);
+    }
 }

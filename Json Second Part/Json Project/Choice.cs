@@ -1,24 +1,22 @@
-﻿using System;
-
-namespace Json
+﻿namespace Json
 {
     public class Choice : IPattern
     {
-        private readonly IPattern[] pattern;
+        private readonly IPattern[] patterns;
 
-        public Choice(params IPattern[] patterns)
+        public Choice(params IPattern[] pattern)
         {
-            this.pattern = patterns;
+            this.patterns = pattern;
         }
 
         public IMatch Match(string text)
         {
-            foreach (var pat in pattern)
+            foreach (var patern in patterns)
             {
-                IMatch match = pat.Match(text);
+                IMatch match = patern.Match(text);
                 if (match.Succes())
                 {
-                    return new SuccesMatch(match.RemainingText());
+                    return match;
                 }
             }
 

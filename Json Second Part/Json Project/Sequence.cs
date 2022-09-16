@@ -1,31 +1,33 @@
-﻿using System;
-
-namespace Json
+﻿namespace Json
 {
     public class Sequence : IPattern
     {
-        private readonly IPattern[] pattern;
+        private readonly IPattern[] patterns;
 
-        public Sequence(params IPattern[] patterns)
-    {
-            pattern = patterns;
-    }
+        public Sequence(params IPattern[] pattern)
+        {
+            patterns = pattern;
+        }
 
         public IMatch Match(string text)
         {
-            var newText = text;
-            foreach (var pat in pattern)
+            IMatch match = null;
+            foreach (var pattern in patterns)
             {
-                IMatch isMatch = pat.Match(newText);
-                if (!isMatch.Succes())
+                if (match != null)
+                {
+                    match = pattern.Match(match.RemainingText());
+                }
+
+                match ??= pattern.Match(text);
+
+                if (!match.Succes())
                 {
                     return new FailedMatch(text);
                 }
-
-                newText = isMatch.RemainingText();
             }
 
-            return new SuccesMatch(newText);
+            return match;
         }
     }
 }

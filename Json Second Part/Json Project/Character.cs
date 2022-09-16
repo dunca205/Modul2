@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Json
+﻿namespace Json
 {
-     public class Character : IPattern
+    public class Character : IPattern
     {
         readonly char pattern;
 
