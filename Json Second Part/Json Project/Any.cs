@@ -11,17 +11,10 @@
 
         public IMatch Match(string text)
         {
-            if (string.IsNullOrEmpty(text))
-            {
-                return new FailedMatch(text);
-            }
-
-            if (acceptedCharacters.Contains(text[0]))
-            {
-                return new SuccesMatch(text[1..]);
-            }
-
-            return new FailedMatch(text);
+            return string.IsNullOrEmpty(text) ||
+                 !acceptedCharacters.Contains(text[0]) ?
+                  new FailedMatch(text) :
+                  new SuccesMatch(text[1..]);
         }
     }
 }
