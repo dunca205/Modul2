@@ -13,11 +13,6 @@
         {
             IMatch match = new SuccesMatch(text);
 
-            if (string.IsNullOrEmpty(text))
-            {
-                return new SuccesMatch(text);
-            }
-
             while (match.Succes())
             {
                 match = pattern.Match(match.RemainingText());
