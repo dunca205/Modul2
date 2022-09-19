@@ -13,7 +13,10 @@
 
         public IMatch Match(string text)
         {
-            return string.IsNullOrEmpty(text) || !(text[0] >= start && text[0] <= end) ? new FailedMatch(text) : new SuccesMatch(text[1..]);
+            return string.IsNullOrEmpty(text) ||
+                !(text[0] >= start && text[0] <= end)
+                ? new FailedMatch(text)
+                : new SuccesMatch(text[1..]);
         }
 
         static void Main(string[] args)

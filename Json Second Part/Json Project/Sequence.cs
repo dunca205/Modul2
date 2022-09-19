@@ -11,15 +11,11 @@
 
         public IMatch Match(string text)
         {
-            IMatch match = null;
+            IMatch match = new SuccesMatch(text);
+
             foreach (var pattern in patterns)
             {
-                if (match != null)
-                {
-                    match = pattern.Match(match.RemainingText());
-                }
-
-                match ??= pattern.Match(text);
+                match = pattern.Match(match.RemainingText());
 
                 if (!match.Succes())
                 {
