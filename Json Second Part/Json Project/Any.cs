@@ -11,15 +11,14 @@
 
         public IMatch Match(string text)
         {
-            if (!string.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(text))
             {
-                foreach (char character in acceptedCharacters)
-                {
-                    if (text.StartsWith(character))
-                    {
-                        return new SuccesMatch(text[1..]);
-                    }
-                }
+                return new FailedMatch(text);
+            }
+
+            if (acceptedCharacters.Contains(text[0]))
+            {
+                return new SuccesMatch(text[1..]);
             }
 
             return new FailedMatch(text);
