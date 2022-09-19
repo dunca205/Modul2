@@ -7,7 +7,7 @@
         public Many(IPattern pattern)
         {
             this.pattern = pattern;
-    }
+        }
 
         public IMatch Match(string text)
         {
@@ -18,7 +18,7 @@
                 return new SuccesMatch(text);
             }
 
-            foreach (char character in text)
+            while (match.Succes())
             {
                 match = pattern.Match(match.RemainingText());
             }
