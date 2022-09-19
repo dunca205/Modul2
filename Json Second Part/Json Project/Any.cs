@@ -2,18 +2,18 @@
 {
     public class Any : IPattern
     {
-        private readonly string accepted;
+        private readonly string acceptedCharacters;
 
         public Any(string accepted)
         {
-            this.accepted = accepted;
+            this.acceptedCharacters = accepted;
         }
 
         public IMatch Match(string text)
         {
             if (!string.IsNullOrEmpty(text))
             {
-                foreach (char character in accepted)
+                foreach (char character in acceptedCharacters)
                 {
                     if (text.StartsWith(character))
                     {
