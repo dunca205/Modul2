@@ -24,7 +24,7 @@
                 }
             }
 
-            return new SuccesMatch(text[text.Length ..]);
+            return new SuccesMatch(text[prefix.Length..]);
         }
     }
 }
