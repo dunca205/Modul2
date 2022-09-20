@@ -6,10 +6,10 @@ namespace Json
         [InlineData("abc")]
         [InlineData("aaaabc")]
         [InlineData("bc")]
-        public void RemoveCharacterIfTextMatchesGivenPattern(string input)
+        public void RemoveCharacterIfTextMatchesGivenPattern(string text)
         {
             var a = new Many(new Character('a'));
-            IMatch match = a.Match(input);
+            IMatch match = a.Match(text);
             Assert.True(match.Succes());
             Assert.Equal("bc", match.RemainingText());
 
