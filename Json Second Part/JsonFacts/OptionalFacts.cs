@@ -28,7 +28,7 @@ namespace Json
         public void PatternDoesntMatchGivenText()
         {
             var a = new OptionalPattern(new Character('a'));
-            IMatch match = a.Match(""); 
+            IMatch match = a.Match("");
             Assert.True(match.Succes());
             Assert.Equal("", match.RemainingText());
 
