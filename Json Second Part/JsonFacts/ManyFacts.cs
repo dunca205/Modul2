@@ -2,32 +2,19 @@ namespace Json
 {
     public class ManyFacts
     {
-        [Fact]
-        public void TextMatchesPatterOnce()
+        [Theory]
+        [InlineData("abc")]
+        [InlineData("aaaabc")]
+        [InlineData("bc")]
+        public void RemoveCharacterIfTextMatchesGivenPattern(string input)
         {
             var a = new Many(new Character('a'));
-            IMatch match = a.Match("abc");
+            IMatch match = a.Match(input);
             Assert.True(match.Succes());
             Assert.Equal("bc", match.RemainingText());
-        }
 
-        [Fact]
-        public void TextMatchesPatternMultipleTimes()
-        {
-            var a = new Many(new Character('a'));
-            IMatch match = a.Match("aaaabc"); // true / "bc"
-            Assert.True(match.Succes());
-            Assert.Equal("bc", match.RemainingText());
         }
-
-        [Fact]
-        public void TextDoesntMatchGivenPattern()
-        {
-            var a = new Many(new Character('a'));
-            IMatch match = a.Match("bc"); // true / "bc"
-            Assert.True(match.Succes());
-            Assert.Equal("bc", match.RemainingText());
-        }
+       
 
         [Fact]
         public void EmptyTextDoesntMatchGivenPattern()
