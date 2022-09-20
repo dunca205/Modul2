@@ -14,7 +14,7 @@ namespace Json
             Assert.Equal("bc", match.RemainingText());
 
         }
-       
+
 
         [Fact]
         public void EmptyTextDoesntMatchGivenPattern()
