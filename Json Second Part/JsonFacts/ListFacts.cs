@@ -59,7 +59,7 @@
         [Fact]
         public void ListMatchesAllCharacters()
         {
-            var digits = new OneOrMore(new Range('0', '9')); // va elimina toate caractere consecutive care  se afla in intervalul 0-9
+            var digits = new OneOrMore(new Range('0', '9'));
 
             var whitespace = new Many(new Any(" \r\n\t"));
 
@@ -67,17 +67,18 @@
 
             var list = new List(digits, separator);
 
-            IMatch match = list.Match("1; 22  ;\n 33\t 22"); // true, ""
+            IMatch match = list.Match("1; 22  ;\n 333 \t; 22"); // true, ""
             Assert.True(match.Succes());
             Assert.Equal("", match.RemainingText());
-            // " el          sep          el          sep         el "
-            // " 0-9whitespace;whitespace0-9whitespace;whitespace0-9
-            // "  1            ;         22           ; \n       33
+
+            match = list.Match("1 \n;"); // true, " \n;"
+            Assert.True(match.Succes());
+            Assert.Equal(" \n;", match.RemainingText());
+
+            match = list.Match("abc"); // true, "abc"
+            Assert.True(match.Succes());
+            Assert.Equal("abc", match.RemainingText());
 
         }
-        /* 
- list.Match("1 \n;"); // true, " \n;"
- list.Match("abc"); // true, "abc"
-        */
     }
 }
