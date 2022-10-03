@@ -6,10 +6,9 @@
 
         public Number()
         {
-            var negativeSign = new Optional(new Character('-'));
             var digit = new Range(start: '0', end: '9');
             var digits = new OneOrMore(digit);
-            var integer = new Sequence(negativeSign, new Choice(new Character('0'), digits));
+            var integer = new Sequence(new Optional(new Character('-')), new Choice(new Character('0'), digits));
             var fractional = new Sequence(new Any("."), new OneOrMore(digits));
             var exponential = new Sequence(new Any("eE"), new Optional(new Any("-+")), new OneOrMore(digits));
             pattern = new Sequence(integer, new Optional(fractional), new Optional(exponential));
