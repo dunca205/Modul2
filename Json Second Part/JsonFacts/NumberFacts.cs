@@ -1,7 +1,4 @@
-﻿using System;
-using Xunit;
-
-namespace Json
+﻿namespace Json
 {
     public class NumberFacts
     {

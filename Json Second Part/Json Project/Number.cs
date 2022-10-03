@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Json
+﻿namespace Json
 {
     public class Number : IPattern
     {
@@ -8,16 +6,13 @@ namespace Json
 
         public Number()
         {
-            var positiveOrNegativeSign = new OptionalPattern(new Any("-+"));
-            var negativeSign = new OptionalPattern(new Character('-'));
-            var exponentialSign = new Any("eE");
-            var rangeOneNine = new Range(start: '1', end: '9');
-            var digit = new Choice(new Character('0'), rangeOneNine); // poate sa fie 0 sau  orice nr de la 1-9
-            var digits = new Choice(new Character('0'), new OneOrMore(digit)); // poate sa fie 0 sau un alt nr care nu incepe cu 0 dar poate sa il contina si pe 0
-            var integer = new Sequence(negativeSign, digits);
-            var fractionalPart = new Sequence(new Any("."), new OneOrMore(digits));
-            var exponentialPart = new Sequence(exponentialSign, positiveOrNegativeSign, new OneOrMore(digits));
-            pattern = new Sequence(integer, new OptionalPattern(fractionalPart), new OptionalPattern(exponentialPart));
+            var negativeSign = new Optional(new Character('-'));
+            var digit = new Range(start: '0', end: '9');
+            var digits = new OneOrMore(digit);
+            var integer = new Sequence(negativeSign, new Choice(new Character('0'), digits));
+            var fractional = new Sequence(new Any("."), new OneOrMore(digits));
+            var exponential = new Sequence(new Any("eE"), new Optional(new Any("-+")), new OneOrMore(digits));
+            pattern = new Sequence(integer, new Optional(fractional), new Optional(exponential));
         }
 
         public IMatch Match(string text)

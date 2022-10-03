@@ -1,10 +1,10 @@
 ﻿namespace Json
 {
-    public class OptionalPattern : IPattern
+    public class Optional : IPattern
     {
         private readonly IPattern pattern;
 
-        public OptionalPattern(IPattern pattern)
+        public Optional(IPattern pattern)
         {
             this.pattern = pattern;
         }

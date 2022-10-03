@@ -7,7 +7,7 @@ namespace Json
         [InlineData("bc")]
         public void RemovesMatchingPatterFromGivenTextIfItsFound(string text)
         {
-            var a = new OptionalPattern(new Character('a'));
+            var a = new Optional(new Character('a'));
             IMatch match = a.Match(text);
             Assert.Equal("bc", match.RemainingText());
             Assert.True(match.Succes());
@@ -18,7 +18,7 @@ namespace Json
         [InlineData("-123")]
         public void RemovesNegativeSignFromTextIfItsFound(string text)
         {
-            var sign = new OptionalPattern(new Character('-'));
+            var sign = new Optional(new Character('-'));
             IMatch match = sign.Match(text);
             Assert.Equal("123", match.RemainingText());
             Assert.True(match.Succes());
@@ -27,7 +27,7 @@ namespace Json
         [Fact]
         public void PatternDoesntMatchGivenText()
         {
-            var a = new OptionalPattern(new Character('a'));
+            var a = new Optional(new Character('a'));
             IMatch match = a.Match("");
             Assert.True(match.Succes());
             Assert.Equal("", match.RemainingText());
@@ -40,7 +40,7 @@ namespace Json
         [Fact]
         public void RemovesOneMatchingPatternFromGivenText()
         {
-            var a = new OptionalPattern(new Character('a'));
+            var a = new Optional(new Character('a'));
             IMatch match = a.Match("aabc");
             Assert.Equal("abc", match.RemainingText());
             Assert.True(match.Succes());
