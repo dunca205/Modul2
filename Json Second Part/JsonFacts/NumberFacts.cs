@@ -21,6 +21,7 @@ namespace Json
         [InlineData("61e-9")]
         [InlineData("12.34E3")]
         [InlineData("0.01e-00")]
+        [InlineData("-0.01")]
         public void IsValidJsonNumber(string text)
         {
             IMatch match = new Number().Match(text);
@@ -43,6 +44,7 @@ namespace Json
             Assert.Equal("-a", match.RemainingText());
             Assert.False(match.Succes());
         }
+
         [Fact]
         public void ValidIntegerAndInvalidFraction()
         {
@@ -50,12 +52,22 @@ namespace Json
             Assert.Equal(".r", match.RemainingText());
             Assert.True(match.Succes());
         }
+
         [Fact]
         public void ValidIntegerAndInvalidExponential()
         {
             IMatch match = new Number().Match("-10E");
             Assert.Equal("E", match.RemainingText());
             Assert.True(match.Succes());
+        }
+
+        [Fact]
+        public void ValidInteger()
+        {
+            IMatch match = new Number().Match("-01");
+            Assert.Equal("1", match.RemainingText());
+            Assert.True(match.Succes());
+
         }
     }
 }
