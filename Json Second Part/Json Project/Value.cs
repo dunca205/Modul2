@@ -6,7 +6,7 @@
 
         public Value()
         {
-            var ws = new Character(' ');
+            var ws = new Any("  \n\r\t");
             var value = new Choice(new JsonString(), new Number(), new Text("true"), new Text("false"), new Text("null"));
             var comma = new Character(',');
             var element = new Sequence(ws, value, ws); // o valoare marginita la stanga si la dreapta de spatiu
@@ -25,9 +25,10 @@
                 new Character('{'),
                 new Choice(ws, members),
                 new Character('}'));
-
             value.Add(array);
             value.Add(obj);
+            // var value = new Choice(new JsonString(), new Number(), new Text("true"), new Text("false"), new Text("null")); + object + array 
+
             pattern = new Sequence(ws, value, ws);
         }
 
