@@ -5,15 +5,13 @@
         [Theory]
         [InlineData("\"\\n\"")]
         [InlineData("\"\\r\"")]
-      //  [InlineData("\"\"")]
+        [InlineData("\"\"")]
         [InlineData("\"\\u26Be\"")]
         [InlineData("\"\\\"\"")]
         [InlineData("\"\\/\"")]
         [InlineData("\"a\"")]
-       // [InlineData("\"abc\"")]
+        [InlineData("\"abc\"")]
         [InlineData("\"⛅\"")]
-
-        //  [InlineData("\"abc\"")]
         public void IsValidJsonString(string text)
         {
             IMatch match = new JsonString().Match(text);
@@ -54,10 +52,28 @@
             Assert.Equal("\"\\u26\"", match.RemainingText());
         }
 
-      //  [Fact]  fail
-        public void ContainsInvalidHexSequenceAndValidEscapeChar()
+        [Fact]
+        public void ContainsValidHexSequenceAndValidEscapeChar()
         {
             IMatch match = new JsonString().Match("\"\\u26Be\\r\"");
+            Assert.True(match.Succes());
+            Assert.Equal("", match.RemainingText());
+
+        }
+
+        [Fact]
+        public void ContainsValidHexSequenceValidValidUnicodePointEscapeCharAnd()
+        {
+            IMatch match = new JsonString().Match("\"\\u26Be \\r\"");
+            Assert.True(match.Succes());
+            Assert.Equal("", match.RemainingText());
+
+        }
+
+        [Fact]
+        public void ContainsInvalidHexSequenceAndValidEscapeCharacter()
+        {
+            IMatch match = new JsonString().Match("\"\\u26Be \\w\"");
             Assert.True(match.Succes());
             Assert.Equal("", match.RemainingText());
 
