@@ -69,14 +69,5 @@
             Assert.Equal("", match.RemainingText());
 
         }
-
-        [Fact]
-        public void ContainsInvalidHexSequenceAndValidEscapeCharacter()
-        {
-            IMatch match = new JsonString().Match("\"\\u26Be \\w\"");
-            Assert.True(match.Succes());
-            Assert.Equal("", match.RemainingText());
-
-        }
     }
 }
