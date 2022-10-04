@@ -1,6 +1,8 @@
 ﻿namespace Json
 {
+#pragma warning disable CA1716 // Identifiers should not match keywords
     public class Optional : IPattern
+#pragma warning restore CA1716 // Identifiers should not match keywords
     {
         private readonly IPattern pattern;
 

@@ -1,12 +1,14 @@
-﻿using System;
-
-namespace Json
+﻿namespace Json
 {
-    public class StringJson : IPattern
+#pragma warning disable CA1720 // Identifier contains type name
+#pragma warning disable CA1716 // Identifiers should not match keywords
+    public class String : IPattern
+#pragma warning restore CA1716 // Identifiers should not match keywords
+#pragma warning restore CA1720 // Identifier contains type name
     {
         private readonly IPattern pattern;
 
-        public StringJson()
+        public String()
         {
             var hexCharacters = new Any("0123456789abcdefABCDEF");
             var escapeSequenceCharacters = new Any("/bfnrt\"\\/");
