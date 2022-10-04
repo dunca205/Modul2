@@ -1,14 +1,10 @@
 ﻿namespace Json
 {
-#pragma warning disable CA1720 // Identifier contains type name
-#pragma warning disable CA1716 // Identifiers should not match keywords
-    public class String : IPattern
-#pragma warning restore CA1716 // Identifiers should not match keywords
-#pragma warning restore CA1720 // Identifier contains type name
+    public class JsonString : IPattern
     {
         private readonly IPattern pattern;
 
-        public String()
+        public JsonString()
         {
             var hexCharacters = new Any("0123456789abcdefABCDEF");
             var escapeSequenceCharacters = new Any("/bfnrt\"\\/");
