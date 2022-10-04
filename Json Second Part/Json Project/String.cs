@@ -15,7 +15,7 @@
                 new Character('u'),
                 new Sequence(hexCharacters, hexCharacters, hexCharacters, hexCharacters));
 
-            var escapeCharacters = new Any("/bfnrt\"\\/");
+            var escapeCharacters = new Any("bfnrt\"\\/");
 
             var escapeSequence = new Sequence(
                 new Character('\\'),
@@ -24,9 +24,9 @@
             var character = new Choice(
                 escapeSequence,
                 new Choice(
-                new Range(start: ' ', end: '!'),
-                new Range(start: '#', end: '['),
-                new Range(start: ']', end: char.MaxValue)));
+                    new Range(start: ' ', end: '!'),
+                    new Range(start: '#', end: '['),
+                    new Range(start: ']', end: char.MaxValue)));
 
             pattern = new Sequence(new Character('"'), new Many(character), new Character('"'));
         }
