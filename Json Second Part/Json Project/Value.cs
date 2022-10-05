@@ -16,20 +16,18 @@
 
             var array = new Sequence(
                 new Character('['),
-                new Choice(
-                    ws,
-                    elements),
+                elements,
                 new Character(']'));
 
             var obj = new Sequence(
                 new Character('{'),
-                new Choice(ws, members),
+                members,
                 new Character('}'));
             value.Add(array);
             value.Add(obj);
             // var value = new Choice(new JsonString(), new Number(), new Text("true"), new Text("false"), new Text("null"), new Obj(), new array());
 
-            pattern = new Sequence(ws, value, ws);
+            pattern = new Sequence(value);
         }
 
         public IMatch Match(string text)
