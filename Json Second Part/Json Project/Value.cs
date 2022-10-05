@@ -10,8 +10,8 @@
             var value = new Choice(new JsonString(), new Number(), new Text("true"), new Text("false"), new Text("null"));
             var comma = new Character(',');
             var element = new Sequence(ws, value, ws); // o valoare marginita la stanga si la dreapta de spatiu
-            var elements = new List(element: element, separator: comma); // o lista de tip element separator, deci : ws value ws separator
-            var member = new Sequence(ws, new JsonString(), ws, new Character(':'), element);
+            var elements = new List(element: element, separator: comma); // o lista de tip element separator, deci : ws value ws separator ws value ws etc 
+            var member = new Sequence(ws, new JsonString(), ws, new Character(':'), element);  //ex: \"Ana\" : 23 , \"Cristina\" : 24 
             var members = new List(element: member, separator: comma);
 
             var array = new Sequence(
@@ -27,7 +27,7 @@
                 new Character('}'));
             value.Add(array);
             value.Add(obj);
-            // var value = new Choice(new JsonString(), new Number(), new Text("true"), new Text("false"), new Text("null")); + object + array 
+            // var value = new Choice(new JsonString(), new Number(), new Text("true"), new Text("false"), new Text("null"), new Obj(), new array());
 
             pattern = new Sequence(ws, value, ws);
         }
