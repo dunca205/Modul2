@@ -13,13 +13,14 @@
         [InlineData("true")]
         [InlineData("false")]
         [InlineData("null")]
-        // [InlineData("[ ]")] // array cu whitespace
-        // [InlineData("{ }")] // obiect gol
-        [InlineData("[ \"GML\" , \"XML\" ]")]
+        [InlineData("[ ]")] // array cu 1whitespace
+        [InlineData("[ \n]")] // array cu 2 whitespace
+        [InlineData("{ }")] // obiect gol
+        [InlineData("[\"GML\"]")]
         [InlineData("[ \"abc\" , 12.3 , true , null ]")] // array de values 
         [InlineData("{ \"Ana\" : 23 }")] // obiect { spatiu string spatiu : spatiu numar spatiu }
         [InlineData("{ \"Ana\" : 23 , \"Cristina\" : 24 }")] // mai multe obiecte 
-       //   [InlineData("{ \"value\" : \"Open\" , \"onclick\" : \"OpenDoc()\" }")] (pass)
+                                                             // [InlineData("{ \"value\" : \"Open\" , \"onclick\" : \"OpenDoc()\" }")] 
         public void IsValidJson(string text)
         {
             IMatch match = new Value().Match(text);

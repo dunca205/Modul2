@@ -6,28 +6,32 @@
 
         public Value()
         {
-            var ws = new Any("  \n\r\t");
+            var ws = new Many(new Any("  \n\r\t"));
             var value = new Choice(new JsonString(), new Number(), new Text("true"), new Text("false"), new Text("null"));
             var comma = new Character(',');
-            var element = new Sequence(ws, value, ws); // o valoare marginita la stanga si la dreapta de spatiu
-            var elements = new List(element: element, separator: comma); // o lista de tip element separator, deci : ws value ws separator ws value ws etc 
-            var member = new Sequence(ws, new JsonString(), ws, new Character(':'), element);  //ex: \"Ana\" : 23 , \"Cristina\" : 24 
+            var element = new Sequence(ws, value, ws);
+            var elements = new List(element: element, separator: comma);
+            var member = new Sequence(ws, new JsonString(), ws, new Character(':'), element);
             var members = new List(element: member, separator: comma);
 
             var array = new Sequence(
                 new Character('['),
-                elements,
+                new Choice(
+                    ws,
+                    elements),
                 new Character(']'));
 
             var obj = new Sequence(
                 new Character('{'),
-                members,
+                new Choice(
+                   ws,
+                   members),
                 new Character('}'));
+
             value.Add(array);
             value.Add(obj);
-            // var value = new Choice(new JsonString(), new Number(), new Text("true"), new Text("false"), new Text("null"), new Obj(), new array());
 
-            pattern = new Sequence(value);
+            pattern = element;
         }
 
         public IMatch Match(string text)
