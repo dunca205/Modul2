@@ -16,16 +16,14 @@
 
             var array = new Sequence(
                 new Character('['),
-                new Choice(
-                    ws,
-                    elements),
+                ws,
+                elements,
                 new Character(']'));
 
             var obj = new Sequence(
                 new Character('{'),
-                new Choice(
-                   ws,
-                   members),
+                ws,
+                members,
                 new Character('}'));
 
             value.Add(array);
