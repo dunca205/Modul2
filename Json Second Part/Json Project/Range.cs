@@ -18,9 +18,5 @@
                 ? new FailedMatch(text)
                 : new SuccesMatch(text[1..]);
         }
-
-        static void Main(string[] args)
-        {
-        }
     }
 }
