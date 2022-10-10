@@ -38,10 +38,4 @@
     <ApplicationDefinition Include="C:\Users\sorin\Desktop\Junior\Modul2\Json.Start\Json Second Part\Json Project\.editorconfig" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="JsonExample1.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
