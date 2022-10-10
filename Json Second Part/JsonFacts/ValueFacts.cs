@@ -4,7 +4,7 @@
     {
         [Theory]
         [InlineData("\"abc\"")]
-        [InlineData("\"\\n\"")] 
+        [InlineData("\"\\n\"")]
         [InlineData("\"\\u26Be\"")]
         [InlineData("12.3")]
         [InlineData("12.3E-2")]
@@ -17,7 +17,7 @@
         [InlineData("{ }")]
         [InlineData("[\"GML\"]")]
         [InlineData("[ \"abc\" , 12.3 , true , null ]")]
-        [InlineData("{ \"Ana\" : 23 }")] 
+        [InlineData("{ \"Ana\" : 23 }")]
         [InlineData("{ \"Ana\" : 23 , \"Cristina\" : 24 }")]
         [InlineData("{\"value\" : \"Open\" , \"onclick\" : \"OpenDoc()\" }")]
         public void IsValidJson(string text)

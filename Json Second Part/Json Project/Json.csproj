@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -27,6 +27,21 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20371.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\sorin\Desktop\Junior\Modul2\Json.Start\Json Second Part\Json Project\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Include="C:\Users\sorin\Desktop\Junior\Modul2\Json.Start\Json Second Part\Json Project\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="JsonExample1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
