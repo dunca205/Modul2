@@ -2,7 +2,7 @@
   "profiles": {
     "Json": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\sorin\\Desktop\\JsonExample3.txt C:\\Users\\sorin\\Desktop\\JsonExample2.txt "
+      "commandLineArgs": "C:\\Users\\sorin\\Desktop\\JsonExample1.txt C:\\Users\\sorin\\Desktop\\JsonExample2.txt C:\\Users\\sorin\\Desktop\\JsonExample3.txt"
     }
   }
 }

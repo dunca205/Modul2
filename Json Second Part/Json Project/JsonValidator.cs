@@ -4,12 +4,18 @@
     {
         static void Main(string[] args)
         {
-            IMatch match;
-            foreach (var arg in args)
+            if (args.Length == 0)
             {
-                string text = System.IO.File.ReadAllText(arg);
-                match = new Value().Match(text);
-                Console.WriteLine(match.Succes() ? "The text file conforms to the JSON format" : "The text does not conform to the JSON format");
+                Console.WriteLine("No text file was found");
+            }
+            else
+            {
+                foreach (var arg in args)
+                {
+                    string text = System.IO.File.ReadAllText(arg);
+                    IMatch match = new Value().Match(text);
+                    Console.WriteLine(match.Succes() ? "The text file conforms to the JSON format" : "The text does not conform to the JSON format");
+                }
             }
         }
     }
