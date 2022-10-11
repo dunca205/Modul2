@@ -5,8 +5,8 @@ namespace Json
         [Fact]
         public void TextMatchesGivenPrefix()
         {
-            var textTrue = new Text1("true");
-            var textFalse = new Text1("false");
+            var textTrue = new Text("true");
+            var textFalse = new Text("false");
 
             IMatch match = textTrue.Match("true"); // true / ""
             Assert.True(match.Succes());
@@ -54,7 +54,7 @@ namespace Json
         [Fact]
         public void TextMatchesNullOrEmptyPrefix()
         {
-            var empty = new Text1("");
+            var empty = new Text("");
             IMatch match = empty.Match("true");// true / "true"
             Assert.True(match.Succes());
             Assert.Equal("true", match.RemainingText());

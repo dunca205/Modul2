@@ -7,7 +7,7 @@
         public Value()
         {
             var ws = new Many(new Any("  \n\r\t"));
-            var value = new Choice(new JsonString(), new Number(), new Text1("true"), new Text1("false"), new Text1("null"));
+            var value = new Choice(new JsonString(), new Number(), new Text("true"), new Text("false"), new Text("null"));
             var comma = new Character(',');
             var element = new Sequence(ws, value, ws);
             var elements = new List(element: element, separator: comma);
