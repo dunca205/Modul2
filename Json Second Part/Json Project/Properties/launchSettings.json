@@ -2,7 +2,12 @@
   "profiles": {
     "Json": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\sorin\\Desktop\\JsonExample1.txt C:\\Users\\sorin\\Desktop\\JsonExample2.txt C:\\Users\\sorin\\Desktop\\JsonExample3.txt"
+      "commandLineArgs": "JsonExample1.txt JsonExample2.txt JsonExample3.txt JsonExample4.txt",
+      "workingDirectory": "C:\\Users\\sorin\\Desktop\\JsonExamples"
+    },
+    "Profile 1": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Users\\sorin\\Desktop\\JsonExamples\\JsonExamples"
     }
   }
 }

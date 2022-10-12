@@ -32,12 +32,6 @@
             IMatch match = new Value().Match("abc");
             Assert.Equal("abc", match.RemainingText());
             Assert.False(match.Succes());
-
         }
-
-
-
-
-
     }
 }

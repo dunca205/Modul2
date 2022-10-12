@@ -1,10 +1,10 @@
 ﻿namespace Json
 {
-    public class Text : IPattern
+    public class Text1 : IPattern
     {
         private readonly string prefix;
 
-        public Text(string prefix)
+        public Text1(string prefix)
         {
             this.prefix = prefix;
         }
