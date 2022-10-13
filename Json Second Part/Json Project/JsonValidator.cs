@@ -20,19 +20,15 @@
             }
 
             Console.WriteLine("Introduce path to the folder that contains the text files");
-            string paths = "";
-            while (paths != "stop")
+
+            string folderPath = Console.ReadLine();
+            IMatch matchInput = new Value().Match(File.ReadAllText(folderPath));
+            if (!matchInput.Succes() || !matchInput.RemainingText().Equals(string.Empty))
             {
-                paths = Console.ReadLine();
-                foreach (string path2 in System.IO.Directory.GetFiles(paths))
-                {
-                    IMatch matchInput = new Value().Match(System.IO.File.ReadAllText(path2));
-                    if (matchInput.Succes() && matchInput.RemainingText().Equals(string.Empty))
-                    {
-                        Console.WriteLine("The text file conforms to the JSON format");
-                    }
-                }
+                return;
             }
+
+            Console.WriteLine("The text file conforms to the JSON format");
         }
     }
 }

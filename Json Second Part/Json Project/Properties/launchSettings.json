@@ -4,10 +4,6 @@
       "commandName": "Project",
       "commandLineArgs": "JsonExample1.txt JsonExample2.txt JsonExample3.txt JsonExample4.txt",
       "workingDirectory": "C:\\Users\\sorin\\Desktop\\JsonExamples"
-    },
-    "Profile 1": {
-      "commandName": "Executable",
-      "executablePath": "C:\\Users\\sorin\\Desktop\\JsonExamples\\JsonExamples"
     }
   }
 }
