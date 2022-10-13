@@ -19,10 +19,10 @@
                 }
             }
 
-            Console.WriteLine("Introduce path to the folder that contains the text files");
+            Console.WriteLine("Introduce path to text file");
 
-            string folderPath = Console.ReadLine();
-            IMatch matchInput = new Value().Match(File.ReadAllText(folderPath));
+            string path = Console.ReadLine();
+            IMatch matchInput = new Value().Match(File.ReadAllText(path));
             if (!matchInput.Succes() || !matchInput.RemainingText().Equals(string.Empty))
             {
                 return;
