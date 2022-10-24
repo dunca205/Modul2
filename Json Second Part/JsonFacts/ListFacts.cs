@@ -53,7 +53,7 @@
             var a = new List(new Range('0', '9'), new Character(','));
             IMatch match = a.Match(null);
             Assert.True(match.Succes());
-            Assert.Equal(null, match.RemainingText());
+            Assert.Null(match.RemainingText());
         }
 
         [Fact]

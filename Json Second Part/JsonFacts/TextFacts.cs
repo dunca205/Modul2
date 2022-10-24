@@ -27,7 +27,7 @@ namespace Json
 
             match = textTrue.Match(null); // false / null
             Assert.False(match.Succes());
-            Assert.Equal(null, match.RemainingText());
+            Assert.Null(match.RemainingText());
 
             match = textFalse.Match("false");
             Assert.True(match.Succes());
@@ -48,7 +48,7 @@ namespace Json
 
             match = textFalse.Match(null);
             Assert.False(match.Succes());
-            Assert.Equal(null, match.RemainingText());
+            Assert.Null(match.RemainingText());
 
         }
         [Fact]
@@ -61,7 +61,7 @@ namespace Json
 
             match = empty.Match(null); // false / null
             Assert.False(match.Succes());
-            Assert.Equal(null, match.RemainingText());
+            Assert.Null(match.RemainingText());
 
         }
     }

@@ -27,7 +27,7 @@ namespace Json
             var range = new Range('0', '9');
             IMatch match = range.Match(null);
             Assert.False(match.Succes());
-            Assert.Equal(null, match.RemainingText());
+            Assert.Null(match.RemainingText());
         }
 
         [Fact]

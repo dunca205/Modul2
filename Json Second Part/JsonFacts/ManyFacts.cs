@@ -31,7 +31,7 @@ namespace Json
             var a = new Many(new Character('a'));
             IMatch match = a.Match(null); // true / null
             Assert.True(match.Succes());
-            Assert.Equal(null, match.RemainingText());
+            Assert.Null(match.RemainingText());
         }
 
 

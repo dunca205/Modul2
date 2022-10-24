@@ -34,7 +34,7 @@ namespace Json
 
             match = a.Match(null);
             Assert.True(match.Succes());
-            Assert.Equal(null, match.RemainingText());
+            Assert.Null(match.RemainingText());
         }
 
         [Fact]

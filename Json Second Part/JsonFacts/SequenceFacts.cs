@@ -23,7 +23,7 @@ namespace Json
             Assert.False(match.Succes());
 
             match = ab.Match(null); // false / null
-            Assert.Equal(null, match.RemainingText());
+            Assert.Null(match.RemainingText());
             Assert.False(match.Succes());
         }
 
@@ -50,7 +50,7 @@ namespace Json
             Assert.Equal("", match.RemainingText());
 
             match = abc.Match(null); // false / null
-            Assert.Equal(null, match.RemainingText());
+            Assert.Null(match.RemainingText());
             Assert.False(match.Succes());
         }
 
@@ -76,7 +76,7 @@ namespace Json
             Assert.Equal("abc", match.RemainingText());
 
             match = hexSeq.Match(null); // false / null
-            Assert.Equal(null, match.RemainingText());
+            Assert.Null(match.RemainingText());
             Assert.False(match.Succes());
 
         }

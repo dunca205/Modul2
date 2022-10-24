@@ -44,7 +44,7 @@
         {
             var a = new OneOrMore(new Range('0', '9'));
             IMatch match = a.Match(null); // false / null
-            Assert.Equal(null, match.RemainingText());
+            Assert.Null(match.RemainingText());
             Assert.False(match.Succes());
         }
 

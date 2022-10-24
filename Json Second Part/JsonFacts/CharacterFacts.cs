@@ -24,7 +24,7 @@ namespace Json
             var character = new Character('0');
             IMatch match = character.Match(null);
             Assert.False(match.Succes());
-            Assert.Equal(null, match.RemainingText());
+            Assert.Null(match.RemainingText());
 
         }
         [Fact]
