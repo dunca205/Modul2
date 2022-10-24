@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Collections
+﻿namespace Collections
 {
     public class IntArray
     {
@@ -8,45 +6,46 @@ namespace Collections
 
         public IntArray()
         {
-            array = new int[0];
+            array = Array.Empty<int>();
         }
+
         static void Main()
         {
 
         }
 
-        public void Add(int element)//
+        public void Add(int element)
         {
             Array.Resize(ref array, array.Length + 1);
             array[^1] = element;
         }
 
-        public int Count()//
+        public int Count()
         {
             return array.Length;
         }
 
-        public int Element(int index)//
+        public int Element(int index)
         {
             return array[index];
         }
 
-        public void SetElement(int index, int element)//
+        public void SetElement(int index, int element)
         {
             array[index] = element;
         }
 
-        public bool Contains(int element)//
+        public bool Contains(int element)
         {
             return array.Contains(element);
         }
 
-        public int IndexOf(int element) //
+        public int IndexOf(int element)
         {
             return Array.IndexOf(array, element);
         }
 
-        public void Insert(int index, int element) //
+        public void Insert(int index, int element)
         {
             array[index] = element;
         }
@@ -56,7 +55,7 @@ namespace Collections
             Array.Resize(ref array, 0);
         }
 
-        public void Remove(int element) 
+        public void Remove(int element)
         {
             array[IndexOf(element)] = 0;
         }
