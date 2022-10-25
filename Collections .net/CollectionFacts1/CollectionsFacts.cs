@@ -13,13 +13,45 @@ namespace Collections
         }
 
         [Fact]
+        public void AddMoreThanFiveElements()
+        {
+            var arraynumbers = new IntArray();
+            arraynumbers.Add(1);
+            arraynumbers.Add(2);
+            arraynumbers.Add(3);
+            arraynumbers.Add(4);
+            arraynumbers.Add(5);
+            Assert.Equal(8, arraynumbers.Count());
+            arraynumbers.Add(2);
+            arraynumbers.Add(3);
+            arraynumbers.Add(4);
+            arraynumbers.Add(5);
+            Assert.Equal(16, arraynumbers.Count());
+        }
+
+        [Fact]
+        public void AddNextElementOnNextAvaiablePosition()
+        {
+            var arraynumbers = new IntArray();
+            arraynumbers.Add(1);
+            arraynumbers.Add(100);
+            arraynumbers.RemoveAt(1);
+            arraynumbers.Add(3);
+            arraynumbers.Add(5);
+            arraynumbers.Add(2);
+            Assert.Equal(2, arraynumbers.Element(3));
+            Assert.Equal(4, arraynumbers.Count());
+
+        }
+
+        [Fact]
         public void CountArrayElements()
         {
             var arraynumbers = new IntArray();
             arraynumbers.Add(1);
             arraynumbers.Add(2);
             arraynumbers.Add(10);
-            Assert.Equal(3, arraynumbers.Count());
+            Assert.Equal(4, arraynumbers.Count());
         }
 
         [Fact]
@@ -55,7 +87,7 @@ namespace Collections
         {
             var arraynumbers = new IntArray();
             arraynumbers.Add(100);
-            Assert.Equal(-1, arraynumbers.IndexOf(0));
+            Assert.Equal(-1, arraynumbers.IndexOf(5));
         }
 
         [Fact]

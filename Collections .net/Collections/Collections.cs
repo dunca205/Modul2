@@ -6,13 +6,33 @@
 
         public IntArray()
         {
-            array = Array.Empty<int>();
+            const int minimumCapacity = 4;
+            array = new int[minimumCapacity];
+        }
+
+        public int AvaiablePosition()
+        {
+            foreach (var number in array)
+            {
+                if (number.Equals(0))
+                {
+                    return IndexOf(number);
+                }
+            }
+
+            return -1;
         }
 
         public void Add(int element)
         {
-            Array.Resize(ref array, array.Length + 1);
-            array[^1] = element;
+            if (AvaiablePosition() > -1)
+            {
+                array[AvaiablePosition()] = element;
+                return;
+            }
+
+            Array.Resize(ref array, array.Length * 2);
+            array[AvaiablePosition()] = element;
         }
 
         public int Count()
