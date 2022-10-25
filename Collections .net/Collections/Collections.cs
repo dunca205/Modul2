@@ -3,41 +3,31 @@
     public class IntArray
     {
         private int[] array;
+        private int count;
 
         public IntArray()
         {
             const int minimumCapacity = 4;
             array = new int[minimumCapacity];
-        }
-
-        public int AvaiablePosition()
-        {
-            foreach (var number in array)
-            {
-                if (number.Equals(0))
-                {
-                    return IndexOf(number);
-                }
-            }
-
-            return -1;
+            count = 0;
         }
 
         public void Add(int element)
         {
-            if (AvaiablePosition() > -1)
+            if (count < array.Length)
             {
-                array[AvaiablePosition()] = element;
+                array[count] = element;
+                count++;
                 return;
             }
 
-            Array.Resize(ref array, array.Length * 2);
-            array[AvaiablePosition()] = element;
+            Array.Resize(ref array, count * 2);
+            Add(element);
         }
 
         public int Count()
         {
-            return array.Length;
+            return count;
         }
 
         public int Element(int index)
@@ -68,6 +58,7 @@
         public void Clear()
         {
             Array.Resize(ref array, 0);
+            count = 0;
         }
 
         public void Remove(int element)
@@ -75,12 +66,14 @@
             if (IndexOf(element) > -1)
             {
                 array[IndexOf(element)] = 0;
+                count--;
             }
         }
 
         public void RemoveAt(int index)
         {
             array[index] = 0;
+            count--;
         }
 
     }
