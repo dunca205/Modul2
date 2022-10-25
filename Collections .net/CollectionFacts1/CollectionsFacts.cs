@@ -51,6 +51,14 @@ namespace Collections
         }
 
         [Fact]
+        public void ElementIsNotPresentInTheArray()
+        {
+            var arraynumbers = new IntArray();
+            arraynumbers.Add(100);
+            Assert.Equal(-1, arraynumbers.IndexOf(0));
+        }
+
+        [Fact]
         public void InsertNewElementAtCertainPosition()
         {
             var arraynumbers = new IntArray();

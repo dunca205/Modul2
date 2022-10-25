@@ -9,11 +9,6 @@
             array = Array.Empty<int>();
         }
 
-        static void Main()
-        {
-
-        }
-
         public void Add(int element)
         {
             Array.Resize(ref array, array.Length + 1);
@@ -50,14 +45,17 @@
             array[index] = element;
         }
 
-        public void Clear() // aici nu stiu daca trebuie sa fie un sir cu 0 elemente sau sa se stearga doar valoarea de pe fiecare pozitie si sa ramana 0
+        public void Clear()
         {
             Array.Resize(ref array, 0);
         }
 
         public void Remove(int element)
         {
-            array[IndexOf(element)] = 0;
+            if (IndexOf(element) > -1)
+            {
+                array[IndexOf(element)] = 0;
+            }
         }
 
         public void RemoveAt(int index)
