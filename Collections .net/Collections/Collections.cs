@@ -22,7 +22,7 @@
             }
 
             Array.Resize(ref array, count * 2);
-            Add(element);
+            array[count++] = element;
         }
 
         public int Count()
