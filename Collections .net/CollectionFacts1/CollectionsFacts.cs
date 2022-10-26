@@ -142,7 +142,20 @@ namespace Collections
             arraynumbers.Add(101);
             arraynumbers.Add(120);
             arraynumbers.RemoveAt(1);
+            arraynumbers.RemoveAt(5);
             Assert.Equal(120, arraynumbers.Element(1));
+        }
+
+        [Fact]
+        public void RemoveInexistentElement()
+        {
+            var arraynumbers = new IntArray();
+            arraynumbers.Add(100);
+            arraynumbers.Add(101);
+            arraynumbers.Add(120);
+            arraynumbers.RemoveAt(4);
+            Assert.Equal(3, arraynumbers.Count());
+
         }
     }
 }

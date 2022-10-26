@@ -12,7 +12,7 @@
             count = 0;
         }
 
-        public void DoubleTheCapacity()
+        private void DoubleTheCapacity()
         {
             if (count >= array.Length)
             {
@@ -20,19 +20,26 @@
             }
         }
 
+        private void ShiftLeft(int index)
+        {
+            for (int i = index; i < count - 1; i++)
+            {
+                array[i] = array[i + 1];
+            }
+        }
+
+        private void ShiftRight(int index)
+        {
+            for (int i = count; i > count - index; i--)
+            {
+                array[i] = array[i - 1];
+            }
+        }
+
         public void Add(int element)
         {
             DoubleTheCapacity();
             array[count++] = element;
-        }
-
-        public (int[], int[]) SplitArrayAtCertainIndex(int index)
-        {
-            int[] arrayBeforeIndex = new int[index];
-            int[] arrayFromIndex = new int[count - index];
-            Array.Copy(array, 0, arrayBeforeIndex, 0, index);
-            Array.Copy(array, index, arrayFromIndex, 0, count - index);
-            return (arrayBeforeIndex, arrayFromIndex);
         }
 
         public int Count()
@@ -47,7 +54,10 @@
 
         public void SetElement(int index, int element)
         {
-            array[index] = element;
+            if (index < count)
+            {
+                array[index] = element;
+            }
         }
 
         public bool Contains(int element)
@@ -63,12 +73,8 @@
         public void Insert(int index, int element)
         {
             DoubleTheCapacity();
-
-            (int[] fistpartofarray, int[] secondpartofarray) = SplitArrayAtCertainIndex(index);
-
-            Array.Resize(ref fistpartofarray, fistpartofarray.Length + 1);
-            fistpartofarray[^1] = element;
-            array = fistpartofarray.Concat(secondpartofarray).ToArray();
+            ShiftRight(index);
+            array[index] = element;
             count++;
         }
 
@@ -81,14 +87,15 @@
         public void Remove(int element)
         {
             RemoveAt(IndexOf(element));
-            count--;
         }
 
         public void RemoveAt(int index)
         {
-            (int[] fistpartofarray, int[] secondpartofarray) = SplitArrayAtCertainIndex(index);
-            array = fistpartofarray.Concat(secondpartofarray[1..]).ToArray();
-            count--;
+            if (index < count)
+            {
+                ShiftLeft(index);
+                count--;
+            }
         }
     }
 }
