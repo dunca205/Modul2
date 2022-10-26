@@ -12,30 +12,6 @@
             count = 0;
         }
 
-        private void DoubleTheCapacity()
-        {
-            if (count >= array.Length)
-            {
-                Array.Resize(ref array, count * 2);
-            }
-        }
-
-        private void ShiftLeft(int index)
-        {
-            for (int i = index; i < count - 1; i++)
-            {
-                array[i] = array[i + 1];
-            }
-        }
-
-        private void ShiftRight(int index)
-        {
-            for (int i = count; i > count - index; i--)
-            {
-                array[i] = array[i - 1];
-            }
-        }
-
         public void Add(int element)
         {
             DoubleTheCapacity();
@@ -62,12 +38,19 @@
 
         public bool Contains(int element)
         {
-            return array.Contains(element);
+            return IndexOf(element) >= 0;
         }
 
         public int IndexOf(int element)
         {
-            return Array.IndexOf(array, element);
+            int indexOfElement = Array.IndexOf(array, element);
+
+            if (indexOfElement >= 0 && indexOfElement < count)
+            {
+                return indexOfElement;
+            }
+
+            return -1;
         }
 
         public void Insert(int index, int element)
@@ -86,15 +69,43 @@
 
         public void Remove(int element)
         {
-            RemoveAt(IndexOf(element));
+            if (IndexOf(element) != -1)
+            {
+                ShiftLeft(IndexOf(element));
+                count--;
+            }
         }
 
         public void RemoveAt(int index)
         {
-            if (index < count)
+            if (index < count  && index > -1)
             {
                 ShiftLeft(index);
                 count--;
+            }
+        }
+
+        private void DoubleTheCapacity()
+        {
+            if (count >= array.Length)
+            {
+                Array.Resize(ref array, count * 2);
+            }
+        }
+
+        private void ShiftLeft(int index)
+        {
+            for (int i = index; i < count - 1; i++)
+            {
+                array[i] = array[i + 1];
+            }
+        }
+
+        private void ShiftRight(int index)
+        {
+            for (int i = count; i > count - index; i--)
+            {
+                array[i] = array[i - 1];
             }
         }
     }

@@ -135,7 +135,7 @@ namespace Collections
         }
 
         [Fact]
-        public void RemoveNumberAtCertainIndex()
+        public void RemoveAtNumberAtCertainIndex()
         {
             var arraynumbers = new IntArray();
             arraynumbers.Add(100);
@@ -147,7 +147,7 @@ namespace Collections
         }
 
         [Fact]
-        public void RemoveInexistentElement()
+        public void RemoveAtInexistentElement()
         {
             var arraynumbers = new IntArray();
             arraynumbers.Add(100);
@@ -155,7 +155,17 @@ namespace Collections
             arraynumbers.Add(120);
             arraynumbers.RemoveAt(4);
             Assert.Equal(3, arraynumbers.Count());
+        }
 
+        [Fact]
+        public void RemoveInexistentElement()
+        {
+            var arraynumbers = new IntArray();
+            arraynumbers.Add(100);
+            arraynumbers.Add(101);
+            arraynumbers.Add(120);
+            arraynumbers.Remove(4);
+            Assert.Equal(3, arraynumbers.Count());
         }
     }
 }
