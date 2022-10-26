@@ -12,17 +12,27 @@
             count = 0;
         }
 
+        public void DoubleTheCapacity()
+        {
+            if (count >= array.Length)
+            {
+                Array.Resize(ref array, count * 2);
+            }
+        }
+
         public void Add(int element)
         {
-            if (count < array.Length)
-            {
-                array[count] = element;
-                count++;
-                return;
-            }
-
-            Array.Resize(ref array, count * 2);
+            DoubleTheCapacity();
             array[count++] = element;
+        }
+
+        public (int[], int[]) SplitArrayAtCertainIndex(int index)
+        {
+            int[] arrayBeforeIndex = new int[index];
+            int[] arrayFromIndex = new int[count - index];
+            Array.Copy(array, 0, arrayBeforeIndex, 0, index);
+            Array.Copy(array, index, arrayFromIndex, 0, count - index);
+            return (arrayBeforeIndex, arrayFromIndex);
         }
 
         public int Count()
@@ -52,7 +62,16 @@
 
         public void Insert(int index, int element)
         {
-            array[index] = element;
+            DoubleTheCapacity();
+
+            (int[] fistpartofarray, int[] secondpartofarray) = SplitArrayAtCertainIndex(index);
+
+            Array.Resize(ref fistpartofarray, fistpartofarray.Length + 1);
+            fistpartofarray[^1] = element;
+            Array.Copy(fistpartofarray, 0, fistpartofarray, 0, fistpartofarray.Length - 1);
+
+            array = fistpartofarray.Concat(secondpartofarray).ToArray();
+            count++;
         }
 
         public void Clear()
@@ -63,18 +82,15 @@
 
         public void Remove(int element)
         {
-            if (IndexOf(element) > -1)
-            {
-                array[IndexOf(element)] = 0;
-                count--;
-            }
+            RemoveAt(IndexOf(element));
+            count--;
         }
 
         public void RemoveAt(int index)
         {
-            array[index] = 0;
+            (int[] fistpartofarray, int[] secondpartofarray) = SplitArrayAtCertainIndex(index);
+            array = fistpartofarray.Concat(secondpartofarray[1..]).ToArray();
             count--;
         }
-
     }
 }
