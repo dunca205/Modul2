@@ -68,8 +68,6 @@
 
             Array.Resize(ref fistpartofarray, fistpartofarray.Length + 1);
             fistpartofarray[^1] = element;
-            Array.Copy(fistpartofarray, 0, fistpartofarray, 0, fistpartofarray.Length - 1);
-
             array = fistpartofarray.Concat(secondpartofarray).ToArray();
             count++;
         }

@@ -12,7 +12,6 @@ namespace Collections
             Assert.True(arraynumbers.Contains(1));
         }
 
-
         [Fact]
         public void AddMoreThanFiveElements()
         {
