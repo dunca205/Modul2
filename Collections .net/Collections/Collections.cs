@@ -38,7 +38,7 @@
 
         public bool Contains(int element)
         {
-            return IndexOf(element) >= 0;
+            return IndexOf(element) != -1;
         }
 
         public int IndexOf(int element)
@@ -78,7 +78,7 @@
 
         public void RemoveAt(int index)
         {
-            if (index < count  && index > -1)
+            if (index < count  && index != -1)
             {
                 ShiftLeft(index);
                 count--;
