@@ -165,6 +165,8 @@ namespace Collections
             arraynumbers.Add(101);
             arraynumbers.Add(120);
             arraynumbers.Remove(4);
+            arraynumbers.RemoveAt(-1);
+            Assert.Equal(3, arraynumbers.Count());
             Assert.Equal(3, arraynumbers.Count());
         }
     }

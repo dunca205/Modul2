@@ -38,30 +38,25 @@
 
         public bool Contains(int element)
         {
-            return IndexOf(element) != -1;
+            return IndexOf(element) != -1 && IndexOf(element) < count;
         }
 
         public int IndexOf(int element)
         {
-            int indexOfElement = Array.IndexOf(array, element);
-
-            if (IsValidIndex(indexOfElement))
-            {
-                return indexOfElement;
-            }
-
-            return -1;
+            return Array.IndexOf(array, element);
         }
 
         public void Insert(int index, int element)
         {
-            if (IsValidIndex(index))
+            if (!IsValidIndex(index))
             {
-                DoubleTheCapacity();
-                ShiftRight(index);
-                array[index] = element;
-                count++;
+                return;
             }
+
+            DoubleTheCapacity();
+            ShiftRight(index);
+            array[index] = element;
+            count++;
         }
 
         public void Clear()
@@ -77,11 +72,13 @@
 
         public void RemoveAt(int index)
         {
-            if (IsValidIndex(index))
+            if (!IsValidIndex(index))
             {
-                ShiftLeft(index);
-                count--;
+                return;
             }
+
+            ShiftLeft(index);
+            count--;
         }
 
         private bool IsValidIndex(int index)
@@ -91,10 +88,12 @@
 
         private void DoubleTheCapacity()
         {
-            if (count >= array.Length)
+            if (array.Length > count)
             {
-                Array.Resize(ref array, count * 2);
+                return;
             }
+
+            Array.Resize(ref array, count * 2);
         }
 
         private void ShiftLeft(int index)
