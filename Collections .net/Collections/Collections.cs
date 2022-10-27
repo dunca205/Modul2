@@ -30,7 +30,7 @@
 
         public void SetElement(int index, int element)
         {
-            if (index < count)
+            if (IsValidIndex(index))
             {
                 array[index] = element;
             }
@@ -45,7 +45,7 @@
         {
             int indexOfElement = Array.IndexOf(array, element);
 
-            if (indexOfElement >= 0 && indexOfElement < count)
+            if (IsValidIndex(indexOfElement))
             {
                 return indexOfElement;
             }
@@ -55,10 +55,13 @@
 
         public void Insert(int index, int element)
         {
-            DoubleTheCapacity();
-            ShiftRight(index);
-            array[index] = element;
-            count++;
+            if (IsValidIndex(index))
+            {
+                DoubleTheCapacity();
+                ShiftRight(index);
+                array[index] = element;
+                count++;
+            }
         }
 
         public void Clear()
@@ -69,20 +72,21 @@
 
         public void Remove(int element)
         {
-            if (IndexOf(element) != -1)
-            {
-                ShiftLeft(IndexOf(element));
-                count--;
-            }
+            RemoveAt(IndexOf(element));
         }
 
         public void RemoveAt(int index)
         {
-            if (index < count  && index != -1)
+            if (IsValidIndex(index))
             {
                 ShiftLeft(index);
                 count--;
             }
+        }
+
+        private bool IsValidIndex(int index)
+        {
+            return index > -1 && index < count;
         }
 
         private void DoubleTheCapacity()
