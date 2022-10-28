@@ -30,20 +30,30 @@
 
         public void SetElement(int index, int element)
         {
-            if (IsValidIndex(index))
+            if (!IsValidIndex(index))
             {
-                array[index] = element;
+                return;
             }
+
+            array[index] = element;
         }
 
         public bool Contains(int element)
         {
-            return IndexOf(element) != -1 && IndexOf(element) < count;
+            return IndexOf(element) != -1;
         }
 
         public int IndexOf(int element)
         {
-            return Array.IndexOf(array, element);
+            for (int index = 0; index < count; index++)
+            {
+                if (array[index] == element)
+                {
+                    return index;
+                }
+            }
+
+            return -1;
         }
 
         public void Insert(int index, int element)
