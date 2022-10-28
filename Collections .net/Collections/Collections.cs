@@ -45,15 +45,7 @@
 
         public int IndexOf(int element)
         {
-            for (int index = 0; index < count; index++)
-            {
-                if (array[index] == element)
-                {
-                    return index;
-                }
-            }
-
-            return -1;
+            return Array.IndexOf(array, element, 0, count);
         }
 
         public void Insert(int index, int element)
