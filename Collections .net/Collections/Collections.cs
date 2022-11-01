@@ -67,9 +67,13 @@
             count = 0;
         }
 
-        public void Remove(int element)
+        public bool Remove(int element)
         {
+            int countAfterElementIsRemoved = count - 1;
+
             RemoveAt(IndexOf(element));
+
+            return count == countAfterElementIsRemoved;
         }
 
         public void RemoveAt(int index)

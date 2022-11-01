@@ -25,6 +25,18 @@ namespace Collections
         }
 
         [Fact]
+        public void ReturnTrueIfElementIsFoundAndRemoved()
+        {
+            var arraynumbers = new IntArray();
+            arraynumbers.Add(1);
+            arraynumbers.Add(2);
+            arraynumbers.Add(3);
+            arraynumbers.Add(4);
+            Assert.True(arraynumbers.Remove(1));
+            Assert.False(arraynumbers.Remove(100));
+        }
+
+        [Fact]
         public void AddNextElementOnNextAvaiablePosition()
         {
             var arraynumbers = new IntArray();
