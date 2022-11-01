@@ -21,7 +21,7 @@ namespace Collections
             arraynumbers.Add(3);
             arraynumbers.Add(4);
             arraynumbers.Add(5);
-            Assert.Equal(5, arraynumbers.Count());
+            Assert.Equal(5, arraynumbers.Count);
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace Collections
             arraynumbers.Add(5);
             arraynumbers.Add(2);
             Assert.Equal(2, arraynumbers.Element(3));
-            Assert.Equal(4, arraynumbers.Count());
+            Assert.Equal(4, arraynumbers.Count);
 
         }
 
@@ -58,7 +58,7 @@ namespace Collections
             arraynumbers.Add(1);
             arraynumbers.Add(2);
             arraynumbers.Add(10);
-            Assert.Equal(3, arraynumbers.Count());
+            Assert.Equal(3, arraynumbers.Count);
         }
 
         [Fact]
@@ -116,7 +116,7 @@ namespace Collections
             arraynumbers.Add(300);
             arraynumbers.Add(120);
             arraynumbers.Clear();
-            Assert.Equal(0, arraynumbers.Count());
+            Assert.Equal(0, arraynumbers.Count);
         }
 
         [Fact]
@@ -166,7 +166,7 @@ namespace Collections
             arraynumbers.Add(101);
             arraynumbers.Add(120);
             arraynumbers.RemoveAt(4);
-            Assert.Equal(3, arraynumbers.Count());
+            Assert.Equal(3, arraynumbers.Count);
         }
 
         [Fact]
@@ -178,8 +178,8 @@ namespace Collections
             arraynumbers.Add(120);
             arraynumbers.Remove(4);
             arraynumbers.RemoveAt(-1);
-            Assert.Equal(3, arraynumbers.Count());
-            Assert.Equal(3, arraynumbers.Count());
+            Assert.Equal(3, arraynumbers.Count);
+            Assert.Equal(3, arraynumbers.Count);
         }
     }
 }

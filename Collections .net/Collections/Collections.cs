@@ -3,24 +3,20 @@
     public class IntArray
     {
         private int[] array;
-        private int count;
 
         public IntArray()
         {
             const int minimumCapacity = 4;
             array = new int[minimumCapacity];
-            count = 0;
+            Count = 0;
         }
+
+        public int Count { get; private set; }
 
         public void Add(int element)
         {
             DoubleTheCapacity();
-            array[count++] = element;
-        }
-
-        public int Count()
-        {
-            return count;
+            array[Count++] = element;
         }
 
         public int Element(int index)
@@ -45,7 +41,7 @@
 
         public int IndexOf(int element)
         {
-            return Array.IndexOf(array, element, 0, count);
+            return Array.IndexOf(array, element, 0, Count);
         }
 
         public void Insert(int index, int element)
@@ -58,22 +54,22 @@
             DoubleTheCapacity();
             ShiftRight(index);
             array[index] = element;
-            count++;
+            Count++;
         }
 
         public void Clear()
         {
             Array.Resize(ref array, 0);
-            count = 0;
+            Count = 0;
         }
 
         public bool Remove(int element)
         {
-            int countAfterElementIsRemoved = count - 1;
+            int countAfterElementIsRemoved = Count - 1;
 
             RemoveAt(IndexOf(element));
 
-            return count == countAfterElementIsRemoved;
+            return Count == countAfterElementIsRemoved;
         }
 
         public void RemoveAt(int index)
@@ -84,27 +80,27 @@
             }
 
             ShiftLeft(index);
-            count--;
+            Count--;
         }
 
         private bool IsValidIndex(int index)
         {
-            return index > -1 && index < count;
+            return index > -1 && index < Count;
         }
 
         private void DoubleTheCapacity()
         {
-            if (array.Length > count)
+            if (array.Length > Count)
             {
                 return;
             }
 
-            Array.Resize(ref array, count * 2);
+            Array.Resize(ref array, Count * 2);
         }
 
         private void ShiftLeft(int index)
         {
-            for (int i = index; i < count - 1; i++)
+            for (int i = index; i < Count - 1; i++)
             {
                 array[i] = array[i + 1];
             }
@@ -112,7 +108,7 @@
 
         private void ShiftRight(int index)
         {
-            for (int i = count; i > count - index; i--)
+            for (int i = Count; i > Count - index; i--)
             {
                 array[i] = array[i - 1];
             }
