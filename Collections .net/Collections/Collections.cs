@@ -8,7 +8,6 @@
         {
             const int minimumCapacity = 4;
             array = new int[minimumCapacity];
-            Count = 0;
         }
 
         public int Count { get; private set; }
