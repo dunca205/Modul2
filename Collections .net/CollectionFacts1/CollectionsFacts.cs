@@ -46,7 +46,7 @@ namespace Collections
             arraynumbers.Add(3);
             arraynumbers.Add(5);
             arraynumbers.Add(2);
-            Assert.Equal(2, arraynumbers.Element(3));
+            Assert.Equal(2, arraynumbers[3]);
             Assert.Equal(4, arraynumbers.Count);
 
         }
@@ -67,8 +67,9 @@ namespace Collections
             var arraynumbers = new IntArray();
             arraynumbers.Add(1);
             arraynumbers.Add(2);
-            arraynumbers.SetElement(0, 20);
-            Assert.Equal(20, arraynumbers.Element(0));
+            arraynumbers[0] = 20;
+            arraynumbers[-2] = 30;
+            Assert.Equal(20, arraynumbers[0]);
         }
 
         [Fact]
@@ -105,7 +106,7 @@ namespace Collections
             arraynumbers.Add(300);
             arraynumbers.Add(120);
             arraynumbers.Insert(1, 400);
-            Assert.Equal(400, arraynumbers.Element(1));
+            Assert.Equal(400, arraynumbers[1]);
         }
 
         [Fact]
@@ -128,8 +129,8 @@ namespace Collections
             arraynumbers.Add(200);
             arraynumbers.Add(120);
             arraynumbers.Remove(200);
-            Assert.Equal(100, arraynumbers.Element(0));
-            Assert.Equal(200, arraynumbers.Element(1));
+            Assert.Equal(100, arraynumbers[0]);
+            Assert.Equal(200, arraynumbers[1]);
 
         }
 
@@ -155,7 +156,7 @@ namespace Collections
             arraynumbers.Add(120);
             arraynumbers.RemoveAt(1);
             arraynumbers.RemoveAt(5);
-            Assert.Equal(120, arraynumbers.Element(1));
+            Assert.Equal(120, arraynumbers[1]);
         }
 
         [Fact]

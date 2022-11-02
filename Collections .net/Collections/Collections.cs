@@ -12,25 +12,25 @@
 
         public int Count { get; private set; }
 
+        public int this[int index]
+        {
+            get => array[index];
+
+            set
+            {
+                if (!IsValidIndex(index))
+                {
+                    return;
+                }
+
+                array[index] = value;
+            }
+        }
+
         public void Add(int element)
         {
             DoubleTheCapacity();
             array[Count++] = element;
-        }
-
-        public int Element(int index)
-        {
-            return array[index];
-        }
-
-        public void SetElement(int index, int element)
-        {
-            if (!IsValidIndex(index))
-            {
-                return;
-            }
-
-            array[index] = element;
         }
 
         public bool Contains(int element)
