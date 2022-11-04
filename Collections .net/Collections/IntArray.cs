@@ -27,7 +27,7 @@
             }
         }
 
-        public void Add(int element)
+        public virtual void Add(int element)
         {
             DoubleTheCapacity();
             array[Count++] = element;
@@ -43,7 +43,7 @@
             return Array.IndexOf(array, element, 0, Count);
         }
 
-        public void Insert(int index, int element)
+        public virtual void Insert(int index, int element)
         {
             if (!IsValidIndex(index))
             {
@@ -82,12 +82,7 @@
             Count--;
         }
 
-        private bool IsValidIndex(int index)
-        {
-            return index > -1 && index < Count;
-        }
-
-        private void DoubleTheCapacity()
+        public void DoubleTheCapacity()
         {
             if (array.Length > Count)
             {
@@ -95,6 +90,11 @@
             }
 
             Array.Resize(ref array, Count * 2);
+        }
+
+        private bool IsValidIndex(int index)
+        {
+            return index > -1 && index < Count;
         }
 
         private void ShiftLeft(int index)
