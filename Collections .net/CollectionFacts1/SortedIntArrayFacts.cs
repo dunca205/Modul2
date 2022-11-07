@@ -12,8 +12,6 @@
             sortedArray.Add(7);
             sortedArray[2] = 4;
             Assert.Equal(4, sortedArray[2]);
-            sortedArray[2] = 9;
-            Assert.Equal(4, sortedArray[2]);
         }
 
         [Fact]
@@ -34,10 +32,7 @@
             var sortedArray = new SortedIntArray();
             sortedArray.Add(1);
             sortedArray.Add(2);
-            sortedArray.Add(3);
-            sortedArray.Add(4);
-            sortedArray.Add(5);
-            Assert.Equal(5, sortedArray[4]);
+            Assert.Equal(2, sortedArray[1]);
         }
 
         [Fact]
@@ -90,7 +85,7 @@
         }
 
         [Fact]
-        public void InsertNewElementThatWontModifyTheOrdeR()
+        public void InsertNewElementEqualWithTheOneFromTheGivenIndex()
         {
             var sortedArray = new SortedIntArray();
             sortedArray.Add(1);
