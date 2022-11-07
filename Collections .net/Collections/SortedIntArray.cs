@@ -2,16 +2,35 @@
 {
     public class SortedIntArray : IntArray
     {
-        public SortedIntArray() : base()
+        public SortedIntArray()
         {
         }
 
         public override int this[int index]
         {
-            get => base[index];
             set
             {
-                if (!IsValidIndex(index) || this[index - 1] > value || this[index + 1] < value)
+                if (index < 0 || index >= Count)
+                {
+                    return;
+                }
+
+                if (index == 0 || index == Count - 1)
+                {
+                    if (index == 0 && index < Count && base[index + 1] > value)
+                    {
+                        base[index] = value;
+                    }
+
+                    if (index == Count - 1 && base[index - 1] < value)
+                    {
+                        base[index] = value;
+                    }
+
+                    return;
+                }
+
+                if (base[index - 1] > value || base[index + 1] < value)
                 {
                     return;
                 }
@@ -38,6 +57,25 @@
             }
 
             base.Insert(index, element);
+        }
+
+        private bool IsSpecialCase(int index)
+        {
+            if (index == 0 || index == Count - 1)
+            {
+                if (index == 0 && index < Count && base[index + 1] > value)
+                {
+                    base[index] = value;
+                }
+
+                if (index == Count - 1 && base[index - 1] < value)
+                {
+                    base[index] = value;
+                }
+
+                return;
+            }
+
         }
     }
 }

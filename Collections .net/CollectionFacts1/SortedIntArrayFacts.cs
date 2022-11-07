@@ -15,6 +15,21 @@
         }
 
         [Fact]
+        public void SetElementProp()
+        {
+
+            var sortedArray = new SortedIntArray();
+            sortedArray.Add(1);
+            sortedArray.Add(3);
+            sortedArray.Add(6);
+            sortedArray[0] = 0;
+            Assert.Equal(0, sortedArray[0]);
+            sortedArray[-1] = 3;
+            sortedArray[2] = 5;
+            Assert.Equal(5, sortedArray[2]);
+        }
+
+        [Fact]
         public void SetGreaterElement_OnCertainPoisition_GivenElementWouldChangeTheAscendingOrder()
         {
             var sortedArray = new SortedIntArray();
