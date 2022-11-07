@@ -15,7 +15,7 @@
         }
 
         [Fact]
-        public void SetElementProp()
+        public void SetElementIndex0()
         {
 
             var sortedArray = new SortedIntArray();
@@ -24,8 +24,27 @@
             sortedArray.Add(6);
             sortedArray[0] = 0;
             Assert.Equal(0, sortedArray[0]);
+        }
+
+        [Fact]
+        public void SetelementOnNegativeIndex()
+        {
+            var sortedArray = new SortedIntArray();
+            sortedArray.Add(1);
+            sortedArray.Add(3);
+            sortedArray.Add(6);
             sortedArray[-1] = 3;
+            Assert.Equal(6, sortedArray[2]);
+        }
+        [Fact]
+        public void SetNewValueForLastElement()
+        {
+            var sortedArray = new SortedIntArray();
+            sortedArray.Add(1);
+            sortedArray.Add(3);
+            sortedArray.Add(6);
             sortedArray[2] = 5;
+            sortedArray[2] = 2;
             Assert.Equal(5, sortedArray[2]);
         }
 

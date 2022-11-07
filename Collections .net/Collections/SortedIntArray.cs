@@ -15,22 +15,7 @@
                     return;
                 }
 
-                if (index == 0 || index == Count - 1)
-                {
-                    if (index == 0 && index < Count && base[index + 1] > value)
-                    {
-                        base[index] = value;
-                    }
-
-                    if (index == Count - 1 && base[index - 1] < value)
-                    {
-                        base[index] = value;
-                    }
-
-                    return;
-                }
-
-                if (base[index - 1] > value || base[index + 1] < value)
+                if (!HasRightValueOnRightOrLeftSide(index, value) && !HasRightValuesOnRightAndLeftSide(index, value))
                 {
                     return;
                 }
@@ -59,23 +44,29 @@
             base.Insert(index, element);
         }
 
-        private bool IsSpecialCase(int index)
+        private bool HasRightValueOnRightOrLeftSide(int index, int value)
         {
-            if (index == 0 || index == Count - 1)
+            if (index != 0 && index != Count - 1)
             {
-                if (index == 0 && index < Count && base[index + 1] > value)
-                {
-                    base[index] = value;
-                }
-
-                if (index == Count - 1 && base[index - 1] < value)
-                {
-                    base[index] = value;
-                }
-
-                return;
+                return false;
             }
 
+            if (index == 0 && index < Count && base[index + 1] > value)
+            {
+                return true;
+            }
+
+            if (index == Count - 1 && base[index - 1] < value)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool HasRightValuesOnRightAndLeftSide(int index, int value)
+        {
+            return base[index - 1] < value && base[index + 1] > value;
         }
     }
 }
