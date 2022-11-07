@@ -2,7 +2,7 @@ global using Xunit;
 
 namespace Collections
 {
-    public class CollectionsFacts
+    public class IntArrayFacts
     {
         [Fact]
         public void AddOneLastElement()
@@ -144,7 +144,6 @@ namespace Collections
             arraynumbers.Add(4);
             arraynumbers.Insert(1, 6);
             Assert.Equal(1, arraynumbers.IndexOf(6));
-
         }
 
         [Fact]

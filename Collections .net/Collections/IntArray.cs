@@ -12,7 +12,7 @@
 
         public int Count { get; private set; }
 
-        public int this[int index]
+        public virtual int this[int index]
         {
             get => array[index];
 
@@ -92,7 +92,7 @@
             Array.Resize(ref array, Count * 2);
         }
 
-        private bool IsValidIndex(int index)
+        public bool IsValidIndex(int index)
         {
             return index > -1 && index < Count;
         }
@@ -107,9 +107,11 @@
 
         private void ShiftRight(int index)
         {
-            for (int i = Count; i > Count - index; i--)
+            int rightSideLimit = Count;
+            for (int i = Count; i >= Count - index; i--)
             {
-                array[i] = array[i - 1];
+                array[rightSideLimit] = array[i - 1];
+                rightSideLimit--;
             }
         }
     }

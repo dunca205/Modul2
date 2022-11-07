@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Collections
+﻿namespace Collections
 {
     public class SortedIntArray : IntArray
     {
@@ -12,35 +6,38 @@ namespace Collections
         {
         }
 
-        public override void Add(int element)
+        public override int this[int index]
         {
-            DoubleTheCapacity();
-            base.Add(element);
-            BubbleSort();
-        }
-
-        public void BubbleSort()
-        {
-            bool swaped = true;
-            for (int i = 0; i < Count - 1 && swaped; i++)
+            get => base[index];
+            set
             {
-                swaped = false;
-                for (int j = i; j < Count - 1; j++)
+                if (!IsValidIndex(index) || this[index - 1] > value || this[index + 1] < value)
                 {
-                    if (this[j + 1] < this[j])
-                    {
-                        Swap(j + 1, j);
-                        swaped = true;
-                    }
+                    return;
                 }
+
+                base[index] = value;
             }
         }
 
-        public void Swap(int lower, int higher)
+        public override void Add(int element)
         {
-            int temp = this[lower];
-            this[lower] = this[higher];
-            this[higher] = temp;
+            if (Count != 0 && this[Count - 1] > element)
+            {
+                return;
+            }
+
+            base.Add(element);
+        }
+
+        public override void Insert(int index, int element)
+        {
+            if (index > 0 && this[index - 1] > element || this[index] < element)
+            {
+                return;
+            }
+
+            base.Insert(index, element);
         }
     }
 }
