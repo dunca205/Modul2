@@ -46,17 +46,27 @@
 
         private bool HasRightValueOnRightOrLeftSide(int index, int value)
         {
-            if (index != 0 && index != Count - 1)
-            {
-                return false;
-            }
-
-            if (index == 0 && index < Count && base[index + 1] > value)
+            if (index == 0 && NewValueCanBeSetOnIndexZero(value))
             {
                 return true;
             }
 
             if (index == Count - 1 && base[index - 1] < value)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool NewValueCanBeSetOnIndexZero(int value)
+        {
+            if (Count == 1) // daca avem doar un element in sir il putem inlocui cu orice pt ca nu avem repere de comparatie
+            {
+                return true;
+            }
+
+            if (base[1] > value) // daca nu s a oprit la primul if , ne asiguram ca value este in continuare mai mica decat valoarea de pe urmatoare pozitie
             {
                 return true;
             }

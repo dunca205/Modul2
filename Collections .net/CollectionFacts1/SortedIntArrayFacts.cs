@@ -15,7 +15,7 @@
         }
 
         [Fact]
-        public void SetElementIndex0()
+        public void SetElementIndex0WhenCountIsGraterThan1()
         {
 
             var sortedArray = new SortedIntArray();
@@ -25,9 +25,17 @@
             sortedArray[0] = 0;
             Assert.Equal(0, sortedArray[0]);
         }
+        [Fact]
+        public void SetElementAtIndex0WhenCountIsOne()
+        {
+            var sortedArray = new SortedIntArray();
+            sortedArray.Add(2);
+            sortedArray[0] = 1;
+            Assert.Equal(1, sortedArray[0]);
+        }
 
         [Fact]
-        public void SetelementOnNegativeIndex()
+        public void SetElementOnNegativeIndex()
         {
             var sortedArray = new SortedIntArray();
             sortedArray.Add(1);
@@ -37,7 +45,7 @@
             Assert.Equal(6, sortedArray[2]);
         }
         [Fact]
-        public void SetNewValueForLastElement()
+        public void SetNewValueOnLastElement()
         {
             var sortedArray = new SortedIntArray();
             sortedArray.Add(1);
