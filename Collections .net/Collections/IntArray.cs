@@ -92,7 +92,7 @@
             Array.Resize(ref array, Count * 2);
         }
 
-        private bool IsValidIndex(int index)
+        public bool IsValidIndex(int index)
         {
             return index > -1 && index < Count;
         }

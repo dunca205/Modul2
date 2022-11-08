@@ -10,12 +10,7 @@
         {
             set
             {
-                if (index < 0 || index >= Count)
-                {
-                    return;
-                }
-
-                if (!HasRightValueOnRightOrLeftSide(index, value) && !HasRightValuesOnRightAndLeftSide(index, value))
+                if (ElementOrDefault(index - 1, value) > value || value > ElementOrDefault(index + 1, value))
                 {
                     return;
                 }
@@ -44,39 +39,14 @@
             base.Insert(index, element);
         }
 
-        private bool HasRightValueOnRightOrLeftSide(int index, int value)
+        private int ElementOrDefault(int index, int value)
         {
-            if (index == 0 && NewValueCanBeSetOnIndexZero(value))
+            if (IsValidIndex(index))
             {
-                return true;
+                return this[index];
             }
 
-            if (index == Count - 1 && base[index - 1] < value)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool NewValueCanBeSetOnIndexZero(int value)
-        {
-            if (Count == 1) // daca avem doar un element in sir il putem inlocui cu orice pt ca nu avem repere de comparatie
-            {
-                return true;
-            }
-
-            if (base[1] > value) // daca nu s a oprit la primul if , ne asiguram ca value este in continuare mai mica decat valoarea de pe urmatoare pozitie
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool HasRightValuesOnRightAndLeftSide(int index, int value)
-        {
-            return base[index - 1] < value && base[index + 1] > value;
+            return value;
         }
     }
 }
