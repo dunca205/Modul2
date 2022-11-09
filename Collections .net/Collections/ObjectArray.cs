@@ -29,6 +29,11 @@ namespace Collections
             }
         }
 
+        public ObjectArrayEnum GetEnumerator()
+        {
+            return new ObjectArrayEnum(objectArray);
+        }
+
         public virtual void Add(object element)
         {
             ResizeArray();
@@ -103,11 +108,6 @@ namespace Collections
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
-        }
-
-        public ObjectArrayEnum GetEnumerator()
-        {
-            return new ObjectArrayEnum(objectArray);
         }
 
         private void ShiftLeft(int index)

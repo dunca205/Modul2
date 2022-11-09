@@ -1,19 +1,18 @@
-﻿global using Xunit;
-namespace Collections
+﻿namespace Collections
 {
     public class ObjectArrayFacts
     {
         [Fact]
         public void AddNumbersOnObjectArray()
         {
-            var objectArray = new ObjectArray { 10,03, 20, 30, 40};
+            var objectArray = new ObjectArray { 10, 03, 20, 30, 40 };
             Assert.True(objectArray.Contains(20));
         }
 
         [Fact]
         public void AddWordAndCharacterOnObjectArray()
         {
-            var objectArray = new ObjectArray { 10, 20, "mama" , 'c' };
+            var objectArray = new ObjectArray { 10, 20, "mama", 'c' };
             Assert.True(objectArray.Contains("mama"));
             Assert.True(objectArray.Contains('c'));
         }
@@ -38,10 +37,10 @@ namespace Collections
         public void GetEnumeratorForMinimumLengthArrayWhenAllPositionsAreFilled()
         {
             var objectArray = new ObjectArray { 1, 2, 3, 4 };
-            var enumerator = objectArray.GetEnumerator();
-            while(enumerator.MoveNext())
+            var enumerator = objectArray. GetEnumerator();
+            while (enumerator.MoveNext())
             {
-                Assert.True(enumerator.Current !=  null);
+                Assert.True(enumerator.Current != null);
             }
 
         }
