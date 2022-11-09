@@ -29,7 +29,7 @@
 
         public virtual void Add(int element)
         {
-            DoubleTheCapacity();
+            ResizeArray();
             array[Count++] = element;
         }
 
@@ -50,7 +50,7 @@
                 return;
             }
 
-            DoubleTheCapacity();
+            ResizeArray();
             ShiftRight(index);
             array[index] = element;
             Count++;
@@ -82,14 +82,15 @@
             Count--;
         }
 
-        public void DoubleTheCapacity()
+        public void ResizeArray()
         {
+            const int doubleTheCapacity = 2;
             if (array.Length > Count)
             {
                 return;
             }
 
-            Array.Resize(ref array, Count * 2);
+            Array.Resize(ref array, Count * doubleTheCapacity);
         }
 
         public bool IsValidIndex(int index)

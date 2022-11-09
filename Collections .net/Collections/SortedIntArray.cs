@@ -31,7 +31,7 @@
 
         public override void Insert(int index, int element)
         {
-            if (index > 0 && this[index - 1] > element || this[index] < element)
+            if (ElementOrDefault(index - 1, element) > element || element > ElementOrDefault(index + 1, element))
             {
                 return;
             }
