@@ -29,9 +29,9 @@ namespace Collections
             }
         }
 
-        public ObjectArrayEnum GetEnumerator()
+        public IEnumerator GetEnumerator()
         {
-            return new ObjectArrayEnum(objectArray);
+            return new ObjectArrayEnumerator(this);
         }
 
         public virtual void Add(object element)
@@ -103,11 +103,6 @@ namespace Collections
         public bool IsValidIndex(int index)
         {
             return index > -1 && index < Count;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         private void ShiftLeft(int index)

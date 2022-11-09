@@ -37,7 +37,7 @@
         public void GetEnumeratorForMinimumLengthArrayWhenAllPositionsAreFilled()
         {
             var objectArray = new ObjectArray { 1, 2, 3, 4 };
-            var enumerator = objectArray. GetEnumerator();
+            var enumerator = objectArray.GetEnumerator();
             while (enumerator.MoveNext())
             {
                 Assert.True(enumerator.Current != null);
@@ -46,15 +46,13 @@
         }
 
         [Fact]
-        public void GetEnumeratorWhenNotAllPositionsAreFilled() // pica
+        public void GetEnumeratorWhenNotAllPositionsAreFilled()
         {
-            var objectArray = new ObjectArray { 1, 2, 3, 4, 5 };
-            var enumerator = objectArray.GetEnumerator();
+            var enumerator = new ObjectArray { 1, 2, 3, 4, 5 }.GetEnumerator();  
             while (enumerator.MoveNext())
             {
                 Assert.True(enumerator.Current != null);
             }
-
         }
     }
 }
