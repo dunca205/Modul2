@@ -102,7 +102,7 @@ namespace Collections
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator)GetEnumerator();
+            return GetEnumerator();
         }
 
         public ObjectArrayEnum GetEnumerator()
