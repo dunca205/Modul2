@@ -19,7 +19,7 @@ namespace Collections
 
         bool IEnumerator.MoveNext()
         {
-            if (position >= objectArray.Count - 1)
+            if (position + 1 >= objectArray.Count)
             {
                 return false;
             }

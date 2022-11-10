@@ -29,6 +29,11 @@ namespace Collections
             }
         }
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
         public IEnumerator GetEnumerator()
         {
             return new ObjectArrayEnumerator(this);

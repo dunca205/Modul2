@@ -38,10 +38,13 @@
         {
             var objectArray = new ObjectArray { 1, 2, 3, 4 };
             var enumerator = objectArray.GetEnumerator();
+            int count = 0;
             while (enumerator.MoveNext())
             {
+                count++;
                 Assert.True(enumerator.Current != null);
             }
+            Assert.Equal(4, count);
 
         }
 
