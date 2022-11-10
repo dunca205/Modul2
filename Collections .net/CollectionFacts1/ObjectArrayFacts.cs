@@ -57,5 +57,17 @@
                 Assert.True(enumerator.Current != null);
             }
         }
+
+        [Fact]
+        public void MoveNextTwoTimesResetThenMoveNextOneTime()
+        {
+            var enumerator = new ObjectArray { 1, 2, 3, 4, 5 }.GetEnumerator();
+            enumerator.MoveNext();
+            enumerator.MoveNext();
+            Assert.Equal(2, enumerator.Current);
+            enumerator.Reset();
+            enumerator.MoveNext();
+            Assert.Equal(1, enumerator.Current);
+        }
     }
 }
