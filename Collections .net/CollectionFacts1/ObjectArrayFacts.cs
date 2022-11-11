@@ -68,25 +68,6 @@
             enumerator.Reset();
             enumerator.MoveNext();
             Assert.Equal(1, enumerator.Current);
-            enumerator.Reset();
-            Assert.Equal(null, enumerator.Current);
-
         }
-
-        [Fact]
-        public void MoveNextWhenArrayIsEmpty()
-        {
-            var enumerator = new ObjectArray {}.GetEnumerator();
-            Assert.False(enumerator.MoveNext());
-        }
-
-        [Fact]
-        public void MoveNextWhenTheresElementsInTheArray()
-        {
-            var enumerator = new ObjectArray {1}.GetEnumerator();
-            Assert.True(enumerator.MoveNext());
-            Assert.False(enumerator.MoveNext());
-        }
-
     }
 }

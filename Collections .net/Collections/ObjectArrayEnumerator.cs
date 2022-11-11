@@ -25,7 +25,7 @@ namespace Collections
             }
         }
 
-        public bool MoveNext()
+        bool IEnumerator.MoveNext()
         {
             if (position + 1 >= objectArray.Count)
             {
