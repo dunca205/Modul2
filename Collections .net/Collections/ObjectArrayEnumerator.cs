@@ -12,12 +12,20 @@ namespace Collections
             this.objectArray = objectArray;
         }
 
-        object IEnumerator.Current
+        public object Current
         {
-            get { return objectArray[position]; }
+            get
+            {
+                if (position == -1)
+                {
+                    return null;
+                }
+
+                return objectArray[position];
+            }
         }
 
-        bool IEnumerator.MoveNext()
+        public bool MoveNext()
         {
             if (position + 1 >= objectArray.Count)
             {

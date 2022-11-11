@@ -51,7 +51,7 @@
         [Fact]
         public void GetEnumeratorWhenNotAllPositionsAreFilled()
         {
-            var enumerator = new ObjectArray { 1, 2, 3, 4, 5 }.GetEnumerator();  
+            var enumerator = new ObjectArray { 1, 2, 3, 4, 5 }.GetEnumerator();
             while (enumerator.MoveNext())
             {
                 Assert.True(enumerator.Current != null);
@@ -68,6 +68,25 @@
             enumerator.Reset();
             enumerator.MoveNext();
             Assert.Equal(1, enumerator.Current);
+            enumerator.Reset();
+            Assert.Equal(null, enumerator.Current);
+
         }
+
+        [Fact]
+        public void MoveNextWhenArrayIsEmpty()
+        {
+            var enumerator = new ObjectArray {}.GetEnumerator();
+            Assert.False(enumerator.MoveNext());
+        }
+
+        [Fact]
+        public void MoveNextWhenTheresElementsInTheArray()
+        {
+            var enumerator = new ObjectArray {1}.GetEnumerator();
+            Assert.True(enumerator.MoveNext());
+            Assert.False(enumerator.MoveNext());
+        }
+
     }
 }
