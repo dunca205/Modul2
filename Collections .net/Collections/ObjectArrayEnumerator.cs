@@ -14,18 +14,10 @@ namespace Collections
 
         public object Current
         {
-            get
-            {
-                if (position == -1)
-                {
-                    return null;
-                }
-
-                return objectArray[position];
-            }
+            get { return objectArray[position]; }
         }
 
-        bool IEnumerator.MoveNext()
+        public bool MoveNext()
         {
             if (position + 1 >= objectArray.Count)
             {
