@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Runtime.CompilerServices;
 
 namespace Collections
 {
@@ -29,14 +30,19 @@ namespace Collections
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
         public IEnumerator GetEnumerator()
         {
-            return new ObjectArrayEnumerator(this);
+            int position = -1;
+            foreach (var item in objectArray)
+            {
+                position++;
+                yield return item;
+
+                if (position + 1 >= Count)
+                {
+                    yield break;
+                }
+            }
         }
 
         public virtual void Add(object element)
