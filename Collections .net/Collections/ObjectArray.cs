@@ -32,16 +32,9 @@ namespace Collections
 
         public IEnumerator GetEnumerator()
         {
-            int position = -1;
-            foreach (var item in objectArray)
+            for (int i = 0; i < Count; i++)
             {
-                position++;
-                yield return item;
-
-                if (position + 1 >= Count)
-                {
-                    yield break;
-                }
+              yield return this[i];
             }
         }
 
