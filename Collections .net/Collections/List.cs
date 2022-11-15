@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Collections
 {
-    public class List<T> : IEnumerable
+    public class List<T> : IEnumerable<T>
     {
         private T[] list;
 
@@ -30,7 +30,7 @@ namespace Collections
             }
         }
 
-        public IEnumerator GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             for (int i = 0; i < Count; i++)
             {
@@ -107,6 +107,11 @@ namespace Collections
         public bool IsValidIndex(int index)
         {
             return index > -1 && index < Count;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() // declarat explicit pt ca vrem sa ca vrem sa accesam GetEnumerator din interfata IEnumerable
+        {
+            return GetEnumerator();
         }
 
         private void ShiftLeft(int index)
