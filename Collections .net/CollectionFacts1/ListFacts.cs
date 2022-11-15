@@ -17,6 +17,7 @@ namespace CollectionFacts
                 Assert.True(number > 0);
             }
         }
+
         [Fact]
         public void ListOfDoubleTypeVariablesCheckCapacityWhenListHas4Elements()
         {
@@ -27,8 +28,8 @@ namespace CollectionFacts
             {
                 Assert.True(enumerator.Current > 0);
             }
-
         }
+
         [Fact]
         public void ListOfCharactersCheckCapacityWhenListContains5Elements()
         {

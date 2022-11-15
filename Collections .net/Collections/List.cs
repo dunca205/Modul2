@@ -5,12 +5,12 @@ namespace Collections
 {
     public class List<T> : IEnumerable
     {
-        private T[] objectList;
+        private T[] list;
 
         public List()
         {
             const int minimumCapacity = 4;
-            objectList = new T[minimumCapacity];
+            list = new T[minimumCapacity];
         }
 
         public int Count { get; private set; }
@@ -26,7 +26,7 @@ namespace Collections
                     return;
                 }
 
-                objectList[index] = value;
+                list[index] = value;
             }
         }
 
@@ -41,7 +41,7 @@ namespace Collections
         public virtual void Add(T element)
         {
             ResizeArray();
-            objectList[Count++] = element;
+            list[Count++] = element;
         }
 
         public bool Contains(T element)
@@ -51,7 +51,7 @@ namespace Collections
 
         public int IndexOf(T element)
         {
-            return Array.IndexOf(objectList, element, 0, Count);
+            return Array.IndexOf(list, element, 0, Count);
         }
 
         public virtual void Insert(int index, T element)
@@ -63,13 +63,13 @@ namespace Collections
 
             ResizeArray();
             ShiftRight(index);
-            objectList[index] = element;
+            list[index] = element;
             Count++;
         }
 
         public void Clear()
         {
-            Array.Resize(ref objectList, 0);
+            Array.Resize(ref list, 0);
             Count = 0;
         }
 
@@ -96,12 +96,12 @@ namespace Collections
         public void ResizeArray()
         {
             const int doubleTheCapacity = 2;
-            if (objectList.Length > Count)
+            if (list.Length > Count)
             {
                 return;
             }
 
-            Array.Resize(ref objectList, Count * doubleTheCapacity);
+            Array.Resize(ref list, Count * doubleTheCapacity);
         }
 
         public bool IsValidIndex(int index)
@@ -113,7 +113,7 @@ namespace Collections
         {
             for (int i = index; i < Count - 1; i++)
             {
-                objectList[i] = objectList[i + 1];
+                list[i] = list[i + 1];
             }
         }
 
@@ -122,7 +122,7 @@ namespace Collections
             int rightSideLimit = Count;
             for (int i = Count; i >= Count - index; i--)
             {
-                objectList[rightSideLimit] = objectList[i - 1];
+                list[rightSideLimit] = list[i - 1];
                 rightSideLimit--;
             }
         }
