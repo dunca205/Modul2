@@ -12,10 +12,29 @@ namespace CollectionFacts
         public void ListOfIntVariablesCheckValue()
         {
             var list = new List<int> { 1, 2, 3 };
-            foreach(var number in list)
+            foreach (var number in list)
             {
                 Assert.True(number > 0);
             }
+        }
+        [Fact]
+        public void ListOfDoubleTypeVariablesCheckCapacityWhenListHas4Elements()
+        {
+            var list = new List<double> { 1, 2.12, 34.02, 3 };
+            Assert.True(list.Capacity.Equals(4));
+            var enumerator = list.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                Assert.True(enumerator.Current > 0);
+            }
+
+        }
+        [Fact]
+        public void ListOfCharactersCheckCapacityWhenListContains5Elements()
+        {
+            var list = new List<char> { 'a', 'b', 'c', 'd', 'e' };
+            Assert.True(list.Capacity.Equals(8));
+            Assert.True(list.Count.Equals(5));
         }
 
         [Fact]
