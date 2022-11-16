@@ -57,7 +57,7 @@
         [Fact]
         public void InsertElementOnImproperPosition()
         {
-            var sortedList = new SortedList<int> { 1,3,5,6,7};
+            var sortedList = new SortedList<int> { 1, 3, 5, 6, 7 };
             sortedList.Insert(1, 6);
             Assert.Equal(3, sortedList[1]);
         }

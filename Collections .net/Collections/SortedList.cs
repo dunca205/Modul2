@@ -11,7 +11,7 @@
         {
             set
             {
-                if (this[index].CompareTo(value) > 0) // daca elementul curent este mai mare decat valoarea nu e ok sa ii schimbam valoarea 
+                if (!IsValidIndex(index) || this[index].CompareTo(value) > 0)
                 {
                     return;
                 }
@@ -22,7 +22,7 @@
 
         public override void Add(T element)
         {
-            if (Count != 0 && this[Count - 1].CompareTo(element) > 0) // ultimul element din sir este mai mare decat elementul pe care vrem sa il adaugam
+            if (Count != 0 && this[Count - 1].CompareTo(element) > 0)
             {
                 return;
             }
