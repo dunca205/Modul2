@@ -1,4 +1,6 @@
-﻿namespace Collections
+﻿using Xunit.Sdk;
+
+namespace Collections
 {
     public class SortedListFacts
     {
@@ -6,7 +8,6 @@
         public void AddNumbersInAscendingOrder()
         {
             var sortedList = new SortedList<int> { 1, 2, 3 };
-
             Assert.Equal(3, sortedList.Count);
         }
 
@@ -24,6 +25,16 @@
             sortedList[2] = 4;
             Assert.Equal(4, sortedList[2]);
         }
+
+        [Fact]
+        public void SetLargerValueOnPositionThatHasLeftAndRightValues()
+        {
+            var sortedList = new SortedList<int> { 1, 3, 6, 7 };
+            sortedList[1] = 2;
+            Assert.True(sortedList[1].Equals(2));
+
+        }
+
 
         [Fact]
         public void SetSmallerValueThatWouldChangeTheAsceningOrder()
