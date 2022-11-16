@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Runtime.CompilerServices;
 
 namespace Collections
 {
@@ -34,7 +33,7 @@ namespace Collections
         {
             for (int i = 0; i < Count; i++)
             {
-              yield return this[i];
+                yield return this[i];
             }
         }
 

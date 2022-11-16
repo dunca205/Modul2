@@ -52,7 +52,7 @@
         public void GetEnumeratorWhenNotAllPositionsAreFilled()
         {
             var enumerator = new ObjectArray { 1, 2, 3, 4, 5 }.GetEnumerator();
-           while(enumerator.MoveNext())
+            while (enumerator.MoveNext())
             {
                 Assert.True(enumerator.Current != null);
             }

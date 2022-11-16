@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 
 namespace Collections
 {
@@ -109,7 +108,7 @@ namespace Collections
             return index > -1 && index < Count;
         }
 
-        IEnumerator IEnumerable.GetEnumerator() // declarat explicit pt ca vrem sa ca vrem sa accesam GetEnumerator din interfata IEnumerable
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }

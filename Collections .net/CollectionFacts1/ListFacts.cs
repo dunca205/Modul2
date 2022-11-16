@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CollectionFacts
+﻿namespace Collections
 {
     public class ListFacts
     {
         [Fact]
-        public void ListOfIntVariablesCheckValue()
+        public void AddOneLastElement()
         {
-            var list = new List<int> { 1, 2, 3 };
-            foreach (var number in list)
-            {
-                Assert.True(number > 0);
-            }
+            var arraynumbers = new IntArray();
+            arraynumbers.Add(1);
+            Assert.True(arraynumbers.Contains(1));
         }
+
+        [Fact]
+        public void ListOfInt()
+        {
+            var list = new List<int> { 1, 2, 3, 4 };
+            Assert.Equal(4, list.Count));
+        }
+  
 
         [Fact]
         public void ListOfDoubleTypeVariablesCheckCapacityWhenListHas4Elements()
         {
-            var list = new List<double> { 1, 2.12, 34.02, 3 };
-            Assert.True(list.Capacity.Equals(4));
+            var list = new List<double> { 1.23, 2.03, 3.12 };
+            Assert.Equal(3, list.Count);
             var enumerator = list.GetEnumerator();
             while (enumerator.MoveNext())
             {
@@ -31,32 +31,31 @@ namespace CollectionFacts
         }
 
         [Fact]
-        public void ListOfCharactersCheckCapacityWhenListContains5Elements()
+        public void ListOfCharacters()
         {
-            var list = new List<char> { 'a', 'b', 'c', 'd', 'e' };
-            Assert.True(list.Capacity.Equals(8));
-            Assert.True(list.Count.Equals(5));
+            var list = new List<char> { 'a', 'b', 'c' };
+            Assert.Equal(3, list.Count);
         }
 
-        [Fact]
-        public void ListOfStringsCheckLength()
-        {
-            var list = new List<string> { "ana", "are", "apa" };
-            foreach(var word in list)
-            {
-                Assert.Equal(3, word.Length);
-            }
-        }
+        /* [Fact]
+         public void ListOfStringsCheckLength()
+         {
+             var list = new List<string> { "ana", "are", "apa" };
+             foreach (var word in list)
+             {
+                 Assert.Equal(3, word.Length);
+             }
+         }
 
-        [Fact]
-        public void EnumerateElementsInList()
-        {
-            var list = new List<string> { "ana", "are", "apa" };
-            var enumerator = list.GetEnumerator();
-            while(enumerator.MoveNext())
-            {
-                Assert.Equal(3, enumerator.Current.Length);
-            }
-        }
+         [Fact]
+         public void EnumerateElementsInList()
+         {
+             var list = new List<string> { "ana", "are", "apa" };
+             var enumerator = list.GetEnumerator();
+             while (enumerator.MoveNext())
+             {
+                 Assert.Equal(3, enumerator.Current.Length);
+             }
+         }*/
     }
 }
