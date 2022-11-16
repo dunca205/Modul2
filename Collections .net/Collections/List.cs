@@ -14,9 +14,9 @@ namespace Collections
 
         public int Count { get; private set; }
 
-        public T this[int index]
+        public virtual T this[int index]
         {
-            get => this[index];
+            get => list[index];
 
             set
             {

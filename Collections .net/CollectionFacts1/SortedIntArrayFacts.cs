@@ -137,7 +137,5 @@
             Assert.Equal(4, sortedArray[1]);
             Assert.Equal(4, sortedArray[2]);
         }
-
-
     }
 }

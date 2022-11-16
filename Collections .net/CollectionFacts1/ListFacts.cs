@@ -2,21 +2,14 @@
 {
     public class ListFacts
     {
-        [Fact]
-        public void AddOneLastElement()
-        {
-            var arraynumbers = new IntArray();
-            arraynumbers.Add(1);
-            Assert.True(arraynumbers.Contains(1));
-        }
 
         [Fact]
         public void ListOfInt()
         {
             var list = new List<int> { 1, 2, 3, 4 };
-            Assert.Equal(4, list.Count));
+            Assert.Equal(4, list.Count);
         }
-  
+
 
         [Fact]
         public void ListOfDoubleTypeVariablesCheckCapacityWhenListHas4Elements()
@@ -37,25 +30,25 @@
             Assert.Equal(3, list.Count);
         }
 
-        /* [Fact]
-         public void ListOfStringsCheckLength()
-         {
-             var list = new List<string> { "ana", "are", "apa" };
-             foreach (var word in list)
-             {
-                 Assert.Equal(3, word.Length);
-             }
-         }
+        [Fact]
+        public void ListOfStringsCheckLength()
+        {
+            var list = new List<string> { "ana", "are", "apa" };
+            foreach (var word in list)
+            {
+                Assert.Equal(3, word.Length);
+            }
+        }
 
-         [Fact]
-         public void EnumerateElementsInList()
-         {
-             var list = new List<string> { "ana", "are", "apa" };
-             var enumerator = list.GetEnumerator();
-             while (enumerator.MoveNext())
-             {
-                 Assert.Equal(3, enumerator.Current.Length);
-             }
-         }*/
+        [Fact]
+        public void EnumerateElementsInList()
+        {
+            var list = new List<string> { "ana", "are", "apa" };
+            var enumerator = list.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                Assert.Equal(3, enumerator.Current.Length);
+            }
+        }
     }
 }

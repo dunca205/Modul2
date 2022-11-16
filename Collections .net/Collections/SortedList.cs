@@ -3,13 +3,26 @@
     public class SortedList<T> : List<T>
         where T : IComparable<T>
     {
-        public SortedList() : base()
+        public SortedList()
         {
+        }
+
+        public override T this[int index]
+        {
+            set
+            {
+                if (this[index].CompareTo(value) > 0) // daca elementul curent este mai mare decat valoarea nu e ok sa ii schimbam valoarea 
+                {
+                    return;
+                }
+
+                base[index] = value;
+            }
         }
 
         public override void Add(T element)
         {
-            if (Count != 0 && this[Count - 1].CompareTo(element) < 0)
+            if (Count != 0 && this[Count - 1].CompareTo(element) > 0) // ultimul element din sir este mai mare decat elementul pe care vrem sa il adaugam
             {
                 return;
             }
@@ -17,19 +30,9 @@
             base.Add(element);
         }
 
-        public int CompareTo(T other, T theOtherOne)
-        {
-            if (other == null)
-            {
-                return 1;
-            }
-
-            return other.CompareTo(theOtherOne);
-        }
-
         public override void Insert(int index, T element)
         {
-            if (ElementOrDefault(index - 1, element).CompareTo(element) > 0 || element.CompareTo(ElementOrDefault(index + 1, element)) > 0)
+            if (!IsValidIndex(index) || this[index - 1].CompareTo(element) > 0 || this[index].CompareTo(element) < 0)
             {
                 return;
             }
@@ -37,14 +40,8 @@
             base.Insert(index, element);
         }
 
-        private T ElementOrDefault(int index, T value)
-        {
-            if (IsValidIndex(index))
-            {
-                return this[index];
-            }
-
-            return value;
-        }
+        // a.CompareTo(b) > 0 , //  elementul a>b
+        // a.CompareTo(b) < 0 , //  elementul a < b
+        // a.CompareTo(b) = 0, // elementul a = b
     }
 }
