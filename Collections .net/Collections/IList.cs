@@ -17,7 +17,7 @@ namespace Collections
             list = new System.Collections.Generic.List<T>();
         }
 
-        public int Count { get; }
+        public int Count { get; set; }
 
         public bool IsReadOnly { get; }
 
@@ -47,6 +47,7 @@ namespace Collections
         public virtual void Add(T item)
         {
             list.Add(item);
+            Count++;
         }
 
         public bool Contains(T item)
@@ -67,6 +68,7 @@ namespace Collections
             }
 
             list.Insert(index, item);
+            Count++;
         }
 
         public void Clear()
@@ -81,6 +83,7 @@ namespace Collections
                 return;
             }
 
+            Count--;
             list.RemoveAt(index);
         }
 
@@ -101,6 +104,12 @@ namespace Collections
 
         public bool Remove(T item)
         {
+            if (!IsValidIndex(IndexOf(item)))
+            {
+                return false;
+            }
+
+            Count--;
             return list.Remove(item);
         }
     }
