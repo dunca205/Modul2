@@ -45,6 +45,23 @@ namespace Collections
         }
 
         [Fact]
+        public void InsertElementOnFirstPosition()
+        {
+            var sortedList = new SortedList<int> { 1, 2, 3 };
+            sortedList.Insert(0, 0);
+            Assert.True(sortedList[0].Equals(0));
+        }
+
+        [Fact]
+        public void InsertElementOnLastPosition() 
+        {
+            var sortedList = new SortedList<int> { 1, 2, 3 };
+            sortedList.Insert(2, 1);
+            sortedList.Insert(2, 4);
+            Assert.True(sortedList[2].Equals(4));
+        }
+
+        [Fact]
         public void InsertElementOnProperPosition()
         {
             var sortedList = new SortedList<int> { 1, 4, 6 };

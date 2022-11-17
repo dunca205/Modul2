@@ -1,4 +1,6 @@
-﻿namespace Collections
+﻿using System;
+
+namespace Collections
 {
     public class SortedList<T> : List<T>
         where T : IComparable<T>
@@ -24,7 +26,7 @@
 
         public override void Add(T element)
         {
-            if (Count != 0 && RightSideIsGreater(Count - 1, element))
+            if (Count != 0 && this[Count - 1].CompareTo(element) > 0)
             {
                 return;
             }
@@ -34,7 +36,10 @@
 
         public override void Insert(int index, T element)
         {
-            if (!IsValidIndex(index) || RightSideIsGreater(index - 1, element) || LeftSideIsGreater(index, element))
+            T leftSideValue = ElementOrDefault(index - 1, element);
+            T rightSideValue = ElementOrDefault(index + 1, element);
+
+            if (leftSideValue.CompareTo(element) > 0 || rightSideValue.CompareTo(element) < 0)
             {
                 return;
             }
@@ -50,16 +55,6 @@
             }
 
             return value;
-        }
-
-        private bool RightSideIsGreater(int index, T value)
-        {
-            return this[index].CompareTo(value) > 0;
-        }
-
-        private bool LeftSideIsGreater(int index, T value)
-        {
-            return value.CompareTo(this[index]) > 0;
         }
 
         // a.CompareTo(b) > 0 , //  elementul a>b
