@@ -1,12 +1,11 @@
 ﻿namespace Collections
 {
-    public class ListFacts
+    public class IListImplementationFacts
     {
-
         [Fact]
         public void ListOfInt()
         {
-            var list = new List<int> { 1, 2, 3, 4 };
+            var list = new IListImplementation<int> { 1, 2, 3, 4 };
             Assert.Equal(4, list.Count);
         }
 
@@ -14,7 +13,7 @@
         [Fact]
         public void ListOfDoubleTypeVariablesCheckCapacityWhenListHas4Elements()
         {
-            var list = new List<double> { 1.23, 2.03, 3.12 };
+            var list = new IListImplementation<double> { 1.23, 2.03, 3.12 };
             Assert.Equal(3, list.Count);
             var enumerator = list.GetEnumerator();
             while (enumerator.MoveNext())
@@ -26,14 +25,14 @@
         [Fact]
         public void ListOfCharacters()
         {
-            var list = new List<char> { 'a', 'b', 'c' };
+            var list = new IListImplementation<char> { 'a', 'b', 'c' };
             Assert.Equal(3, list.Count);
         }
 
         [Fact]
         public void ListOfStringsCheckLength()
         {
-            var list = new List<string> { "ana", "are", "apa" };
+            var list = new IListImplementation<string> { "ana", "are", "apa" };
             foreach (var word in list)
             {
                 Assert.Equal(3, word.Length);
@@ -43,7 +42,7 @@
         [Fact]
         public void EnumerateElementsInList()
         {
-            var list = new List<string> { "ana", "are", "apa" };
+            var list = new IListImplementation<string> { "ana", "are", "apa" };
             var enumerator = list.GetEnumerator();
             while (enumerator.MoveNext())
             {
@@ -52,16 +51,12 @@
         }
 
         [Fact]
-        public void GetEnumeratorForDerivatedTypes()
+        public void EnumerateAGenericList()
         {
-            var sortedList = new System.Collections.Generic.List<object> { 1, 3, 3, 4, 'z', "ana" };
-            // iterarea se va face pe orice derivat din tipul object
-            var enumerator = sortedList.GetEnumerator();
-            while (enumerator.MoveNext())
-            {
-                Assert.True(enumerator.Current != null);
-            }
-
+            var generic = new System.Collections.Generic.List<int>();
+            var enumerator  = generic.GetEnumerator();
+            Assert.False(enumerator.MoveNext());
         }
     }
+   
 }

@@ -57,5 +57,17 @@
                 Assert.True(enumerator.Current != null);
             }
         }
+
+        [Fact]
+        public void GetEnumeratorForDerivatedTypes()
+        {
+            var array = new string[] { "ana", "are", "mere" };
+            var objectArray = new ObjectArray { array };
+            var enumerator = objectArray.GetEnumerator();
+            while(enumerator.MoveNext())
+            {
+                Assert.True(enumerator.Current != null);
+            }
+        }
     }
 }

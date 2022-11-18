@@ -1,10 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 
 namespace Collections
 {
@@ -15,6 +9,8 @@ namespace Collections
         public ILists()
         {
             list = new System.Collections.Generic.List<T>();
+
+            // ILists = este de tipul List<T>() ; nu de tipul clasei definite de mine care are acelasi nume
         }
 
         public int Count { get; set; }
@@ -89,7 +85,13 @@ namespace Collections
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            list.CopyTo(array, arrayIndex);
+            bool canBeCopied = this.Count <= (array.Length - arrayIndex); // ma asigur ca sirul este suficient de mare sa poata copia toate elementele
+            if (!IsValidIndex(arrayIndex) || !canBeCopied)
+            {
+                return;
+            }
+
+            list.CopyTo(array, arrayIndex); // aici copiaza pt ca list este de tip generic 
         }
 
         public bool IsValidIndex(int index)

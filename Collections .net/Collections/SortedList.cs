@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Collections
+﻿namespace Collections
 {
     public class SortedList<T> : List<T>
         where T : IComparable<T>

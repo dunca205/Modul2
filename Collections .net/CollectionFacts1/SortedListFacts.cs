@@ -1,6 +1,4 @@
-﻿using Xunit.Sdk;
-
-namespace Collections
+﻿namespace Collections
 {
     public class SortedListFacts
     {
@@ -53,7 +51,7 @@ namespace Collections
         }
 
         [Fact]
-        public void InsertElementOnLastPosition() 
+        public void InsertElementOnLastPosition()
         {
             var sortedList = new SortedList<int> { 1, 2, 3 };
             sortedList.Insert(2, 1);
