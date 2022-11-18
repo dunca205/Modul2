@@ -55,7 +55,6 @@
         public void GetEnumeratorForDerivatedTypes()
         {
             var sortedList = new System.Collections.Generic.List<object> { 1, 3, 3, 4, 'z', "ana" };
-            // iterarea se va face pe orice derivat din tipul object
             var enumerator = sortedList.GetEnumerator();
             while (enumerator.MoveNext())
             {

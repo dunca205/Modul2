@@ -2,7 +2,7 @@
 
 namespace Collections
 {
-    public class List<T> : IEnumerable<T>
+    public class List<T> : IList<T>
     {
         private T[] list;
 
@@ -13,6 +13,8 @@ namespace Collections
         }
 
         public int Count { get; private set; }
+
+        public bool IsReadOnly { get; }
 
         public virtual T this[int index]
         {
@@ -37,23 +39,34 @@ namespace Collections
             }
         }
 
-        public virtual void Add(T element)
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            bool canBeCopied = this.Count <= (array.Length - arrayIndex);
+            if (!IsValidIndex(arrayIndex) || !canBeCopied)
+            {
+                return;
+            }
+
+            this.CopyTo(array, arrayIndex); // aici nu copiaza sirul pt ca this(List<T> nu este de tip generic)
+        }
+
+        public virtual void Add(T item)
         {
             ResizeArray();
-            list[Count++] = element;
+            list[Count++] = item;
         }
 
-        public bool Contains(T element)
+        public bool Contains(T item)
         {
-            return IndexOf(element) != -1;
+            return IndexOf(item) != -1;
         }
 
-        public int IndexOf(T element)
+        public int IndexOf(T item)
         {
-            return Array.IndexOf(list, element, 0, Count);
+            return Array.IndexOf(list, item, 0, Count);
         }
 
-        public virtual void Insert(int index, T element)
+        public virtual void Insert(int index, T item)
         {
             if (!IsValidIndex(index))
             {
@@ -62,7 +75,7 @@ namespace Collections
 
             ResizeArray();
             ShiftRight(index);
-            list[index] = element;
+            list[index] = item;
             Count++;
         }
 
@@ -72,11 +85,11 @@ namespace Collections
             Count = 0;
         }
 
-        public bool Remove(T element)
+        public bool Remove(T item)
         {
             int countAfterElementIsRemoved = Count - 1;
 
-            RemoveAt(IndexOf(element));
+            RemoveAt(IndexOf(item));
 
             return Count == countAfterElementIsRemoved;
         }
