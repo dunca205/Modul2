@@ -71,6 +71,7 @@ namespace Collections
             var arrayToHold = new int[6];
             list.CopyTo(arrayToHold, 0);
             Assert.True(arrayToHold[0].Equals(1));
+            Assert.True(arrayToHold[2].Equals(3));
             
 
 

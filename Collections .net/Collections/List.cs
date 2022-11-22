@@ -51,7 +51,7 @@ namespace Collections
 
             foreach (T item in this)
             {
-                while (counter < array.Length)
+                if (counter < array.Length)
                 {
                     array[counter] = item;
                     counter++;
