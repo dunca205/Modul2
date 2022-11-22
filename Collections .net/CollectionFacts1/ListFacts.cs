@@ -1,4 +1,6 @@
-﻿namespace Collections
+﻿using Newtonsoft.Json.Bson;
+
+namespace Collections
 {
     public class ListFacts
     {
@@ -60,6 +62,17 @@
             {
                 Assert.True(enumerator.Current != null);
             }
+        }
+
+        [Fact]
+        public void CopyTo()
+        {
+            var list = new List<int> { 1, 2, 3, 4};
+            var arrayToHold = new int[6];
+            list.CopyTo(arrayToHold, 0);
+            Assert.True(arrayToHold[0].Equals(1));
+            
+
 
         }
     }

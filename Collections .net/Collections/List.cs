@@ -47,7 +47,16 @@ namespace Collections
                 return;
             }
 
-            this.CopyTo(array, arrayIndex); // aici nu copiaza sirul pt ca this(List<T> nu este de tip generic)
+            int counter = arrayIndex;
+
+            foreach (T item in this)
+            {
+                while (counter < array.Length)
+                {
+                    array[counter] = item;
+                    counter++;
+                }
+            }
         }
 
         public virtual void Add(T item)
