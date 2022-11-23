@@ -64,7 +64,7 @@
             var array = new string[] { "ana", "are", "mere" };
             var objectArray = new ObjectArray { array };
             var enumerator = objectArray.GetEnumerator();
-            while(enumerator.MoveNext())
+            while (enumerator.MoveNext())
             {
                 Assert.True(enumerator.Current != null);
             }

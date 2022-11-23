@@ -22,27 +22,27 @@
             }
         }
 
-        public override void Add(T element)
+        public override void Add(T item)
         {
-            if (Count != 0 && this[Count - 1].CompareTo(element) > 0)
+            if (Count != 0 && this[Count - 1].CompareTo(item) > 0)
             {
                 return;
             }
 
-            base.Add(element);
+            base.Add(item);
         }
 
-        public override void Insert(int index, T element)
+        public override void Insert(int index, T item)
         {
-            T leftSideValue = ElementOrDefault(index - 1, element);
-            T rightSideValue = ElementOrDefault(index + 1, element);
+            T leftSideValue = ElementOrDefault(index - 1, item);
+            T rightSideValue = ElementOrDefault(index + 1, item);
 
-            if (leftSideValue.CompareTo(element) > 0 || rightSideValue.CompareTo(element) < 0)
+            if (leftSideValue.CompareTo(item) > 0 || rightSideValue.CompareTo(item) < 0)
             {
                 return;
             }
 
-            base.Insert(index, element);
+            base.Insert(index, item);
         }
 
         private T ElementOrDefault(int index, T value)

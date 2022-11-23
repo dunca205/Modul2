@@ -47,16 +47,7 @@ namespace Collections
                 return;
             }
 
-            int counter = arrayIndex;
-
-            foreach (T item in this)
-            {
-                if (counter < array.Length)
-                {
-                    array[counter] = item;
-                    counter++;
-                }
-            }
+            list.CopyTo(array, arrayIndex);
         }
 
         public virtual void Add(T item)

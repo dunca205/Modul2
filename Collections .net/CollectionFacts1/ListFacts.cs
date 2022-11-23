@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Bson;
-
-namespace Collections
+﻿namespace Collections
 {
     public class ListFacts
     {
@@ -43,7 +41,7 @@ namespace Collections
         }
 
         [Fact]
-        public void EnumerateElementsInList()
+        public void EnumerateElementsOfSameLengthFromList()
         {
             var list = new List<string> { "ana", "are", "apa" };
             var enumerator = list.GetEnumerator();
@@ -54,27 +52,49 @@ namespace Collections
         }
 
         [Fact]
-        public void GetEnumeratorForDerivatedTypes()
+        public void CoppyListToArrayStartingWithIndexZero()
         {
-            var sortedList = new System.Collections.Generic.List<object> { 1, 3, 3, 4, 'z', "ana" };
-            var enumerator = sortedList.GetEnumerator();
-            while (enumerator.MoveNext())
-            {
-                Assert.True(enumerator.Current != null);
-            }
-        }
-
-        [Fact]
-        public void CopyTo()
-        {
-            var list = new List<int> { 1, 2, 3, 4};
+            var list = new List<int> { 1, 2, 3, 4 };
             var arrayToHold = new int[6];
             list.CopyTo(arrayToHold, 0);
             Assert.True(arrayToHold[0].Equals(1));
             Assert.True(arrayToHold[2].Equals(3));
-            
+        }
 
+        [Fact]
+        public void CoppyListToArrayStartingWithIndex3()
+        {
+            var list = new List<int> { 1, 2, 3, 4 };
+            var arrayToHold = new int[8];
+            list.CopyTo(arrayToHold, 3);
+            Assert.Equal(1, arrayToHold[3]);
+        }
+
+        [Fact]
+        public void CoppyListToArrayWhenArraysLengthIsNotEnough()
+        {
+            var list = new List<int> { 1, 2, 3, 4 };
+            var arrayToHold = new int[5];
+            list.CopyTo(arrayToHold, 3);
+            Assert.Equal(0, arrayToHold[4]);
+        }
+
+        [Fact]
+        public void CoppyListToArrayWhenArrayIsPerfectSize()
+        {
+            var list = new List<int> { 1, 2, 3, 4 };
+            var arrayToHold = new int[5];
+            list.CopyTo(arrayToHold, 1);
+            Assert.Equal(1, arrayToHold[1]);
 
         }
+
+        [Fact]
+        public void CollectionIsReadOnly()
+        {
+            var list = new List<int> { };
+            Assert.False (list.IsReadOnly);
+        }
+       
     }
 }
