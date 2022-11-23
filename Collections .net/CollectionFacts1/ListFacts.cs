@@ -90,11 +90,19 @@
         }
 
         [Fact]
+        public void CoppyListWithOnly5ItemsWhenArrayLengthIs5()
+        {
+            var list = new List<int> { 1, 2, 3, 4, 5 };
+            var arrayToHold = new int[5];
+            list.CopyTo(arrayToHold, 0);
+
+        }
+
+        [Fact]
         public void CollectionIsReadOnly()
         {
             var list = new List<int> { };
             Assert.False (list.IsReadOnly);
         }
-       
     }
 }

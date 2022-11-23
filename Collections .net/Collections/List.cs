@@ -47,7 +47,8 @@ namespace Collections
                 return;
             }
 
-            list.CopyTo(array, arrayIndex);
+            Array.Copy(list, 0, array, arrayIndex, Count);
+         //   list.CopyTo(array, arrayIndex);
         }
 
         public virtual void Add(T item)
