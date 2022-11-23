@@ -22,7 +22,7 @@ namespace Collections
 
             set
             {
-                if (!IsValidIndex(index))
+                if (!IsValidIndex(index) || this.IsReadOnly)
                 {
                     return;
                 }
@@ -73,7 +73,7 @@ namespace Collections
 
         public virtual void Insert(int index, T item)
         {
-            if (!IsValidIndex(index))
+            if (!IsValidIndex(index) || IsReadOnly)
             {
                 return;
             }
@@ -86,6 +86,11 @@ namespace Collections
 
         public void Clear()
         {
+            if (IsReadOnly)
+            {
+                return;
+            }
+
             Array.Resize(ref list, 0);
             Count = 0;
         }
@@ -117,11 +122,12 @@ namespace Collections
 
         public void ResizeArray()
         {
-            const int doubleTheCapacity = 2;
-            if (list.Length > Count)
+            if (list.Length > Count || IsReadOnly)
             {
                 return;
             }
+
+            const int doubleTheCapacity = 2;
 
             Array.Resize(ref list, Count * doubleTheCapacity);
         }
