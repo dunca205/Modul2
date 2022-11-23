@@ -48,11 +48,15 @@ namespace Collections
             }
 
             Array.Copy(list, 0, array, arrayIndex, Count);
-         //   list.CopyTo(array, arrayIndex);
         }
 
         public virtual void Add(T item)
         {
+            if (IsReadOnly) // A collection that is read-only does not allow the addition of elements after the collection is created.
+            {
+                return;
+            }
+
             ResizeArray();
             list[Count++] = item;
         }
@@ -88,6 +92,11 @@ namespace Collections
 
         public bool Remove(T item)
         {
+            if (IsReadOnly) // A collection that is read-only does not allow removal of elements  after the collection is created.
+            {
+                return false;
+            }
+
             int countAfterElementIsRemoved = Count - 1;
 
             RemoveAt(IndexOf(item));
@@ -97,7 +106,7 @@ namespace Collections
 
         public void RemoveAt(int index)
         {
-            if (!IsValidIndex(index))
+            if (!IsValidIndex(index) || IsReadOnly)
             {
                 return;
             }
