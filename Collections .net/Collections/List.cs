@@ -14,7 +14,13 @@ namespace Collections
 
         public int Count { get; private set; }
 
-        public bool IsReadOnly { get; }
+        public bool IsReadOnly
+        {
+            get
+            {
+                return false; // colectia nu este ReadOnly 
+            }
+        }
 
         public virtual T this[int index]
         {
@@ -22,7 +28,7 @@ namespace Collections
 
             set
             {
-                if (!IsValidIndex(index) || this.IsReadOnly)
+                if (!IsValidIndex(index) || IsReadOnly)
                 {
                     return;
                 }
