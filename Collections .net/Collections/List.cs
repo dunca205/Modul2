@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.ObjectModel;
 
 namespace Collections
 {
@@ -16,10 +17,7 @@ namespace Collections
 
         public bool IsReadOnly
         {
-            get
-            {
-                return false; // colectia nu este ReadOnly 
-            }
+            get; // by default = false;
         }
 
         public virtual T this[int index]
@@ -43,6 +41,16 @@ namespace Collections
             {
                 yield return this[i];
             }
+        }
+
+        public ReadOnlyCollection<T> LimitedAccesCollection()
+        {
+            return new ReadOnlyCollection<T>(this);
+
+            // ReadOnlyCollection<T> : IEnumerable<T>, IEnumerable, IReadOnlyCollection<T>
+            // IReadOnlyCollection<T> :  IReadOnlyList<out T> : IEnumerable<T>, IEnumerable, IReadOnlyCollection<T>
+            // returneaza aceeasi colectie dar de tip readonly,
+            // trebuie sa ma asigur ca oricine primeste o lista List,primeste varianta cu acces limitat
         }
 
         public void CopyTo(T[] array, int arrayIndex)
@@ -158,11 +166,9 @@ namespace Collections
 
         private void ShiftRight(int index)
         {
-            int rightSideLimit = Count;
-            for (int i = Count; i >= Count - index; i--)
+            for (int i = Count; i > index; i--)
             {
-                list[rightSideLimit] = list[i - 1];
-                rightSideLimit--;
+                list[i] = list[i - 1];
             }
         }
     }

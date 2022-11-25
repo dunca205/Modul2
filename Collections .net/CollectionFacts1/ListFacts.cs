@@ -95,14 +95,35 @@
             var list = new List<int> { 1, 2, 3, 4, 5 };
             var arrayToHold = new int[5];
             list.CopyTo(arrayToHold, 0);
+            Assert.Equal(5, arrayToHold[4]);
 
         }
+
+        [Fact]
+        public void InsertElementInList()
+        {
+            var list = new List<int> { 1, 2, 3, 4, 5 };
+            list.Insert(4, 8);
+            Assert.Equal(8, list[4]);
+        }
+
 
         [Fact]
         public void CollectionIsReadOnly()
         {
             var list = new List<int> { };
-            Assert.False (list.IsReadOnly);
+            Assert.False(list.IsReadOnly);
+        }
+
+        [Fact]
+        public void ConvertListToReadOnlyCollection()
+        {
+            var list = new List<int> { 1, 2, 3, 4, 5};
+            var restrictedCollection = list.LimitedAccesCollection();
+            Assert.Equal(5, restrictedCollection.Count);
+            Assert.Equal(2, restrictedCollection.IndexOf(3));
+            restrictedCollection[1].Equals(3);
+            Assert.False(restrictedCollection[1].Equals(3));
         }
     }
 }

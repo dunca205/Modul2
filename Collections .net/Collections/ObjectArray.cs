@@ -118,11 +118,9 @@ namespace Collections
 
         private void ShiftRight(int index)
         {
-            int rightSideLimit = Count;
-            for (int i = Count; i >= Count - index; i--)
+            for (int i = Count; i > index; i--)
             {
-                objectArray[rightSideLimit] = objectArray[i - 1];
-                rightSideLimit--;
+                objectArray[i] = objectArray[i - 1];
             }
         }
     }

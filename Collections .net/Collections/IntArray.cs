@@ -108,11 +108,9 @@
 
         private void ShiftRight(int index)
         {
-            int rightSideLimit = Count;
-            for (int i = Count; i >= Count - index; i--)
+            for (int i = Count; i > index; i--)
             {
-                array[rightSideLimit] = array[i - 1];
-                rightSideLimit--;
+                array[i] = array[i - 1];
             }
         }
     }
