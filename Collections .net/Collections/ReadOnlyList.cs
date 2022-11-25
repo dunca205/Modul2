@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 
 namespace Collections
 {
@@ -24,21 +23,21 @@ namespace Collections
 
         public T this[int index]
         {
-            get => list[index];
+            get => list[index]; // se poate da un index invalid
 
             set
             {
-               // cant be set
+                // cant be set
             }
         }
 
-        public void Add(T item) => throw new NotImplementedException(); // metoda in ICollection
+        public void Add(T item) => throw new NotImplementedException();
 
-        public void Clear() => throw new NotImplementedException(); // metoda in ICollection
+        public void Clear() => throw new NotImplementedException();
 
-        public bool Contains(T item) => IndexOf(item) != -1; // metoda in ICollection
+        public bool Contains(T item) => IndexOf(item) != -1;
 
-        public void CopyTo(T[] array, int arrayIndex) // metoda in ICollection
+        public void CopyTo(T[] array, int arrayIndex)
         {
             bool canBeCopied = this.Count <= (array.Length - arrayIndex);
             if (!IsValidIndex(arrayIndex) || !canBeCopied)
@@ -51,12 +50,15 @@ namespace Collections
 
         public IEnumerator<T> GetEnumerator()
         {
-            return list.GetEnumerator();
+            for (int i = 0; i < Count; i++)
+            {
+                yield return this[i];
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable)list).GetEnumerator();
+            return GetEnumerator();
         }
 
         public int IndexOf(T item) => list.IndexOf(item); // metoda in IList
