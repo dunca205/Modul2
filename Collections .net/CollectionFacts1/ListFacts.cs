@@ -116,12 +116,14 @@
         }
 
         [Fact]
-        public void ConvertListToReadOnlyCollection()
+        public void ConvertListToReadOnly()
         {
             var list = new List<int> { 1, 2, 3, 4, 5};
-            var restrictedCollection = list.LimitedAccesCollection();
-            Assert.Equal(5, restrictedCollection.Count);
-            Assert.Equal(2, restrictedCollection.IndexOf(3));
+            Assert.False(list.IsReadOnly);
+
+            var restrictedCollection = new ReadOnlyList<int>(list);
+            Assert.True(restrictedCollection.IsReadOnly);
+
             restrictedCollection[1].Equals(3);
             Assert.False(restrictedCollection[1].Equals(3));
         }

@@ -47,10 +47,10 @@ namespace Collections
         {
             return new ReadOnlyCollection<T>(this);
 
-            // ReadOnlyCollection<T> : IEnumerable<T>, IEnumerable, IReadOnlyCollection<T>
-            // IReadOnlyCollection<T> :  IReadOnlyList<out T> : IEnumerable<T>, IEnumerable, IReadOnlyCollection<T>
+            // ReadOnlyCollection<T> : IList<T>, IList, IReadOnlyList<T>
+            // IReadOnlyList<out T> : IEnumerable<T>, IEnumerable, IReadOnlyCollection<T>
             // returneaza aceeasi colectie dar de tip readonly,
-            // trebuie sa ma asigur ca oricine primeste o lista List,primeste varianta cu acces limitat
+            // trebuie sa ma asigur ca oricine primeste o lista List<T>,primeste varianta cu acces limitat
         }
 
         public void CopyTo(T[] array, int arrayIndex)
