@@ -23,26 +23,44 @@ namespace Collections
 
         public T this[int index]
         {
-            get => list[index]; // se poate da un index invalid
+            get
+            {
+                OutOfRangeException(index);
+
+                return list[index];
+            }
 
             set
             {
-                // cant be set
+                NotSupportedException();
+                list[index] = value;
             }
         }
 
-        public void Add(T item) => throw new NotImplementedException();
+        public void Add(T item)
+        {
+            NotSupportedException();
+        }
 
-        public void Clear() => throw new NotImplementedException();
+        public void Clear() => NotSupportedException();
 
         public bool Contains(T item) => IndexOf(item) != -1;
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            bool canBeCopied = this.Count <= (array.Length - arrayIndex);
-            if (!IsValidIndex(arrayIndex) || !canBeCopied)
+            if (array == null)
             {
-                return;
+                throw new ArgumentNullException(paramName: nameof(array), "is null");
+            }
+
+            if (arrayIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException(paramName: nameof(arrayIndex), " is less than zero");
+            }
+
+            if (array.Length - arrayIndex < this.Count)
+            {
+                throw new ArgumentException("The number of elements in the source List is greater than the available space from arrayIndex to the end of the destination array.");
             }
 
             list.CopyTo(array, arrayIndex);
@@ -61,13 +79,40 @@ namespace Collections
             return GetEnumerator();
         }
 
-        public int IndexOf(T item) => list.IndexOf(item); // metoda in IList
+        public int IndexOf(T item) => list.IndexOf(item);
 
-        public void Insert(int index, T item) => throw new NotImplementedException(); // metoda in IList
+        public void Insert(int index, T item)
+        {
+            NotSupportedException();
+        }
 
-        public bool Remove(T item) => throw new NotImplementedException(); // metoda in ICollection
+        public bool Remove(T item)
+        {
+            NotSupportedException();
+            return false;
+        }
 
-        public void RemoveAt(int index) => throw new NotImplementedException(); // metoda in IList
+        public void RemoveAt(int index) => NotSupportedException();
+
+        private void OutOfRangeException(int index)
+        {
+            if (IsValidIndex(index))
+            {
+                return;
+            }
+
+            throw new ArgumentOutOfRangeException(paramName: nameof(index), message: " index is not a valid index in the List");
+        }
+
+        private void NotSupportedException()
+        {
+            if (!IsReadOnly)
+            {
+                return;
+            }
+
+            throw new NotSupportedException("The property is set and the List is read - only");
+        }
 
         private bool IsValidIndex(int index)
         {

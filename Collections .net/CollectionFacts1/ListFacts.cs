@@ -75,8 +75,7 @@
         {
             var list = new List<int> { 1, 2, 3, 4 };
             var arrayToHold = new int[5];
-            list.CopyTo(arrayToHold, 3);
-            Assert.Equal(0, arrayToHold[4]);
+            Assert.Throws<ArgumentException>(() => list.CopyTo(arrayToHold, 3));
         }
 
         [Fact]

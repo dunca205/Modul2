@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.ObjectModel;
 
 namespace Collections
 {
@@ -17,19 +16,22 @@ namespace Collections
 
         public bool IsReadOnly
         {
-            get; // by default = false;
+            get;
         }
 
         public virtual T this[int index]
         {
-            get => list[index];
+            get
+            {
+                OutOfRangeException(index);
+
+                return list[index];
+            }
 
             set
             {
-                if (!IsValidIndex(index) || IsReadOnly)
-                {
-                    return;
-                }
+                OutOfRangeException(index);
+                NotSupportedException();
 
                 list[index] = value;
             }
@@ -43,22 +45,21 @@ namespace Collections
             }
         }
 
-        public ReadOnlyCollection<T> LimitedAccesCollection()
-        {
-            return new ReadOnlyCollection<T>(this);
-
-            // ReadOnlyCollection<T> : IList<T>, IList, IReadOnlyList<T>
-            // IReadOnlyList<out T> : IEnumerable<T>, IEnumerable, IReadOnlyCollection<T>
-            // returneaza aceeasi colectie dar de tip readonly,
-            // trebuie sa ma asigur ca oricine primeste o lista List<T>,primeste varianta cu acces limitat
-        }
-
         public void CopyTo(T[] array, int arrayIndex)
         {
-            bool canBeCopied = this.Count <= (array.Length - arrayIndex);
-            if (!IsValidIndex(arrayIndex) || !canBeCopied)
+            if (array == null)
             {
-                return;
+                throw new ArgumentNullException(paramName: nameof(array), "is null");
+            }
+
+            if (arrayIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException(paramName: nameof(arrayIndex), " is less than zero");
+            }
+
+            if (array.Length - arrayIndex < this.Count)
+            {
+                throw new ArgumentException("The number of elements in the source List is greater than the available space from arrayIndex to the end of the destination array.");
             }
 
             Array.Copy(list, 0, array, arrayIndex, Count);
@@ -66,11 +67,7 @@ namespace Collections
 
         public virtual void Add(T item)
         {
-            if (IsReadOnly) // A collection that is read-only does not allow the addition of elements after the collection is created.
-            {
-                return;
-            }
-
+            NotSupportedException();
             ResizeArray();
             list[Count++] = item;
         }
@@ -87,10 +84,8 @@ namespace Collections
 
         public virtual void Insert(int index, T item)
         {
-            if (!IsValidIndex(index) || IsReadOnly)
-            {
-                return;
-            }
+            OutOfRangeException(index);
+            NotSupportedException();
 
             ResizeArray();
             ShiftRight(index);
@@ -100,21 +95,14 @@ namespace Collections
 
         public void Clear()
         {
-            if (IsReadOnly)
-            {
-                return;
-            }
-
+            NotSupportedException();
             Array.Resize(ref list, 0);
             Count = 0;
         }
 
         public bool Remove(T item)
         {
-            if (IsReadOnly) // A collection that is read-only does not allow removal of elements  after the collection is created.
-            {
-                return false;
-            }
+            NotSupportedException();
 
             int countAfterElementIsRemoved = Count - 1;
 
@@ -125,7 +113,9 @@ namespace Collections
 
         public void RemoveAt(int index)
         {
-            if (!IsValidIndex(index) || IsReadOnly)
+            OutOfRangeException(index);
+            NotSupportedException();
+            if (!IsValidIndex(index))
             {
                 return;
             }
@@ -134,9 +124,39 @@ namespace Collections
             Count--;
         }
 
-        public void ResizeArray()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            if (list.Length > Count || IsReadOnly)
+            return GetEnumerator();
+        }
+
+        protected bool IsValidIndex(int index)
+        {
+            return index > -1 && index < Count;
+        }
+
+        private void OutOfRangeException(int index)
+        {
+            if (IsValidIndex(index))
+            {
+                return;
+            }
+
+            throw new ArgumentOutOfRangeException(paramName: Convert.ToString(index), message: " index is not a valid index in the List");
+        }
+
+        private void NotSupportedException()
+        {
+            if (!IsReadOnly)
+            {
+                return;
+            }
+
+            throw new NotSupportedException("The property is set and the List is read - only");
+        }
+
+        private void ResizeArray()
+        {
+            if (list.Length > Count)
             {
                 return;
             }
@@ -144,16 +164,6 @@ namespace Collections
             const int doubleTheCapacity = 2;
 
             Array.Resize(ref list, Count * doubleTheCapacity);
-        }
-
-        public bool IsValidIndex(int index)
-        {
-            return index > -1 && index < Count;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         private void ShiftLeft(int index)
