@@ -1,6 +1,4 @@
-﻿using System.Net.Http.Headers;
-
-namespace Collections
+﻿namespace Collections
 {
     public class ReadOnlyListFacts
     {

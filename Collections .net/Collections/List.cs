@@ -31,7 +31,6 @@ namespace Collections
             set
             {
                 OutOfRangeException(index);
-                NotSupportedException();
 
                 list[index] = value;
             }
@@ -67,7 +66,6 @@ namespace Collections
 
         public virtual void Add(T item)
         {
-            NotSupportedException();
             ResizeArray();
             list[Count++] = item;
         }
@@ -85,8 +83,6 @@ namespace Collections
         public virtual void Insert(int index, T item)
         {
             OutOfRangeException(index);
-            NotSupportedException();
-
             ResizeArray();
             ShiftRight(index);
             list[index] = item;
@@ -95,15 +91,12 @@ namespace Collections
 
         public void Clear()
         {
-            NotSupportedException();
             Array.Resize(ref list, 0);
             Count = 0;
         }
 
         public bool Remove(T item)
         {
-            NotSupportedException();
-
             int countAfterElementIsRemoved = Count - 1;
 
             RemoveAt(IndexOf(item));
@@ -114,12 +107,6 @@ namespace Collections
         public void RemoveAt(int index)
         {
             OutOfRangeException(index);
-            NotSupportedException();
-            if (!IsValidIndex(index))
-            {
-                return;
-            }
-
             ShiftLeft(index);
             Count--;
         }
@@ -142,16 +129,6 @@ namespace Collections
             }
 
             throw new ArgumentOutOfRangeException(paramName: Convert.ToString(index), message: " index is not a valid index in the List");
-        }
-
-        private void NotSupportedException()
-        {
-            if (!IsReadOnly)
-            {
-                return;
-            }
-
-            throw new NotSupportedException("The property is set and the List is read - only");
         }
 
         private void ResizeArray()

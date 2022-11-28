@@ -92,7 +92,7 @@
         public void CoppyListWithOnly5ItemsWhenArrayLengthIs5()
         {
             var list = new List<int> { 1, 2, 3, 4, 5 };
-            var arrayToHold = new int[5];
+            var arrayToHold = new int[6];
             list.CopyTo(arrayToHold, 0);
             Assert.Equal(5, arrayToHold[4]);
 
