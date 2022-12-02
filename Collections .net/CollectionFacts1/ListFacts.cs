@@ -83,8 +83,8 @@
         {
             var list = new List<int> { 1, 2, 3, 4 };
             var arrayToHold = new int[5];
-            list.CopyTo(arrayToHold, 1);
-            Assert.Equal(1, arrayToHold[1]);
+            list.CopyTo(arrayToHold, 0);
+            Assert.Equal(1, arrayToHold[0]);
 
         }
 

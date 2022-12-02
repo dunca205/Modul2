@@ -44,6 +44,11 @@ namespace Collections
             }
         }
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
         public void CopyTo(T[] array, int arrayIndex)
         {
             if (array == null)
@@ -109,11 +114,6 @@ namespace Collections
             OutOfRangeException(index);
             ShiftLeft(index);
             Count--;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         protected bool IsValidIndex(int index)

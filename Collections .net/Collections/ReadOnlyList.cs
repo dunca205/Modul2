@@ -4,22 +4,17 @@ namespace Collections
 {
     public class ReadOnlyList<T> : IList<T>
     {
-        private readonly List<T> list;
+        const string Messsge = "The List is read - only";
+        private readonly IList<T> list;
 
-        public ReadOnlyList(List<T> initialList)
+        public ReadOnlyList(IList<T> initialList)
         {
             list = initialList;
         }
 
-        public int Count { get => list.Count; }
+        public int Count => list.Count;
 
-        public bool IsReadOnly
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool IsReadOnly => true;
 
         public T this[int index]
         {
@@ -30,49 +25,19 @@ namespace Collections
                 return list[index];
             }
 
-            set
-            {
-                NotSupportedException();
-                list[index] = value;
-            }
+            set => throw new NotSupportedException(Messsge);
         }
 
-        public void Add(T item)
-        {
-            NotSupportedException();
-        }
+        public void Add(T item) => throw new NotSupportedException(Messsge);
 
-        public void Clear() => NotSupportedException();
-
-        public bool Contains(T item) => IndexOf(item) != -1;
+        public void Clear() => throw new NotSupportedException(Messsge);
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            if (array == null)
-            {
-                throw new ArgumentNullException(paramName: nameof(array), "is null");
-            }
-
-            if (arrayIndex < 0)
-            {
-                throw new ArgumentOutOfRangeException(paramName: nameof(arrayIndex), " is less than zero");
-            }
-
-            if (array.Length - arrayIndex < this.Count)
-            {
-                throw new ArgumentException("The number of elements in the source List is greater than the available space from arrayIndex to the end of the destination array.");
-            }
-
             list.CopyTo(array, arrayIndex);
         }
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            for (int i = 0; i < Count; i++)
-            {
-                yield return this[i];
-            }
-        }
+        public IEnumerator<T> GetEnumerator() => list.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -81,18 +46,16 @@ namespace Collections
 
         public int IndexOf(T item) => list.IndexOf(item);
 
-        public void Insert(int index, T item)
-        {
-            NotSupportedException();
-        }
+        public void Insert(int index, T item) => throw new NotSupportedException(Messsge);
 
-        public bool Remove(T item)
-        {
-            NotSupportedException();
-            return false;
-        }
+        public bool Remove(T item) => throw new NotSupportedException(Messsge);
 
-        public void RemoveAt(int index) => NotSupportedException();
+        public void RemoveAt(int index) => throw new NotSupportedException(Messsge);
+
+        public bool Contains(T item)
+        {
+            return list.Contains(item);
+        }
 
         private void OutOfRangeException(int index)
         {
@@ -102,16 +65,6 @@ namespace Collections
             }
 
             throw new ArgumentOutOfRangeException(paramName: nameof(index), message: " index is not a valid index in the List");
-        }
-
-        private void NotSupportedException()
-        {
-            if (!IsReadOnly)
-            {
-                return;
-            }
-
-            throw new NotSupportedException("The property is set and the List is read - only");
         }
 
         private bool IsValidIndex(int index)
