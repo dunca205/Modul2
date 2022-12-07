@@ -1,49 +1,91 @@
-﻿namespace Stream
+﻿using System.IO.Compression;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace Stream
 {
     public class Stream
     {
         static void Main(string[] args)
         {
-            string pathToFile = "TextFile.txt";
-            StreamWrite(pathToFile);
-            StreamRead(pathToFile);
+            string path = "TextFile.txt";
+            string text = "Azi este miercuri";
+            StreamWrite(path, text, true, true);
+            StreamRead(path, true, true);
+            long textFileSize = new FileInfo("TextFile.txt").Length;
+            long gzipedFileSize = new FileInfo("GzipedFile.gz").Length;
+
         }
-        public static void StreamRead(string pathToFile)
+        public static void StreamRead(string filepath, bool decrypt, bool decompress) // decrypt/decompress
         {
-            StreamReader reader = new StreamReader(pathToFile); // crearea unui obiect StreamReader
-            while (!reader.EndOfStream) // citeste pana la finalul fisierului cate o linie pe rand
+            if (decrypt)
             {
-                Console.WriteLine(reader.ReadLine());
+                DESCryptoServiceProvider cryptic = new DESCryptoServiceProvider(); // Initializare obiect (DES)  Data Encryption Standard algorithm simetric
+                cryptic.Key = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH"); // max 56-bit
+                cryptic.IV = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH");
+                FileStream inputStream = new FileStream("EncryptedFile.txt", FileMode.Open); // deschide fisierul de decriptat
+                using (CryptoStream decryptor = new CryptoStream(inputStream, cryptic.CreateDecryptor(), CryptoStreamMode.Read)) // decriptare inputStream
+                {
+                    using FileStream outputStream = File.Open("DecryptedFile.txt", FileMode.OpenOrCreate, FileAccess.Write);
+                    int data;
+                    while ((data = decryptor.ReadByte()) != -1) // citieste data = bytes din decryptor si ii 
+                    {
+                        outputStream.WriteByte((byte)data);
+                    }
+                    outputStream.Close();
+                }
+
+                inputStream.Close();
+            }
+        
+            if (decompress)
+            {
+                using FileStream compressed = File.Open("GzipedFile.gz", FileMode.Open); // deschide fisierul comprimat 
+                using FileStream decompressed = File.Open("UnGzipFile.txt", FileMode.OpenOrCreate); // creaza/deschide un fisier text pt datele decomprimate
+                using var decompressor = new GZipStream(compressed, CompressionMode.Decompress); // decomprimarea unui streamFile
+                decompressor.CopyTo(decompressed);
             }
 
-            reader.Close();
-        }
-        public static void StreamWrite(string pathToFile)
-        {
-            StreamWriter writer = new StreamWriter(pathToFile, true); // cream un obiect StreamWriter -> care permite scriere
-            string temp = " ";
-
-            while (temp != null && temp != string.Empty)
+            StreamReader inputFile = File.OpenText(filepath);
+            while (!inputFile.EndOfStream)
             {
-                temp = Console.ReadLine();
-                writer.WriteLine(temp );
+                inputFile.ReadLine();
+            }
+            inputFile.Close();
+        }
+
+        public static void StreamWrite(string filePath, string text, bool encrypt, bool compress) // encrypt/ compress
+        {
+            StreamWriter outputFile = File.CreateText(filePath);
+            outputFile.WriteLine(text);
+            outputFile.Close();
+
+            if (encrypt)
+            {
+                DESCryptoServiceProvider cryptic = new DESCryptoServiceProvider(); // crearea obiect DES 
+                cryptic.Key = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH"); // secret key
+                cryptic.IV = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH"); // trebui sa aiba aceasi dimensiune ca si KEY
+                FileStream inputStream = new FileStream(filePath, FileMode.Open); // deschide fisierul
+                using (FileStream outputStream = File.Open("EncryptedFile.txt", FileMode.OpenOrCreate)) // deschide sau creaza un fisier unde va fi salvata varianta criptata a textului
+                {
+                    using (CryptoStream encryptor = new CryptoStream(outputStream, cryptic.CreateEncryptor(), CryptoStreamMode.Write)) // criptare 
+                    {
+                        byte[] textBytes = ASCIIEncoding.ASCII.GetBytes(text); // transforma in byte array textul
+                        encryptor.Write(textBytes, 0, textBytes.Length); // se scrie in encryptor stream.. sirul de bytes
+                    }
+                }
+
+                inputStream.Close();
             }
 
-            writer.Close();
-        }
 
-        public void GZipStreamCompress()
-        {
+            if (compress)
+            {
+                using FileStream inputStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
+                using FileStream compressed = File.Open("GzipedFile.gz", FileMode.OpenOrCreate, FileAccess.Write);
+                using var compressor = new GZipStream(compressed, CompressionMode.Compress);
+                inputStream.CopyTo(compressor);
+            }
         }
-        public void GZipStreamDecompress()
-        {
-        }
-        public void CryptoStreamEncode()
-        {
-        }
-        public void CryptoStreamDecode()
-        {
-        }
-
     }
 }
