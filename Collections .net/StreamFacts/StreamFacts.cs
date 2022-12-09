@@ -1,3 +1,4 @@
+using System.Text;
 using Xunit;
 
 namespace StreamNamespace
@@ -5,11 +6,16 @@ namespace StreamNamespace
     public class StreamFacts
     {
         [Fact]
-        public void EncryptAndDecryptText()
+        public void WriteToTheStreamAndRead()
         {
-            var memorystream = new MemoryStream();
-            StreamClass.StreamWrite(memorystream, "ana are mere", false, false);
+            var text = "ana are mere";
+            var memorystream = new MemoryStream(text.Length);
+          
+            StreamClass.Write(memorystream, text, false, false);
             Assert.Equal(12, memorystream.Length);
+            
+            var memoryStreamBuffer = Encoding.ASCII.GetString(memorystream.GetBuffer());
+            Assert.Equal(text, memoryStreamBuffer);
         }
     }
 }

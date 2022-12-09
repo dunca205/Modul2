@@ -6,19 +6,8 @@ namespace StreamNamespace
 {
     public class StreamClass
     {
-        static void Main(string[] args)
+        public static void Read(Stream stream, bool decrypt, bool decompress) // decrypt/decompress
         {
-            const string Message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-            string name = "Cristina";
-            var memorystream = new MemoryStream();
-            StreamWrite(memorystream, name, true, false);
-            StreamRead(memorystream, true, false);
-        }
-        public static void StreamRead(Stream stream, bool decrypt, bool decompress) // decrypt/decompress
-        {
-            StreamReader reader = new StreamReader(stream); // am deshis stremul 
-            reader.ReadToEnd();
-
             if (decrypt)
             {
                 using (DESCryptoServiceProvider cryptic = new DESCryptoServiceProvider()) // Initializare obiect (DES)  Data Encryption Standard algorithm simetric
@@ -28,54 +17,52 @@ namespace StreamNamespace
                     using (MemoryStream decrypted = new MemoryStream())
                     {
                         stream.Position = 0;
+
                         using (CryptoStream decryptor = new CryptoStream(stream, cryptic.CreateDecryptor(), CryptoStreamMode.Read))
                         {
-                            int data;
-                            while ((data = decryptor.ReadByte()) != -1)
-                            {
-                                decrypted.WriteByte((byte)data);
-                            }
+                            decryptor.CopyTo(decrypted);
                         }
-
-                        Console.WriteLine(ConvertByteArrayToString(decrypted.GetBuffer()) + " : is the Decrypted text ");
+                        Console.WriteLine("Decrypted text is : {0} ", ConvertByteArrayToString(decrypted.GetBuffer()));
                     }
                 }
             }
 
-
             if (decompress)
             {
-
+                using (MemoryStream decompressed = new MemoryStream())
+                {
+                    using (var decompresor = new GZipStream(stream, CompressionMode.Decompress, true))
+                    {
+                        stream.Position = 0;
+                        decompresor.CopyTo(decompressed);
+                    }
+                    Console.WriteLine("The decompressed length is " + decompressed.Length);
+                }
             }
 
         }
 
-        public static void StreamWrite(Stream stream, string text, bool encrypt, bool compress) // encrypt/ compress
+        public static void Write(Stream stream, string text, bool encrypt, bool compress) // encrypt/ compress
         {
-            Console.WriteLine("textlenght is {0} char" , text.Length);
             byte[] byteArray = Encoding.ASCII.GetBytes(text);
-
 
             if (compress)
             {
-                Console.WriteLine(byteArray.Length + " ByteArray before compression");
                 using (MemoryStream compressed = new MemoryStream())
                 {
                     using (GZipStream compressor = new GZipStream(compressed, CompressionMode.Compress, leaveOpen: true))
                     {
-                        compressor.Write(byteArray);
+                        compressor.Write(byteArray); // scrie byteArray ul pe compressor, care il transmite in streamul compressed
                     }
                     compressed.Position = 0;
-                    byteArray = compressed.ToArray();
+                    byteArray = compressed.ToArray(); // byteArray -> ia valorile buffer ului din compressed
                 }
-
-                Console.WriteLine("compressed text is : " + ConvertByteArrayToString(byteArray));
-                Console.WriteLine(byteArray.Length + " Byte Array after compression");
+                Console.WriteLine("compressed text is :\n " + ConvertByteArrayToString(byteArray) + "\nand it s new size is " + byteArray.Length);
             }
 
             if (encrypt)
             {
-                using (DESCryptoServiceProvider cryptic = new DESCryptoServiceProvider())
+                using (var cryptic = new DESCryptoServiceProvider())
                 {
                     cryptic.Key = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH");
                     cryptic.IV = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH");
@@ -92,11 +79,10 @@ namespace StreamNamespace
                 }
 
                 Console.WriteLine(byteArray.Length + " bytearray length after encryption");
-                Console.WriteLine("Encrypted text is : " + ConvertByteArrayToString(byteArray));
+                //  Console.WriteLine("Encrypted text is : " + ConvertByteArrayToString(byteArray));
             }
 
-            stream.Write(byteArray, 0, byteArray.Length); // fara using pt ca vreau sa ramana deschis sa citim de pe el
-            Console.WriteLine(stream.Length + " stream length after the byteArray was written to the stream");
+            stream.Write(byteArray, 0, byteArray.Length);
 
         }
         public static string ConvertByteArrayToString(byte[] byteArray)
