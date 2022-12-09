@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace StreamProject
+namespace StreamNamespace
 {
     public class StreamFacts
     {
@@ -8,9 +8,8 @@ namespace StreamProject
         public void EncryptAndDecryptText()
         {
             var memorystream = new MemoryStream();
-            var newStream = new Stream(memorystream);
-            newStream.StreamWrite("ana are mere", true, true);
-
+            StreamClass.StreamWrite(memorystream, "ana are mere", false, false);
+            Assert.Equal(12, memorystream.Length);
         }
     }
 }

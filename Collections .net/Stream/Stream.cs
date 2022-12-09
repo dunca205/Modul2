@@ -2,132 +2,108 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Stream
+namespace StreamNamespace
 {
-    public class Stream
+    public class StreamClass
     {
-        private MemoryStream stream;
-        public Stream(MemoryStream baseStream)
-        {
-            stream = baseStream;
-        }
         static void Main(string[] args)
         {
-            var memorystream = new MemoryStream();
-            var newStream = new Stream(memorystream);
             const string Message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
             string name = "Cristina";
-            newStream.StreamWrite(Message, false, true);
-            newStream.StreamRead(false, true);
+            var memorystream = new MemoryStream();
+            StreamWrite(memorystream, name, true, false);
+            StreamRead(memorystream, true, false);
         }
-        public void StreamRead(bool decrypt, bool decompress) // decrypt/decompress
+        public static void StreamRead(Stream stream, bool decrypt, bool decompress) // decrypt/decompress
         {
-            /*if (decrypt)
-            {
-                DESCryptoServiceProvider cryptic = new DESCryptoServiceProvider(); // Initializare obiect (DES)  Data Encryption Standard algorithm simetric
-                cryptic.Key = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH"); // max 56-bit
-                cryptic.IV = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH");
-                FileStream inputStream = new FileStream("EncryptedFile.txt", FileMode.Open); // deschide fisierul de decriptat
-                using (CryptoStream decryptor = new CryptoStream(inputStream, cryptic.CreateDecryptor(), CryptoStreamMode.Read)) // decriptare inputStream
-                {
-                    using FileStream outputStream = File.Open("DecryptedFile.txt", FileMode.OpenOrCreate, FileAccess.Write);
-                    int data;
-                    while ((data = decryptor.ReadByte()) != -1) // citieste data = bytes din decryptor si ii 
-                    {
-                        outputStream.WriteByte((byte)data);
-                    }
-                    outputStream.Close();
-                }
+            StreamReader reader = new StreamReader(stream); // am deshis stremul 
+            reader.ReadToEnd();
 
-                inputStream.Close();
+            if (decrypt)
+            {
+                using (DESCryptoServiceProvider cryptic = new DESCryptoServiceProvider()) // Initializare obiect (DES)  Data Encryption Standard algorithm simetric
+                {
+                    cryptic.Key = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH"); // max 56-bit
+                    cryptic.IV = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH");
+                    using (MemoryStream decrypted = new MemoryStream())
+                    {
+                        stream.Position = 0;
+                        using (CryptoStream decryptor = new CryptoStream(stream, cryptic.CreateDecryptor(), CryptoStreamMode.Read))
+                        {
+                            int data;
+                            while ((data = decryptor.ReadByte()) != -1)
+                            {
+                                decrypted.WriteByte((byte)data);
+                            }
+                        }
+
+                        Console.WriteLine(ConvertByteArrayToString(decrypted.GetBuffer()) + " : is the Decrypted text ");
+                    }
+                }
             }
-        
+
+
             if (decompress)
             {
-                using FileStream compressed = File.Open("GzipedFile.gz", FileMode.Open); // deschide fisierul comprimat 
-                using FileStream decompressed = File.Open("UnGzipFile.txt", FileMode.OpenOrCreate); // creaza/deschide un fisier text pt datele decomprimate
-                using var decompressor = new GZipStream(compressed, CompressionMode.Decompress); // decomprimarea unui streamFile
-                decompressor.CopyTo(decompressed);
-            }*/
-
-            if (decompress)
-            {
-                using (MemoryStream decompressed = new MemoryStream())
-                {
-                    using var gZipStream = new GZipStream(stream, CompressionMode.Decompress, leaveOpen: true);
-                    {
-                        gZipStream.CopyTo(decompressed);
-                    }
-                    stream.SetLength(0);
-                    decompressed.Position = 0;
-                    decompressed.WriteTo(stream);
-
-                }
-                Console.WriteLine(stream.Length);
-
-                StreamReader read = new StreamReader(stream);
-                {
-                    stream.Position = 0;
-                    read.ReadToEnd();
-                    stream.Position = 0;
-                    string text = read.ReadToEnd();
-                    Console.WriteLine(text.Length);
-                }
 
             }
+
         }
-        public void StreamWrite(string text, bool encrypt, bool compress) // encrypt/ compress
+
+        public static void StreamWrite(Stream stream, string text, bool encrypt, bool compress) // encrypt/ compress
         {
-            using (StreamWriter writeStream = new StreamWriter(stream, leaveOpen: true))
-            {
-                writeStream.Write(text);// dupa scriere, stream va avea 445 byes
-            }
+            Console.WriteLine("textlenght is {0} char" , text.Length);
+            byte[] byteArray = Encoding.ASCII.GetBytes(text);
+
 
             if (compress)
             {
-                Console.WriteLine(stream.Length + " before compression");
+                Console.WriteLine(byteArray.Length + " ByteArray before compression");
                 using (MemoryStream compressed = new MemoryStream())
                 {
                     using (GZipStream compressor = new GZipStream(compressed, CompressionMode.Compress, leaveOpen: true))
                     {
-                        stream.Position = 0;
-                        stream.WriteTo(compressor);
+                        compressor.Write(byteArray);
                     }
-
                     compressed.Position = 0;
-                    stream.SetLength(0);
-                    compressed.WriteTo(stream);
-                    compressed.Close();
+                    byteArray = compressed.ToArray();
                 }
-                Console.WriteLine(Convert.ToBase64String(stream.ToArray()));
-                Console.WriteLine(stream.Length + " after compression");
+
+                Console.WriteLine("compressed text is : " + ConvertByteArrayToString(byteArray));
+                Console.WriteLine(byteArray.Length + " Byte Array after compression");
             }
 
             if (encrypt)
             {
-                using (DESCryptoServiceProvider cryptic = new DESCryptoServiceProvider())  // crearea obiect DES 
+                using (DESCryptoServiceProvider cryptic = new DESCryptoServiceProvider())
                 {
-                    cryptic.Key = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH"); // secret key
-                    cryptic.IV = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH"); // trebui sa aiba aceasi dimensiune ca si KEY
+                    cryptic.Key = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH");
+                    cryptic.IV = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH");
                     using (MemoryStream encrypted = new MemoryStream())
                     {
                         using (CryptoStream encryptor = new CryptoStream(encrypted, cryptic.CreateEncryptor(), CryptoStreamMode.Write, leaveOpen: true)) // criptare 
                         {
-                            stream.Position = 0;
-                            stream.WriteTo(encryptor);
+                            encryptor.Write(byteArray);
                         }
 
-                        stream.SetLength(0);
                         encrypted.Position = 0;
-                        encrypted.WriteTo(stream);
+                        byteArray = encrypted.ToArray();
                     }
-
-                    Console.WriteLine("length after encrypt is " + stream.Length + " ||  encrypted text is :");
-                    Console.WriteLine(Convert.ToBase64String(stream.ToArray()));
                 }
+
+                Console.WriteLine(byteArray.Length + " bytearray length after encryption");
+                Console.WriteLine("Encrypted text is : " + ConvertByteArrayToString(byteArray));
             }
 
+            stream.Write(byteArray, 0, byteArray.Length); // fara using pt ca vreau sa ramana deschis sa citim de pe el
+            Console.WriteLine(stream.Length + " stream length after the byteArray was written to the stream");
+
+        }
+        public static string ConvertByteArrayToString(byte[] byteArray)
+        {
+            return (Encoding.ASCII.GetString(byteArray));
         }
     }
 }
+
 
