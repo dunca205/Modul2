@@ -39,6 +39,7 @@ namespace StreamNamespace
                     Console.WriteLine("The decompressed length is " + decompressed.Length);
                 }
             }
+            stream.Close();
 
         }
 
