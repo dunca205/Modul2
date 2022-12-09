@@ -85,7 +85,7 @@ namespace StreamNamespace
             stream.Write(byteArray, 0, byteArray.Length);
 
         }
-        public static string ConvertByteArrayToString(byte[] byteArray)
+        private static string ConvertByteArrayToString(byte[] byteArray)
         {
             return (Encoding.ASCII.GetString(byteArray));
         }
