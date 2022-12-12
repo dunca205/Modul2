@@ -1,4 +1,4 @@
-using Xunit;
+﻿using Xunit;
 
 namespace StreamNamespace
 {
@@ -67,9 +67,8 @@ namespace StreamNamespace
             var text = "cristina";
             var memorystream = new MemoryStream();
             StreamClass.Write(memorystream, text, true, true);
-            //   string decryptedAndDecompressedText = StreamClass.Read(memorystream, true, true);
-            //   Assert.Equal(text, decryptedAndDecompressedText);
-
+            string decryptedAndDecompressedText = StreamClass.Read(memorystream, true, true);
+            Assert.Equal(text, decryptedAndDecompressedText);
         }
     }
 }
