@@ -1,21 +1,66 @@
-using System.Text;
+using System.IO;
 using Xunit;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace StreamNamespace
 {
     public class StreamFacts
     {
         [Fact]
-        public void WriteToTheStreamAndRead()
+        public void CompressALargeText_CompressedStreamIsSmaller()
         {
-            var text = "ana are mere";
-            var memorystream = new MemoryStream(text.Length);
+            var text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+            var memorystream = new MemoryStream();
+            StreamClass.Write(memorystream, text, false, true);
+            Assert.True(memorystream.Length < text.Length);
+        }
 
+        [Fact]
+        public void JustWriteAndRead()
+        {
+            var text = "cristina";
+            var memorystream = new MemoryStream();
             StreamClass.Write(memorystream, text, false, false);
-            Assert.Equal(12, memorystream.Length);
+            string memoryStreamContent = StreamClass.Read(memorystream, false, false);
+            Assert.Equal(text, memoryStreamContent);
+        }
 
-            var memoryStreamBuffer = Encoding.ASCII.GetString(memorystream.GetBuffer());
-            Assert.Equal(text, memoryStreamBuffer);
+        [Fact]
+        public void CompressAndReadContent_StreamLengthIsDifferentWhenTextIsCompressed()
+        {
+            var text = "cristina";
+            var memorystream = new MemoryStream();
+            StreamClass.Write(memorystream, text, false, true);
+            Assert.True(memorystream.Length != text.Length);
+        }
+        [Fact]
+        public void CompresAndDecompress_AfterStreamIsDecompressed_StreamLengthIsEqualWithTextLength()
+        {
+            var text = "cristina";
+            var memorystream = new MemoryStream();
+            StreamClass.Write(memorystream, text, false, true);
+            int decompressedTextLength = StreamClass.Read(memorystream, false, true).Length;
+            Assert.Equal(text.Length, decompressedTextLength);
+        }
+
+        [Fact]
+        public void EncryptTextAndRead_EncryptedTextIsDifferentThanText()
+        {
+            var text = "cristina";
+            var memorystream = new MemoryStream();
+            StreamClass.Write(memorystream, text, true, false);
+            string cryptedText = (StreamClass.Read(memorystream, false, false));
+            Assert.NotEqual(cryptedText, text);
+        }
+
+        [Fact]
+        public void EncryptAndDecryptText_DecryptedTextIsEqualWithText()
+        {
+            var text = "cristina";
+            var memorystream = new MemoryStream();
+            StreamClass.Write(memorystream, text, true, false);
+            string decryptedText = StreamClass.Read(memorystream, true, false);
+            Assert.Equal(text, decryptedText);
         }
     }
 }
