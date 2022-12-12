@@ -1,6 +1,4 @@
-using System.IO;
 using Xunit;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace StreamNamespace
 {
@@ -61,6 +59,17 @@ namespace StreamNamespace
             StreamClass.Write(memorystream, text, true, false);
             string decryptedText = StreamClass.Read(memorystream, true, false);
             Assert.Equal(text, decryptedText);
+        }
+
+        [Fact]
+        public void EncryptAndCompress_ThenDecryptAndDecompress()
+        {
+            var text = "cristina";
+            var memorystream = new MemoryStream();
+            StreamClass.Write(memorystream, text, true, true);
+            //   string decryptedAndDecompressedText = StreamClass.Read(memorystream, true, true);
+            //   Assert.Equal(text, decryptedAndDecompressedText);
+
         }
     }
 }

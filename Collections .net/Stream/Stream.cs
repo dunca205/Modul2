@@ -1,5 +1,4 @@
 ﻿using System.IO.Compression;
-using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -9,7 +8,6 @@ namespace StreamNamespace
     {
         public static string Read(Stream stream, bool decrypt, bool decompress)
         {
-            string streamContent = "";
             stream.Position = 0;
 
             if (decrypt)
@@ -18,28 +16,18 @@ namespace StreamNamespace
                 {
                     cryptic.Key = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH");
                     cryptic.IV = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH");
-                    using CryptoStream decryptor = new CryptoStream(stream, cryptic.CreateDecryptor(), CryptoStreamMode.Read);
-
-                    StreamReader decrypted = new StreamReader(decryptor);
-                    streamContent = decrypted.ReadToEnd();
+                    cryptic.Padding = PaddingMode.None;
+                    stream = new CryptoStream(stream, cryptic.CreateDecryptor(), CryptoStreamMode.Read, leaveOpen: true);
                 }
-
-                return streamContent;
             }
 
             if (decompress)
             {
-                using var decompressor = new GZipStream(stream, CompressionMode.Decompress);
-                StreamReader decompressed = new StreamReader(decompressor);
-                streamContent = decompressed.ReadToEnd();
-                return streamContent;
+                stream = new GZipStream(stream, CompressionMode.Decompress);
             }
 
             StreamReader fromStream = new StreamReader(stream);
-            streamContent = fromStream.ReadToEnd();
-            stream.Close();
-            return streamContent;
-          
+            return fromStream.ReadToEnd();
         }
 
         public static void Write(Stream stream, string text, bool encrypt, bool compress)
@@ -47,33 +35,20 @@ namespace StreamNamespace
             if (compress)
             {
                 stream = new GZipStream(stream, CompressionMode.Compress);
-             //   using var compressor = new GZipStream(stream, CompressionMode.Compress, leaveOpen: true);
-                StreamWriter toCompressor = new StreamWriter(stream);
-                toCompressor.Write(text);
-                toCompressor.Flush();
-                return;
-              
             }
 
             if (encrypt)
             {
-                using (var cryptic = new DESCryptoServiceProvider())
-                {
-                    cryptic.Key = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH");
-                    cryptic.IV = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH");
-                    stream.Position = 0;
-                    using CryptoStream encryptor = new CryptoStream(stream, cryptic.CreateEncryptor(), CryptoStreamMode.Write, leaveOpen: true);
-                    StreamWriter toEncryptor = new StreamWriter(encryptor);
-                    toEncryptor.Write(text);
-                    toEncryptor.Flush();
-                }
-
-                return;
+                var cryptic = new DESCryptoServiceProvider();
+                cryptic.Key = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH");
+                cryptic.IV = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH");
+                cryptic.Padding = PaddingMode.None;
+                stream = new CryptoStream(stream, cryptic.CreateEncryptor(), CryptoStreamMode.Write, leaveOpen: true);
             }
 
-                StreamWriter toStream = new StreamWriter(stream);
-                toStream.Write(text);
-                toStream.Flush();
+            StreamWriter toStream = new StreamWriter(stream);
+            toStream.Write(text);
+            toStream.Flush();
         }
     }
 }
