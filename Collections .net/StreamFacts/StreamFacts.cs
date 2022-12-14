@@ -24,7 +24,7 @@ namespace StreamNamespace
         }
 
         [Fact]
-        public void CompressAndReadContent_StreamLengthIsDifferentWhenTextIsCompressed()
+        public void CompressASmallText_StreamLengthIsDifferentWhenTextIsCompressed()
         {
             var text = "cristina";
             var memorystream = new MemoryStream();

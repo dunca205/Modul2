@@ -44,7 +44,6 @@ namespace StreamNamespace
                 cryptic.IV = ASCIIEncoding.ASCII.GetBytes("ABCDEFGH");
                 cryptic.Padding = PaddingMode.None; // Padding is invalid and cannot be removed.
                 stream = new CryptoStream(stream, cryptic.CreateEncryptor(), CryptoStreamMode.Write, leaveOpen: true);
-                stream.Flush();
             }
 
             StreamWriter toStream = new StreamWriter(stream);
