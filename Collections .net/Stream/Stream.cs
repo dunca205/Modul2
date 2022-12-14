@@ -1,6 +1,5 @@
 ﻿using System.IO.Compression;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace StreamNamespace
 {
@@ -9,7 +8,7 @@ namespace StreamNamespace
         public static Aes aesAlgorithm = Aes.Create();
         public static string Read(Stream stream, bool decrypt = false, bool decompress = false)
         {
-            stream.Seek(0, SeekOrigin.Begin);   
+            stream.Seek(0, SeekOrigin.Begin);
 
             if (decompress)
             {
@@ -20,7 +19,7 @@ namespace StreamNamespace
             {
                 stream = new CryptoStream(stream, aesAlgorithm.CreateDecryptor(), CryptoStreamMode.Read);
             }
-            
+
             StreamReader fromStream = new StreamReader(stream);
             return fromStream.ReadToEnd(); ;
         }
