@@ -7,99 +7,118 @@ namespace LinkedList
         // System.Collections.Generic.LinkedListNode<T> node;
         // System.Collections.Generic.LinkedList<T> node;
 
-        private Node<T> head = new Node<T>(default); // == ultimul el din lista, pointerNext => primulnod, pointer.prev => ultumulnod
+        private Node<T> tail = new Node<T>(default); // == ultimul nod din lista, pointerNext => primulnod, pointer.prev => ultumulnod
 
         public CircularDoublyLinkedList()
         {
-            head.Next = head;
-            head.Prev = head;
-            head.List = this; // nodul face parte din lista
+            tail.Next = tail;
+            tail.Prev = tail;
+            tail.List = this;
         }
-        public Node<T> Last { get => head.Prev.Next; }
+        public Node<T> Last { get => tail.Prev.Next; }
+        //  tail.Prev => penultimul nod, tail.Prev.Next => adresa ultimului nod
 
-        public Node<T> First { get => head.Next; }
+
+        public Node<T> First { get => tail.Next; }
 
 
         public int Count { get; set; }
         public bool IsReadOnly { get; }
 
-        public void Add(T item) 
+        public void Add(T item)
         {
             Add(new Node<T>(item));
         }
         public void Add(Node<T> newNode)
         {
+            AddAfter(Last, newNode); // add next
+        }
+
+        public void AddAfter(Node<T> current, Node<T> newNode)
+        {
             if (Count == 0) // add as first node
             {
-                head = newNode;
-                head.Next = newNode;
-                head.Prev = newNode;
+                tail = newNode;
+                tail.Next = tail.Prev = newNode;
                 Count++;
                 newNode.List = this;
                 return;
             }
-            
-            AddAfter(head, newNode); // add next
-            head = newNode;
-            return;
 
-        }
-
-        public void AddAfter(Node<T> node, Node<T> newNode)
-        {
-            // nodul b =  nodul care urmaza dupa node
-            newNode.Next = node.Next; //il legam pe newnode de nodul care urma initial dupa node
-            newNode.Prev = node; // node va fi inainte lui newnode
-            // === am dat adrese catre prev si next la noul nod
-            newNode.Next.Prev = newNode; // actualizam nodul b -> adresa prev
-            node.Next = newNode; // nodul anterior va avea adresa.next a noului nod
+            newNode.Next = current.Next;
+            newNode.Prev = current;
+            newNode.Next.Prev = newNode;
+            current.Next = newNode;
             Count++;
             newNode.List = this;
-            if(node == Last)
+
+            if (current == Last) // daca nodul curent este ultimul nod in lista
             {
-                head = newNode;
+                tail = newNode; // noul nod va devenii ultimul din lista
             }
         }
 
-        public Node<T> AddAfter(Node<T> node, T value)
+        public Node<T> AddAfter(Node<T> current, T value)
         {
             var newNode = new Node<T>(value);
-            AddAfter(node, newNode);
+            AddAfter(current, newNode);
             return newNode;
         }
 
-        public void AddBefore(Node<T> node, Node<T> newNode)
-        { }
+        public void AddBefore(Node<T> current, Node<T> newNode)
+        {
+            newNode.Next = current;
+            newNode.Prev = current.Prev;
+            newNode.Prev.Next = newNode;
+            current.Prev = newNode;
+            Count++;
 
-        public Node<T> AddBefore(Node<T> node, T value)
-        { return node; }
+            if(current == First) // daca se adauga inaintea primului nod
+            {
+                tail.Prev = newNode; 
+            }
+        }
+
+        public Node<T> AddBefore(Node<T> current, T value)
+        {
+            var newNode = new Node<T>(value);
+            AddBefore(current, newNode);
+           
+            return newNode;
+        }
 
         public void AddFirst(Node<T> node)
         {
-            AddAfter(First, node);
+            AddBefore(First, node);
         }
 
         public Node<T> AddFirst(T value)
         {
             var newNode = new Node<T>(value);
-            AddFirst( newNode);
+            AddFirst(newNode);
             return newNode;
 
         }
 
         public void AddLast(Node<T> node)
-        { }
+        {
+            Add(node);
+        }
 
         public Node<T> AddLast(T value)
-        { return head; }
+        { 
+            var newNode = new Node<T>(value);
+            AddLast(newNode);
+            return newNode;
+        }
 
         public Node<T> Find(T value)
         {
-            return head;
+            return tail;
         }
         public Node<T> FindLast(T value)
         {
-            return head;
+            return tail;
         }
         public void Remove(Node<T> node)
         {
