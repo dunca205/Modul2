@@ -17,10 +17,7 @@ namespace LinkedList
         }
         public Node<T> Last { get => tail.Prev.Next; }
         //  tail.Prev => penultimul nod, tail.Prev.Next => adresa ultimului nod
-
-
         public Node<T> First { get => tail.Next; }
-
 
         public int Count { get; set; }
         public bool IsReadOnly { get; }
@@ -47,14 +44,15 @@ namespace LinkedList
 
             newNode.Next = current.Next;
             newNode.Prev = current;
-            newNode.Next.Prev = newNode;
             current.Next = newNode;
-            Count++;
+            newNode.Next.Prev = newNode;
             newNode.List = this;
+            Count++;
 
-            if (current == Last) // daca nodul curent este ultimul nod in lista
+            if (current == Last)
             {
-                tail = newNode; // noul nod va devenii ultimul din lista
+                // daca nu pun aceasta conditie si este true tail nu se modifica => nici last si first nu se modifica
+                tail = newNode; /*noul nod va devenii ultimul din lista*/
             }
         }
 
@@ -72,11 +70,12 @@ namespace LinkedList
             newNode.Prev.Next = newNode;
             current.Prev = newNode;
             Count++;
+            newNode.List = this;
 
-            if(current == First) // daca se adauga inaintea primului nod
-            {
-                tail.Prev = newNode; 
-            }
+            //if(current == Last) // daca se adauga inaintea primului nod
+            //{
+            //    tail.Next = newNode; 
+            //}
         }
 
         public Node<T> AddBefore(Node<T> current, T value)

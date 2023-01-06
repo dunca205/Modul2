@@ -8,7 +8,7 @@ namespace LinkedList
         public void AddFourNodesToList_CheckLastNodeAfterEachAddOperation()
         {
             var list = new CircularDoublyLinkedList<int>();
-            list.Add(new Node<int>(3));
+            list.Add(3);
             Assert.Equal(3, list.Last.Value);
 
             list.Add(new Node<int>(56));
@@ -24,7 +24,7 @@ namespace LinkedList
         }
 
         [Fact]
-        public void AddAfterNode_CheckNextValue()
+        public void AddAfterNode_CheckValue()
         {
             var list = new CircularDoublyLinkedList<int>();
             var node0 = new Node<int>(0);
@@ -40,9 +40,24 @@ namespace LinkedList
             Assert.Equal(0, list.First.Value);
             Assert.Equal(4, list.Last.Value);
         }
+        [Fact]
+        public void AddAfterLast_but_one() // dupa penultimul nod
+        {
+            var list = new CircularDoublyLinkedList<int>();
+            var node0 = new Node<int>(0);
+            var node2 = new Node<int>(2);
+            var node4 = new Node<int>(4);
+            list.Add(node0);
+            list.Add(node2);
+            list.Add(node4);
+
+            var node3 = new Node<int>(3);
+            list.AddAfter(node2, node3);
+            Assert.Equal(node3, list.Last.Prev);
+        }
 
         [Fact]
-        public void AddBeforeWhenIsJustOneNodeInTheList()
+        public void AddBefore_WhenIsJustOneNodeInTheList()
         {
             var list = new CircularDoublyLinkedList<int>();
             var node0 = new Node<int>(0);
@@ -52,7 +67,6 @@ namespace LinkedList
             list.AddBefore(node0, node2);
             Assert.Equal(node2, list.First);
             Assert.Equal(node0, list.Last);
-           
         }
 
         [Fact]
@@ -70,10 +84,22 @@ namespace LinkedList
             Assert.Equal(node4, node2.Next); // node2 - este ultimul din lista
             Assert.Equal(node0, node4.Next); // node0 urmeaza dupa node4
             Assert.Equal(node2, list.Last);  // nodul 2 este  ultimul din lista
-
         }
         [Fact]
-        public void AddBeforeNodeInBetweenNodes()
+        public void AddBeforeLastNode()
+        {
+            var list = new CircularDoublyLinkedList<int>();
+            var node0 = new Node<int>(0);
+            var node2 = new Node<int>(2);
+            var node4 = new Node<int>(4);
+            list.Add(node0);
+            list.Add(node2);
+            list.AddBefore(node2, node4);
+            Assert.Equal(node4, list.Last.Prev);
+        }
+
+        [Fact]
+        public void AddBeforeNode_InBetweenNodes()
         {
             var list = new CircularDoublyLinkedList<int>();
             var node0 = new Node<int>(0);
@@ -118,8 +144,5 @@ namespace LinkedList
             Assert.True(list.Last.Value == 4);
             Assert.True(node0.Prev.Value == 4);
         }
-
-
-       
     }
 }
