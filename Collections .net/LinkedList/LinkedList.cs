@@ -7,17 +7,21 @@ namespace LinkedList
         // System.Collections.Generic.LinkedListNode<T> node;
         // System.Collections.Generic.LinkedList<T> node;
 
-        private Node<T> tail = new Node<T>(default); // == ultimul nod din lista, pointerNext => primulnod, pointer.prev => ultumulnod
+        private Node<T> sentinel = new Node<T>(default); // == ultimul nod din lista, pointerNext => primulnod, pointer.prev => ultumulnod
 
         public CircularDoublyLinkedList()
         {
-            tail.Next = tail;
-            tail.Prev = tail;
-            tail.List = this;
+            sentinel.Next = sentinel;
+            sentinel.Prev = sentinel;
+            sentinel.List = this;
         }
-        public Node<T> Last { get => tail.Prev.Next; }
-        //  tail.Prev => penultimul nod, tail.Prev.Next => adresa ultimului nod
-        public Node<T> First { get => tail.Next; }
+        public Node<T> Last
+        {
+            get => sentinel.Prev;
+            set { sentinel.Prev = value; }
+        }
+
+        public Node<T> First { get => sentinel.Next; set { sentinel.Next = value; } }
 
         public int Count { get; set; }
         public bool IsReadOnly { get; }
@@ -25,6 +29,7 @@ namespace LinkedList
         public void Add(T item)
         {
             Add(new Node<T>(item));
+
         }
         public void Add(Node<T> newNode)
         {
@@ -33,27 +38,13 @@ namespace LinkedList
 
         public void AddAfter(Node<T> current, Node<T> newNode)
         {
-            if (Count == 0) // add as first node
-            {
-                tail = newNode;
-                tail.Next = tail.Prev = newNode;
-                Count++;
-                newNode.List = this;
-                return;
-            }
-
             newNode.Next = current.Next;
             newNode.Prev = current;
             current.Next = newNode;
             newNode.Next.Prev = newNode;
+
             newNode.List = this;
             Count++;
-
-            if (current == Last)
-            {
-                // daca nu pun aceasta conditie si este true tail nu se modifica => nici last si first nu se modifica
-                tail = newNode; /*noul nod va devenii ultimul din lista*/
-            }
         }
 
         public Node<T> AddAfter(Node<T> current, T value)
@@ -65,6 +56,7 @@ namespace LinkedList
 
         public void AddBefore(Node<T> current, Node<T> newNode)
         {
+            //  AddAfter(current.Prev, newNode);
             newNode.Next = current;
             newNode.Prev = current.Prev;
             newNode.Prev.Next = newNode;
@@ -72,9 +64,9 @@ namespace LinkedList
             Count++;
             newNode.List = this;
 
-            //if(current == Last) // daca se adauga inaintea primului nod
+            //if (current == Last) // daca se adauga inaintea primului nod
             //{
-            //    tail.Next = newNode; 
+            //    sentinel = newNode;
             //}
         }
 
@@ -82,7 +74,7 @@ namespace LinkedList
         {
             var newNode = new Node<T>(value);
             AddBefore(current, newNode);
-           
+
             return newNode;
         }
 
@@ -101,48 +93,74 @@ namespace LinkedList
 
         public void AddLast(Node<T> node)
         {
-            Add(node);
+            AddAfter(Last, node);
         }
 
         public Node<T> AddLast(T value)
-        { 
+        {
             var newNode = new Node<T>(value);
             AddLast(newNode);
             return newNode;
         }
 
-        public Node<T> Find(T value)
+        public Node<T> Find(T value) // incepem cu primul nod
         {
-            return tail;
+            var temp = First;
+            while (temp != Last)
+            {
+                if (temp.Value.Equals(value))
+                {
+                    return temp;
+                }
+
+                temp = temp.Next;
+            }
+
+            return null;
         }
         public Node<T> FindLast(T value)
         {
-            return tail;
+            var temp = Last; // santinel in sine
+            while (temp != First)
+            {
+                if (temp.Value.Equals(value))
+                {
+                    return temp;
+                }
+
+                temp = temp.Prev;
+            }
+
+            return null;
         }
         public void Remove(Node<T> node)
         {
+
         }
         public bool Remove(T item)
         {
+            Remove(new Node<T>(item));
             return true;
         }
         public void RemoveFirst()
         {
+            // incepe de la First
 
         }
         public void RemoveLast()
         {
-
+            // incepe de la Last 
         }
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            Count = 0;
+            sentinel.Next = sentinel.Prev = default;
         }
 
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            return this.Find(item) != null;
         }
 
         public void CopyTo(T[] array, int arrayIndex)
@@ -152,12 +170,20 @@ namespace LinkedList
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            int enumeratorCounter = Count;
+            var temp = First;
+            while (enumeratorCounter > 0)
+            {
+                yield return temp.Value;
+                temp = temp.Next;
+                enumeratorCounter--;
+            }
+            //incepem de la first // daca parcurgem in sens invers incepem cu last, si tempNode.prev
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
     }
 }

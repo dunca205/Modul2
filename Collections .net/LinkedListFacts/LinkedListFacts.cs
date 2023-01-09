@@ -78,13 +78,17 @@ namespace LinkedList
             var node4 = new Node<int>(4);
             list.Add(node0);
             list.Add(node2);
+            Assert.Equal(node2, list.Last);
+            Assert.Equal(node0, list.First);
 
-            list.AddBefore(node0, node4); 
+            list.AddBefore(node0, node4);
+
             Assert.Equal(node4, list.First); // node4 este primul nod,
-            Assert.Equal(node4, node2.Next); // node2 - este ultimul din lista
-            Assert.Equal(node0, node4.Next); // node0 urmeaza dupa node4
+            Assert.Equal(node2, list.Last); // ultimul nod pointeaza next catre primul nod
+            Assert.Equal(node0.Value, node4.Next.Value); // node0 urmeaza dupa node4
             Assert.Equal(node2, list.Last);  // nodul 2 este  ultimul din lista
         }
+
         [Fact]
         public void AddBeforeLastNode()
         {
@@ -130,19 +134,111 @@ namespace LinkedList
 
             list.AddFirst(node2);
             Assert.True(node2 == list.First);
-            Assert.True( list.Last.Value == 0);
+            Assert.True(list.Last.Value == 0);
 
         }
+
         [Fact]
         public void AddNewNodeToLastPosition()
         {
             var list = new CircularDoublyLinkedList<int>();
+            var node1 = new Node<int>(1);// first node
+            var node2 = new Node<int>(2);
+            list.Add(node1);
+            list.Add(node2);
+
+            Assert.Equal(1, list.First.Value);
+            Assert.Equal(2, list.Last.Value);
+
+            var node4 = new Node<int>(4);
+            list.AddLast(node4);
+            Assert.Equal(node4, list.Last);
+            Assert.Equal(1, list.Last.Next.Next.Value);
+            // primul Next -> duce la sentinel al2-lea next-> primul primul nod
+        }
+
+        [Fact]
+        public void ClearList_TailShouldPointToNull()
+        {
+            var list = new CircularDoublyLinkedList<int>();
             var node0 = new Node<int>(0);
+            var node2 = new Node<int>(2);
+            var node4 = new Node<int>(4);
+
             list.Add(node0);
-            list.Add(2);
-            list.AddLast(new Node<int>(4));
-            Assert.True(list.Last.Value == 4);
-            Assert.True(node0.Prev.Value == 4);
+            list.Add(node2);
+            list.Add(node4);
+            Assert.False(node4 is null);
+            list.Clear();
+            Assert.Null(list.First);
+            Assert.Null(list.Last);// System.NullReferenceException
+        }
+
+        [Fact]
+        public void GetEnumeratorForLinkedList()
+        {
+            var list = new CircularDoublyLinkedList<char>();
+            list.Add('a');
+            list.Add('b');
+            list.Add('c');
+            string abc = "";
+            var enumerator = list.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                abc += enumerator.Current;
+            }
+            Assert.Equal("abc", abc);
+        }
+
+        [Fact]
+        public void FindFirstOccuranceOfLetterA()
+        {
+            var list = new CircularDoublyLinkedList<char>();
+            list.Add('b');
+            list.Add('a');
+            list.Add('a');
+            list.Add('c');
+            var nodeA = list.Find('a');
+            Assert.Equal('b', nodeA.Prev.Value);
+            Assert.Equal('a', nodeA.Next.Value);
+        }
+        [Fact]
+        public void FindLastOccuranceOfLetterA()
+        {
+            var list = new CircularDoublyLinkedList<char>
+            {
+                'b',
+                'a',
+                'a',
+                'c'
+            };
+            var nodeA = list.FindLast('a');
+            Assert.Equal('a', nodeA.Prev.Value);
+            Assert.Equal('c', nodeA.Next.Value);
+        }
+
+        [Fact]
+        public void ListContainsLetterA()
+        {
+            var list = new CircularDoublyLinkedList<char>
+            {
+                'b',
+                'a',
+                'a',
+                'c'
+            };
+            Assert.Contains('a', list);
+        }
+
+        [Fact]
+        public void ListDoesntContainLetterA()
+        {
+            var list = new CircularDoublyLinkedList<char>
+            {
+                'b',
+                'c'
+            };
+            Assert.DoesNotContain('a', list);
         }
     }
 }
