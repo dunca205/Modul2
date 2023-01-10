@@ -133,23 +133,28 @@ namespace LinkedList
 
             return null;
         }
-        public void Remove(Node<T> node)
+        public void Remove(Node<T> current)
         {
-
+            current.Prev.Next = current.Next;
+            current.Next.Prev = current.Prev;
+            Count--;
         }
         public bool Remove(T item)
         {
-            Remove(new Node<T>(item));
-            return true;
+            if (Find(item) != null)
+            {
+                Remove(Find(item));
+            }
+            return !Contains(item); // 
         }
         public void RemoveFirst()
         {
-            // incepe de la First
+            Remove(First);
 
         }
         public void RemoveLast()
         {
-            // incepe de la Last 
+            Remove(Last);
         }
 
         public void Clear()
@@ -165,7 +170,12 @@ namespace LinkedList
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+           var enumerator = this.GetEnumerator();
+            while(enumerator.MoveNext())
+            {
+                array[arrayIndex] = enumerator.Current;
+                arrayIndex++;
+            }
         }
 
         public IEnumerator<T> GetEnumerator()

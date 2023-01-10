@@ -227,7 +227,7 @@ namespace LinkedList
                 'a',
                 'c'
             };
-            Assert.Contains('a', list);
+            Assert.True( list.Contains('a'));
         }
 
         [Fact]
@@ -238,7 +238,72 @@ namespace LinkedList
                 'b',
                 'c'
             };
-            Assert.DoesNotContain('a', list);
+            Assert.False(list.Contains('a'));
+        }
+
+        [Fact]
+        public void RemoveNodeFromInBetweenOtherNodes()
+        {
+            var list = new CircularDoublyLinkedList<int>();
+            var node0 = new Node<int>(0);
+            var node2 = new Node<int>(2);
+            var node4 = new Node<int>(4);
+
+            list.Add(node0);
+            list.Add(node2);
+            list.Add(node4);
+            Assert.Equal(node2, list.First.Next);
+            Assert.True(list.Remove(2));
+            Assert.Equal(node4, list.First.Next);
+            Assert.Equal(node0, list.Last.Prev);
+            Assert.False(list.Contains(node4.Value));
+        }
+
+        [Fact]
+        public void RemoveFirstNode()
+        {
+            var list = new CircularDoublyLinkedList<int>();
+            var node0 = new Node<int>(0);
+            var node2 = new Node<int>(2);
+            var node4 = new Node<int>(4);
+
+            list.Add(node0);
+            list.Add(node2);
+            list.Add(node4);
+            list.RemoveFirst();
+            Assert.Equal(node2, list.First);
+        }
+
+        [Fact]
+        public void RemoveLastNode()
+        {
+            var list = new CircularDoublyLinkedList<int>();
+            var node0 = new Node<int>(0);
+            var node2 = new Node<int>(2);
+            var node4 = new Node<int>(4);
+
+            list.Add(node0);
+            list.Add(node2);
+            list.Add(node4);
+            list.RemoveLast();
+            Assert.Equal(node2, list.Last);
+        }
+
+        [Fact]
+        public void CopyToArray()
+        {
+            var list = new CircularDoublyLinkedList<char>
+            {
+                'b',
+                'a',
+                'a',
+                'c'
+            };
+
+            var charArray = new char[8];
+            list.CopyTo(charArray, 4);
+            Assert.Equal('b', charArray[4]);
+            Assert.Equal(list.Last.Value, charArray[7]);
         }
     }
 }
