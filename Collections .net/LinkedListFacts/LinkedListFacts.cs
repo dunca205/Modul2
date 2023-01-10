@@ -5,7 +5,7 @@ namespace LinkedList
     public class LinkedListFacts
     {
         [Fact]
-        public void AddFourNodesToList_CheckLastNodeAfterEachAddOperation()
+        public void AddFourNodesToList_CheckLastNodeValueAfterEachAddOperation()
         {
             var list = new CircularDoublyLinkedList<int>();
             list.Add(3);
@@ -64,7 +64,10 @@ namespace LinkedList
             var node2 = new Node<int>(2);
             list.Add(node0);
             Assert.Equal(node0, list.Last);
+            Assert.Equal(node0, list.First);
+
             list.AddBefore(node0, node2);
+
             Assert.Equal(node2, list.First);
             Assert.Equal(node0, list.Last);
         }
@@ -83,10 +86,10 @@ namespace LinkedList
 
             list.AddBefore(node0, node4);
 
-            Assert.Equal(node4, list.First); // node4 este primul nod,
-            Assert.Equal(node2, list.Last); // ultimul nod pointeaza next catre primul nod
-            Assert.Equal(node0.Value, node4.Next.Value); // node0 urmeaza dupa node4
-            Assert.Equal(node2, list.Last);  // nodul 2 este  ultimul din lista
+            Assert.Equal(node4, list.First); 
+            Assert.Equal(node2, list.Last); 
+            Assert.Equal(node0.Value, node4.Next.Value);
+            Assert.Equal(node2, list.Last);
         }
 
         [Fact]
@@ -142,7 +145,7 @@ namespace LinkedList
         public void AddNewNodeToLastPosition()
         {
             var list = new CircularDoublyLinkedList<int>();
-            var node1 = new Node<int>(1);// first node
+            var node1 = new Node<int>(1);
             var node2 = new Node<int>(2);
             list.Add(node1);
             list.Add(node2);
@@ -154,7 +157,7 @@ namespace LinkedList
             list.AddLast(node4);
             Assert.Equal(node4, list.Last);
             Assert.Equal(1, list.Last.Next.Next.Value);
-            // primul Next -> duce la sentinel al2-lea next-> primul primul nod
+            // primul Next -> duce la sentinel. next-> primul primul nod
         }
 
         [Fact]
@@ -252,12 +255,11 @@ namespace LinkedList
             list.Add(node0);
             list.Add(node2);
             list.Add(node4);
-            list.Remove(2);
+            Assert.True(list.Remove(2));
             Assert.Equal(node4,node0.Next);
             Assert.Equal(node0, node4.Prev);
-            //Assert.Equal(node4, list.First.Next);
-            //Assert.Equal(node0, list.Last.Prev);
-            Assert.False(list.Contains(2));
+            Assert.Equal(node4, list.First.Next);
+            Assert.Equal(node0, list.Last.Prev);
         }
 
         [Fact]
@@ -293,9 +295,7 @@ namespace LinkedList
         [Fact]
         public void RemoveInexistentNode()
         {
-            var list = new CircularDoublyLinkedList<int>();
-            list.Add(1);
-            list.Add(2);
+            var list = new CircularDoublyLinkedList<int> { 1, 2 };
             Assert.False(list.Remove(3));
         }
 
