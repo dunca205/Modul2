@@ -141,11 +141,13 @@ namespace LinkedList
         }
         public bool Remove(T item)
         {
-            if (Find(item) != null)
+            if (Find(item) != null) // exista
             {
                 Remove(Find(item));
+                return true;// was found and removed
             }
-            return !Contains(item); // 
+
+            return false; //true if the element containing value is successfully removed => contains trb sa fie fals
         }
         public void RemoveFirst()
         {
@@ -188,7 +190,6 @@ namespace LinkedList
                 temp = temp.Next;
                 enumeratorCounter--;
             }
-            //incepem de la first // daca parcurgem in sens invers incepem cu last, si tempNode.prev
         }
 
         IEnumerator IEnumerable.GetEnumerator()

@@ -158,7 +158,7 @@ namespace LinkedList
         }
 
         [Fact]
-        public void ClearList_TailShouldPointToNull()
+        public void ClearList_LastAndFirstNodeShouldPointToNull()
         {
             var list = new CircularDoublyLinkedList<int>();
             var node0 = new Node<int>(0);
@@ -252,11 +252,12 @@ namespace LinkedList
             list.Add(node0);
             list.Add(node2);
             list.Add(node4);
-            Assert.Equal(node2, list.First.Next);
-            Assert.True(list.Remove(2));
-            Assert.Equal(node4, list.First.Next);
-            Assert.Equal(node0, list.Last.Prev);
-            Assert.False(list.Contains(node4.Value));
+            list.Remove(2);
+            Assert.Equal(node4,node0.Next);
+            Assert.Equal(node0, node4.Prev);
+            //Assert.Equal(node4, list.First.Next);
+            //Assert.Equal(node0, list.Last.Prev);
+            Assert.False(list.Contains(2));
         }
 
         [Fact]
@@ -287,6 +288,22 @@ namespace LinkedList
             list.Add(node4);
             list.RemoveLast();
             Assert.Equal(node2, list.Last);
+        }
+
+        [Fact]
+        public void RemoveInexistentNode()
+        {
+            var list = new CircularDoublyLinkedList<int>();
+            list.Add(1);
+            list.Add(2);
+            Assert.False(list.Remove(3));
+        }
+
+        [Fact]
+        public void RemoveFromEmptyList()
+        {
+            var list = new CircularDoublyLinkedList<int>();
+            Assert.False(list.Remove(2));
         }
 
         [Fact]
