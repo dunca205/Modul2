@@ -41,7 +41,7 @@ namespace LinkedList
             Assert.Equal(4, list.Last.Value);
         }
         [Fact]
-        public void AddAfterLast_but_one() // dupa penultimul nod
+        public void AddAfterLast_but_one()
         {
             var list = new CircularDoublyLinkedList<int>();
             var node0 = new Node<int>(0);
@@ -120,9 +120,9 @@ namespace LinkedList
             var node3 = new Node<int>(3);
             list.AddBefore(node4, node3);
 
-            Assert.Equal(node2, node3.Prev); // inainte de nodul 3 este nodul 2
-            Assert.Equal(node4, node3.Next); //dupa nodul 3 este nodul4
-            Assert.Equal(node3, node4.Prev); // inainte de nodul 4 este nodul3
+            Assert.Equal(node2, node3.Prev); 
+            Assert.Equal(node4, node3.Next); 
+            Assert.Equal(node3, node4.Prev);
         }
 
         [Fact]
@@ -174,7 +174,7 @@ namespace LinkedList
             Assert.False(node4 is null);
             list.Clear();
             Assert.Null(list.First);
-            Assert.Null(list.Last);// System.NullReferenceException
+            Assert.Null(list.Last);
         }
 
         [Fact]
@@ -321,6 +321,18 @@ namespace LinkedList
             list.CopyTo(charArray, 4);
             Assert.Equal('b', charArray[4]);
             Assert.Equal(list.Last.Value, charArray[7]);
+        }
+
+        [Fact]
+        public void AfterNodeIsRemovedIsNotPartOfTheListAnymore()
+        {
+            var list = new CircularDoublyLinkedList<int>();
+            var node0 = new Node<int>(0);
+            list.Add(node0);
+            Assert.Equal(list, node0.List);
+            list.RemoveLast();
+            Assert.NotEqual(list, node0.List);
+            Assert.Null(node0.List);
         }
     }
 }

@@ -4,10 +4,7 @@ namespace LinkedList
 {
     public class CircularDoublyLinkedList<T> : ICollection<T>
     {
-        // System.Collections.Generic.LinkedListNode<T> node;
-        // System.Collections.Generic.LinkedList<T> node;
-
-        private Node<T> sentinel = new Node<T>(default); // == ultimul nod din lista, pointerNext => primulnod, pointer.prev => ultumulnod
+        private Node<T> sentinel = new Node<T>(default);
 
         public CircularDoublyLinkedList()
         {
@@ -15,13 +12,9 @@ namespace LinkedList
             sentinel.Prev = sentinel;
             sentinel.List = this;
         }
-        public Node<T> Last
-        {
-            get => sentinel.Prev;
-            set { sentinel.Prev = value; }
-        }
+        public Node<T> Last { get => sentinel.Prev; }
 
-        public Node<T> First { get => sentinel.Next; set { sentinel.Next = value; } }
+        public Node<T> First { get => sentinel.Next; }
 
         public int Count { get; set; }
         public bool IsReadOnly { get; }
@@ -33,7 +26,7 @@ namespace LinkedList
         }
         public void Add(Node<T> newNode)
         {
-            AddAfter(Last, newNode); // add next
+            AddAfter(Last, newNode);
         }
 
         public void AddAfter(Node<T> current, Node<T> newNode)
@@ -56,25 +49,13 @@ namespace LinkedList
 
         public void AddBefore(Node<T> current, Node<T> newNode)
         {
-            //  AddAfter(current.Prev, newNode);
-            newNode.Next = current;
-            newNode.Prev = current.Prev;
-            newNode.Prev.Next = newNode;
-            current.Prev = newNode;
-            Count++;
-            newNode.List = this;
-
-            //if (current == Last) // daca se adauga inaintea primului nod
-            //{
-            //    sentinel = newNode;
-            //}
+             AddAfter(current.Prev, newNode);
         }
 
         public Node<T> AddBefore(Node<T> current, T value)
         {
             var newNode = new Node<T>(value);
             AddBefore(current, newNode);
-
             return newNode;
         }
 
@@ -103,7 +84,7 @@ namespace LinkedList
             return newNode;
         }
 
-        public Node<T> Find(T value) // incepem cu primul nod
+        public Node<T> Find(T value)
         {
             var temp = First;
             while (temp != Last)
@@ -120,7 +101,7 @@ namespace LinkedList
         }
         public Node<T> FindLast(T value)
         {
-            var temp = Last; // santinel in sine
+            var temp = Last;
             while (temp != First)
             {
                 if (temp.Value.Equals(value))
@@ -137,17 +118,21 @@ namespace LinkedList
         {
             current.Prev.Next = current.Next;
             current.Next.Prev = current.Prev;
+            current.List = null;
+            current.Next = null;
+            current.Prev = null;
             Count--;
         }
         public bool Remove(T item)
         {
-            if (Find(item) != null) // exista
+            var nodeToRemove = Find(item);
+            if (nodeToRemove != null)
             {
-                Remove(Find(item));
-                return true;// was found and removed
+                Remove(nodeToRemove);
+                return true;
             }
 
-            return false; //true if the element containing value is successfully removed => contains trb sa fie fals
+            return false;
         }
         public void RemoveFirst()
         {
@@ -162,7 +147,7 @@ namespace LinkedList
         public void Clear()
         {
             Count = 0;
-            sentinel.Next = sentinel.Prev = default;
+            sentinel.Next = sentinel.Prev = null;
         }
 
         public bool Contains(T item)
@@ -182,13 +167,9 @@ namespace LinkedList
 
         public IEnumerator<T> GetEnumerator()
         {
-            int enumeratorCounter = Count;
-            var temp = First;
-            while (enumeratorCounter > 0)
+            for(var iterator = First; iterator != Last.Next; iterator = iterator.Next)
             {
-                yield return temp.Value;
-                temp = temp.Next;
-                enumeratorCounter--;
+                yield return iterator.Value;
             }
         }
 

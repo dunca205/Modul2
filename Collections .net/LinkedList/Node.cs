@@ -5,7 +5,7 @@
         public Node(T value)
         {
             Value = value;
-            this.Next = null; //The List, Next, and Previous properties are set to null.
+            this.Next = null;
             this.Prev = null;
             List = null;
         }
