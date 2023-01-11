@@ -22,7 +22,6 @@ namespace LinkedList
         public void Add(T item)
         {
             Add(new Node<T>(item));
-
         }
         public void Add(Node<T> newNode)
         {
@@ -69,7 +68,6 @@ namespace LinkedList
             var newNode = new Node<T>(value);
             AddFirst(newNode);
             return newNode;
-
         }
 
         public void AddLast(Node<T> node)
@@ -113,6 +111,7 @@ namespace LinkedList
         {
             current.Prev.Next = current.Next;
             current.Next.Prev = current.Prev;
+
             current.List = null;
             current.Next = null;
             current.Prev = null;
