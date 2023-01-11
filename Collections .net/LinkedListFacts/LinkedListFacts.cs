@@ -86,8 +86,8 @@ namespace LinkedList
 
             list.AddBefore(node0, node4);
 
-            Assert.Equal(node4, list.First); 
-            Assert.Equal(node2, list.Last); 
+            Assert.Equal(node4, list.First);
+            Assert.Equal(node2, list.Last);
             Assert.Equal(node0.Value, node4.Next.Value);
             Assert.Equal(node2, list.Last);
         }
@@ -120,8 +120,8 @@ namespace LinkedList
             var node3 = new Node<int>(3);
             list.AddBefore(node4, node3);
 
-            Assert.Equal(node2, node3.Prev); 
-            Assert.Equal(node4, node3.Next); 
+            Assert.Equal(node2, node3.Prev);
+            Assert.Equal(node4, node3.Next);
             Assert.Equal(node3, node4.Prev);
         }
 
@@ -230,7 +230,7 @@ namespace LinkedList
                 'a',
                 'c'
             };
-            Assert.True( list.Contains('a'));
+            Assert.True(list.Contains('a'));
         }
 
         [Fact]
@@ -256,7 +256,7 @@ namespace LinkedList
             list.Add(node2);
             list.Add(node4);
             Assert.True(list.Remove(2));
-            Assert.Equal(node4,node0.Next);
+            Assert.Equal(node4, node0.Next);
             Assert.Equal(node0, node4.Prev);
             Assert.Equal(node4, list.First.Next);
             Assert.Equal(node0, list.Last.Prev);

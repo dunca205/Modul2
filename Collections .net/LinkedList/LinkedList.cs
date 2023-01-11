@@ -49,7 +49,7 @@ namespace LinkedList
 
         public void AddBefore(Node<T> current, Node<T> newNode)
         {
-             AddAfter(current.Prev, newNode);
+            AddAfter(current.Prev, newNode);
         }
 
         public Node<T> AddBefore(Node<T> current, T value)
@@ -86,30 +86,25 @@ namespace LinkedList
 
         public Node<T> Find(T value)
         {
-            var temp = First;
-            while (temp != Last)
+
+            for (var temp = First; temp != Last; temp = temp.Next)
             {
                 if (temp.Value.Equals(value))
                 {
                     return temp;
                 }
-
-                temp = temp.Next;
             }
 
             return null;
         }
         public Node<T> FindLast(T value)
         {
-            var temp = Last;
-            while (temp != First)
+            for (var temp = Last; temp != First; temp = temp.Prev)
             {
                 if (temp.Value.Equals(value))
                 {
                     return temp;
                 }
-
-                temp = temp.Prev;
             }
 
             return null;
@@ -157,17 +152,16 @@ namespace LinkedList
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-           var enumerator = this.GetEnumerator();
-            while(enumerator.MoveNext())
+            for (var iterator = First; iterator != Last.Next; iterator = iterator.Next)
             {
-                array[arrayIndex] = enumerator.Current;
+                array[arrayIndex] = iterator.Value;
                 arrayIndex++;
             }
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            for(var iterator = First; iterator != Last.Next; iterator = iterator.Next)
+            for (var iterator = First; iterator != Last.Next; iterator = iterator.Next)
             {
                 yield return iterator.Value;
             }
