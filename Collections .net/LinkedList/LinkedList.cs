@@ -36,19 +36,7 @@ namespace LinkedList
         //
         //   T:System.InvalidOperationException:
         //     node is not in the current System.Collections.Generic.LinkedList`1. -or- newNode
-        //     belongs to another System.Collections.Generic.LinkedList`1.
-            //if (Count == 0)
-            //{
-            //    sentinel.Next = newNode;
-            //    sentinel.Prev = newNode;
-            //    newNode.Next = sentinel;
-            //    newNode.Prev = sentinel;
-            //    newNode.List = this;
-            //    Count++;
-            //    return;
-            //}
-
-           
+        //     belongs to another System.Collections.Generic.LinkedList`1. 
             newNode.Next = current.Next;
             newNode.Prev = current;
             current.Next = newNode;
