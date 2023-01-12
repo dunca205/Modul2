@@ -5,16 +5,16 @@ namespace LinkedList
     public class CircularDoublyLinkedList<T> : ICollection<T>
     {
         private Node<T> sentinel = new Node<T>(default);
+       // new LinkedList<T> head = new LinkedList<T>();
 
         public CircularDoublyLinkedList()
         {
-            sentinel.Next = sentinel;
-            sentinel.Prev = sentinel;
+            sentinel.Next = sentinel.Prev = null;
             sentinel.List = this;
         }
         public Node<T> Last { get => sentinel.Prev; }
-
-        public Node<T> First { get => sentinel.Next; }
+       
+        public Node<T> First { get  => sentinel.Next;}
 
         public int Count { get; set; }
         public bool IsReadOnly { get; }
@@ -30,11 +30,28 @@ namespace LinkedList
 
         public void AddAfter(Node<T> current, Node<T> newNode)
         {
+        // T: System.ArgumentNullException:
+        //     node is null. -or- newNode is null.
+        //
+        //   T:System.InvalidOperationException:
+        //     node is not in the current System.Collections.Generic.LinkedList`1. -or- newNode
+        //     belongs to another System.Collections.Generic.LinkedList`1.
+            if (Count == 0)
+            {
+                sentinel.Next = newNode;
+                sentinel.Prev = newNode;
+                newNode.Next = sentinel;
+                newNode.Prev = sentinel;
+                newNode.List = this;
+                Count++;
+                return;
+            }
+
+           
             newNode.Next = current.Next;
             newNode.Prev = current;
             current.Next = newNode;
             newNode.Next.Prev = newNode;
-
             newNode.List = this;
             Count++;
         }
@@ -109,6 +126,12 @@ namespace LinkedList
         }
         public void Remove(Node<T> current)
         {
+            // Exceptions:
+            //   T:System.ArgumentNullException:
+            //     node is null.
+            //
+            //   T:System.InvalidOperationException:
+            //     node is not in the current System.Collections.Generic.LinkedList`1.
             current.Prev.Next = current.Next;
             current.Next.Prev = current.Prev;
 
@@ -130,11 +153,16 @@ namespace LinkedList
         }
         public void RemoveFirst()
         {
+            //   T:System.InvalidOperationException:
+            //     The System.Collections.Generic.LinkedList`1 is empty.
             Remove(First);
 
         }
         public void RemoveLast()
         {
+            // Exceptions:
+            //   T:System.InvalidOperationException:
+            //     The System.Collections.Generic.LinkedList`1 is empty.
             Remove(Last);
         }
 
@@ -151,6 +179,17 @@ namespace LinkedList
 
         public void CopyTo(T[] array, int arrayIndex)
         {
+      //  Exceptions:
+            //   T:System.ArgumentNullException:
+            //     array is null.
+            //
+            //   T:System.ArgumentOutOfRangeException:
+            //     index is less than zero.
+            //
+            //   T:System.ArgumentException:
+            //     The number of elements in the source System.Collections.Generic.LinkedList`1
+            //     is greater than the available space from index to the end of the destination
+            //     array.
             for (var iterator = First; iterator != Last.Next; iterator = iterator.Next)
             {
                 array[arrayIndex] = iterator.Value;

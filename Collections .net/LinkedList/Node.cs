@@ -2,12 +2,13 @@
 {
     public class Node<T>
     {
+       // new LinkedListNode<T> node;
         public Node(T value)
         {
             Value = value;
             this.Next = null;
             this.Prev = null;
-            List = null;
+            this.List = null;
         }
         public CircularDoublyLinkedList<T> List { get; set; }
         public T Value { get; set; }

@@ -334,5 +334,20 @@ namespace LinkedList
             Assert.NotEqual(list, node0.List);
             Assert.Null(node0.List);
         }
+
+        [Fact]
+        public void FirstAndLastPointToNullWhenListIsEmpty()
+        {
+            var list = new CircularDoublyLinkedList<int>();
+            Assert.Null(list.First);
+            Assert.Null(list.Last);
+        }
+
+        [Fact]
+        public void FindNodeIsEmptyList()
+        {
+            var list = new CircularDoublyLinkedList<int>();
+            Assert.Null(list.Find(2));
+        }
     }
 }
