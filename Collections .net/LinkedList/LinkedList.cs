@@ -9,12 +9,13 @@ namespace LinkedList
 
         public CircularDoublyLinkedList()
         {
-            sentinel.Next = sentinel.Prev = null;
+            sentinel.Next = sentinel;
+            sentinel.Prev = sentinel;
             sentinel.List = this;
         }
-        public Node<T> Last { get => sentinel.Prev; }
+        public Node<T> Last { get => Count == 0 ? null : sentinel.Prev; }
        
-        public Node<T> First { get  => sentinel.Next;}
+        public Node<T> First { get  =>  Count == 0 ? null : sentinel.Next; }
 
         public int Count { get; set; }
         public bool IsReadOnly { get; }
@@ -25,7 +26,7 @@ namespace LinkedList
         }
         public void Add(Node<T> newNode)
         {
-            AddAfter(Last, newNode);
+            AddAfter(sentinel.Prev, newNode);
         }
 
         public void AddAfter(Node<T> current, Node<T> newNode)
@@ -36,16 +37,16 @@ namespace LinkedList
         //   T:System.InvalidOperationException:
         //     node is not in the current System.Collections.Generic.LinkedList`1. -or- newNode
         //     belongs to another System.Collections.Generic.LinkedList`1.
-            if (Count == 0)
-            {
-                sentinel.Next = newNode;
-                sentinel.Prev = newNode;
-                newNode.Next = sentinel;
-                newNode.Prev = sentinel;
-                newNode.List = this;
-                Count++;
-                return;
-            }
+            //if (Count == 0)
+            //{
+            //    sentinel.Next = newNode;
+            //    sentinel.Prev = newNode;
+            //    newNode.Next = sentinel;
+            //    newNode.Prev = sentinel;
+            //    newNode.List = this;
+            //    Count++;
+            //    return;
+            //}
 
            
             newNode.Next = current.Next;
@@ -77,7 +78,7 @@ namespace LinkedList
 
         public void AddFirst(Node<T> node)
         {
-            AddBefore(First, node);
+            AddBefore(sentinel.Next, node);
         }
 
         public Node<T> AddFirst(T value)
@@ -89,7 +90,7 @@ namespace LinkedList
 
         public void AddLast(Node<T> node)
         {
-            AddAfter(Last, node);
+            AddAfter(sentinel.Prev, node);
         }
 
         public Node<T> AddLast(T value)
