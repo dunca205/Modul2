@@ -2,7 +2,6 @@
 {
     public class Node<T>
     {
-       // new LinkedListNode<T> node;
         public Node(T value)
         {
             Value = value;

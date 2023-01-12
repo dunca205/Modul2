@@ -90,8 +90,7 @@ namespace LinkedList
 
         public Node<T> Find(T value)
         {
-
-            for (var temp = First; temp != Last; temp = temp.Next)
+            for (var temp = sentinel.Next; temp != sentinel; temp = temp.Next)
             {
                 if (temp.Value.Equals(value))
                 {
@@ -101,9 +100,10 @@ namespace LinkedList
 
             return null;
         }
+
         public Node<T> FindLast(T value)
         {
-            for (var temp = Last; temp != First; temp = temp.Prev)
+            for (var temp = sentinel.Prev; temp != sentinel; temp = temp.Prev)
             {
                 if (temp.Value.Equals(value))
                 {
@@ -158,7 +158,7 @@ namespace LinkedList
         public void Clear()
         {
             Count = 0;
-            sentinel.Next = sentinel.Prev = null;
+            sentinel.Next = sentinel.Prev = sentinel;
         }
 
         public bool Contains(T item)

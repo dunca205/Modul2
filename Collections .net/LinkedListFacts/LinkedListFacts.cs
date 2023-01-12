@@ -344,7 +344,16 @@ namespace LinkedList
         }
 
         [Fact]
-        public void FindNodeIsEmptyList()
+        public void FindNodeWhenListHasJustOneNode()
+        {
+            var list = new CircularDoublyLinkedList<int>();
+            var node1 = new Node<int>(1) ;
+            list.Add(node1);
+            Assert.Equal(node1, list.Find(1));
+        }
+        
+        [Fact]
+        public void FindReturnsNullWhenListIsEmpty()
         {
             var list = new CircularDoublyLinkedList<int>();
             Assert.Null(list.Find(2));
