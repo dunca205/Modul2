@@ -97,9 +97,10 @@ namespace LinkedList
                     return temp;
                 }
             }
-
+            
             return null;
         }
+        
 
         public Node<T> FindLast(T value)
         {
@@ -188,7 +189,7 @@ namespace LinkedList
 
         public IEnumerator<T> GetEnumerator()
         {
-            for (var iterator = First; iterator != Last.Next; iterator = iterator.Next)
+            for (var iterator = sentinel.Next; iterator != sentinel; iterator = iterator.Next)
             {
                 yield return iterator.Value;
             }
