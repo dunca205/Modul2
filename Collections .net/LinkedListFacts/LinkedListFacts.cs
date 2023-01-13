@@ -347,16 +347,76 @@ namespace LinkedList
         public void FindNodeWhenListHasJustOneNode()
         {
             var list = new CircularDoublyLinkedList<int>();
-            var node1 = new Node<int>(1) ;
+            var node1 = new Node<int>(1);
             list.Add(node1);
             Assert.Equal(node1, list.Find(1));
         }
-        
+
         [Fact]
         public void FindReturnsNullWhenListIsEmpty()
         {
             var list = new CircularDoublyLinkedList<int>();
             Assert.Null(list.Find(2));
+        }
+
+        [Fact]
+        public void ArgumentNullException_WhenAddingNullNewNode()
+        {
+            var list = new CircularDoublyLinkedList<int>();
+            Assert.Throws<ArgumentNullException>(() => list.Add(null));
+        }
+
+        [Fact]
+        public void ArgumentNullException_WhenAddingAfterNull()
+        {
+            var list = new CircularDoublyLinkedList<int>();
+            Assert.Throws<ArgumentNullException>(() => list.AddAfter(list.Last, null));
+        }
+
+        [Fact]
+        public void ArgumentNullExceptionWhenDestinationArrayIsNull()
+        {
+            var list = new CircularDoublyLinkedList<int> { 1, 2, 3, 4, 5, 6 };
+            int[] array = null;
+            Assert.Throws<ArgumentNullException>(() => list.CopyTo(array, 2));
+        }
+
+        [Fact]
+        public void ArgumentNullExceptionRemoveNullNodeFromList()
+        {
+            var list = new CircularDoublyLinkedList<int> { 1, 2, 3 };
+            Assert.Throws<ArgumentNullException>(() => list.Remove(null));
+        }
+
+        [Fact]
+        public void ArgumentOutOfRangeException_WhenIndexIsLessThanZero()
+        {
+            var list = new CircularDoublyLinkedList<int> { 1, 2, 3 };
+            var array = new int[5];
+            Assert.Throws<ArgumentOutOfRangeException>(() => list.CopyTo(array, -1));
+        }
+
+        [Fact]
+        public void ArgumentException_WhenArraySizeIsLessThanTheNumberOfElements()
+        {
+            var list = new CircularDoublyLinkedList<int> { 1, 2, 3, 4, 5, 6 };
+            var array = new int[5];
+            Assert.Throws<ArgumentException>(() => list.CopyTo(array, 2));
+        }
+
+        [Fact]
+        public void InvalidOperationException_WhenRemovingAnIndexistentNode()
+        {
+            var list = new CircularDoublyLinkedList<int> { 1, 2, 3 };
+            Assert.Throws<InvalidOperationException>(() => list.Remove(new Node<int>(5)));
+        }
+
+        [Fact]
+        public void InvalidOperationException_WhenRemovingFirstAndLastNodeWhenListIsEmpty()
+        {
+            var list = new CircularDoublyLinkedList<int>();
+            Assert.Throws<InvalidOperationException>(() => list.RemoveFirst());
+            Assert.Throws<InvalidOperationException>(() => list.RemoveLast());
         }
     }
 }

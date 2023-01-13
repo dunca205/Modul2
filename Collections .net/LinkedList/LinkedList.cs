@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Net.Http.Headers;
+﻿using System.Collections;
 
 namespace LinkedList
 {
@@ -33,16 +31,11 @@ namespace LinkedList
 
         public void AddAfter(Node<T> current, Node<T> newNode)
         {
-            // T: System.ArgumentNullException:
-            //     node is null. -or- newNode is null.
-            //
-            //   T:System.InvalidOperationException:
-            //     node is not in the current System.Collections.Generic.LinkedList`1. -or- newNode
-            //     belongs to another System.Collections.Generic.LinkedList`1. 
             ArgumentNullException(current);
             ArgumentNullException(newNode);
             InvalidOperationException(current);
-            InvalidOperationException(newNode);
+            // + newNode belongs to another LinkedList<T>.
+
             newNode.Next = current.Next;
             newNode.Prev = current;
             current.Next = newNode;
@@ -107,7 +100,6 @@ namespace LinkedList
             return null;
         }
 
-
         public Node<T> FindLast(T value)
         {
             for (var temp = sentinel.Prev; temp != sentinel; temp = temp.Prev)
@@ -122,14 +114,9 @@ namespace LinkedList
         }
         public void Remove(Node<T> current)
         {
-            // Exceptions:
-            //   T:System.ArgumentNullException:
-            //     node is null.
-            //
-            //   T:System.InvalidOperationException:
-            //     node is not in the current System.Collections.Generic.LinkedList`1.
             ArgumentNullException(current);
             InvalidOperationException(current);
+
             current.Prev.Next = current.Next;
             current.Next.Prev = current.Prev;
 
@@ -140,6 +127,9 @@ namespace LinkedList
         }
         public bool Remove(T item)
         {
+            // pt ex: var list = new CircularDoublyLinkedList<int>();
+            // -daca vreau sa testez list.Remove(2),
+            //trebuie sa arunce exceptia : "InvalidOperationException("Node is not in the current LinkedList")? => nu ar mai ajunge sa returneze fals
             var nodeToRemove = Find(item);
             if (nodeToRemove != null)
             {
@@ -151,17 +141,11 @@ namespace LinkedList
         }
         public void RemoveFirst()
         {
-            //   T:System.InvalidOperationException:
-            //     The System.Collections.Generic.LinkedList`1 is empty.
             InvalidOperationException();
             Remove(First);
-
         }
         public void RemoveLast()
         {
-            // Exceptions:
-            //   T:System.InvalidOperationException:
-            //     The System.Collections.Generic.LinkedList`1 is empty.
             InvalidOperationException();
             Remove(Last);
         }
@@ -179,19 +163,10 @@ namespace LinkedList
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            //  Exceptions:
-            //   T:System.ArgumentNullException:
-            //     array is null.
-            //
-            //   T:System.ArgumentOutOfRangeException:
-            //     index is less than zero.
-            //
-            //   T:System.ArgumentException:
-            //     The number of elements in the source System.Collections.Generic.LinkedList`1
-            //     is greater than the available space from index to the end of the destination
-            //     array.
             ArgumentNullException(array);
+
             ArgumentOutOfRangeException(arrayIndex);
+
             ArgumentException(arrayIndex, array.Length);
 
             for (var iterator = First; iterator != Last.Next; iterator = iterator.Next)
@@ -213,23 +188,24 @@ namespace LinkedList
         {
             return GetEnumerator();
         }
-        private void ArgumentNullException(object node)
+        private void ArgumentNullException(object obj)
         {
-            if (node != null)
+            if (obj != null)
             {
                 return;
             }
 
-            throw new ArgumentNullException(nameof(node), " is null"); ;
+            throw new ArgumentNullException(nameof(obj), " is null"); ;
         }
         private void InvalidOperationException(Node<T> node)
         {
-            if (Find(node.Value) != null)
+            if (node.List == this)
             {
                 return;
             }
-            throw new ArgumentNullException(paramName: nameof(node), " is not in the current LinkedList.");
-            //newNode belongs to another LinkedList<T>.
+
+            throw new InvalidOperationException("Node is not in the current LinkedList");
+            // || newNode belongs to another LinkedList<T>.
         }
         private void ArgumentOutOfRangeException(int index)
         {
@@ -242,7 +218,7 @@ namespace LinkedList
 
         private void ArgumentException(int index, int arraysize)
         {
-            if(Count < arraysize - index)
+            if (Count <= arraysize - index)
             {
                 return;
             }
@@ -250,13 +226,12 @@ namespace LinkedList
         }
         private void InvalidOperationException()
         {
-            if(Count > 0)
+            if (Count > 0)
             {
                 return;
             }
             throw new InvalidOperationException("The LinkedList is empty.");
         }
-
     }
 
 }
