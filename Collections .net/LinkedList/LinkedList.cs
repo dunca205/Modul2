@@ -5,7 +5,6 @@ namespace LinkedList
     public class CircularDoublyLinkedList<T> : ICollection<T>
     {
         private Node<T> sentinel = new Node<T>(default);
-        // new LinkedList<T> head = new LinkedList<T>();
 
         public CircularDoublyLinkedList()
         {
