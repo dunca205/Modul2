@@ -1,4 +1,5 @@
 global using Xunit;
+using System.Collections.Generic;
 
 namespace LinkedList
 {
@@ -417,6 +418,14 @@ namespace LinkedList
             var list = new CircularDoublyLinkedList<int>();
             Assert.Throws<InvalidOperationException>(() => list.RemoveFirst());
             Assert.Throws<InvalidOperationException>(() => list.RemoveLast());
+        }
+
+        [Fact]
+        public void InvalidOperationExecption_WhenAddingANewNodeThatBelongsToAnotherList()
+        {
+            var firstList = new CircularDoublyLinkedList<int> { 1, 2, 3};
+            var secondList = new CircularDoublyLinkedList<int> { 0, 1};
+            Assert.Throws<InvalidOperationException>(() => secondList.Add(firstList.Last));
         }
     }
 }

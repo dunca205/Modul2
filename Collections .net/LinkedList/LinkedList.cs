@@ -33,7 +33,8 @@ namespace LinkedList
             ArgumentNullException(current);
             ArgumentNullException(newNode);
             InvalidOperationException(current);
-            // + newNode belongs to another LinkedList<T>.
+            InvalidOperationExceptionForNewNode(newNode);
+
 
             newNode.Next = current.Next;
             newNode.Prev = current;
@@ -204,7 +205,6 @@ namespace LinkedList
             }
 
             throw new InvalidOperationException("Node is not in the current LinkedList");
-            // || newNode belongs to another LinkedList<T>.
         }
         private void ArgumentOutOfRangeException(int index)
         {
@@ -230,6 +230,14 @@ namespace LinkedList
                 return;
             }
             throw new InvalidOperationException("The LinkedList is empty.");
+        }
+        private void InvalidOperationExceptionForNewNode(Node<T> newNode)
+        {
+            if(newNode.List == null) 
+            {
+                return;
+            }
+            throw new InvalidOperationException("Node belongs to another LinkedList.");
         }
     }
 
