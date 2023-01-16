@@ -429,7 +429,7 @@ namespace LinkedList
         }
 
         [Fact]
-        public void ArgumentNullExceptionWhenAddingAfterNull()
+        public void ArgumentNullExceptionWhenAddingBeforeNull()
         {
             var list = new CircularDoublyLinkedList<int>();
             Assert.Throws<ArgumentNullException>(() => list.AddBefore(list.Last, 4));
