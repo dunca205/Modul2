@@ -127,9 +127,6 @@ namespace LinkedList
         }
         public bool Remove(T item)
         {
-            // pt ex: var list = new CircularDoublyLinkedList<int>();
-            // -daca vreau sa testez list.Remove(2),
-            //trebuie sa arunce exceptia : "InvalidOperationException("Node is not in the current LinkedList")? => nu ar mai ajunge sa returneze fals
             var nodeToRemove = Find(item);
             if (nodeToRemove != null)
             {
