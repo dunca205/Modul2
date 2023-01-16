@@ -53,6 +53,7 @@ namespace LinkedList
 
         public void AddBefore(Node<T> current, Node<T> newNode)
         {
+            ArgumentNullException(current);
             AddAfter(current.Prev, newNode);
         }
 

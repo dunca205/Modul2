@@ -427,5 +427,12 @@ namespace LinkedList
             var secondList = new CircularDoublyLinkedList<int> { 0, 1};
             Assert.Throws<InvalidOperationException>(() => secondList.Add(firstList.Last));
         }
+
+        [Fact]
+        public void ArgumentNullExceptionWhenAddingAfterNull()
+        {
+            var list = new CircularDoublyLinkedList<int>();
+            Assert.Throws<ArgumentNullException>(() => list.AddBefore(list.Last, 4));
+        }
     }
 }
