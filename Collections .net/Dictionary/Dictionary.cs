@@ -1,29 +1,88 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Net.Sockets;
 
 namespace Dictionary
 {
     public class Dictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
         int[] buckets;
+        List<Entry<TKey, TValue>>[] elements;
+        //System.Collections.Generic.Dictionary<TKey, TValue> dictionary;
 
-       
-       
-        LinkedList<Entry<TKey, TValue>>[] elements;
-        
         public Dictionary(int size)
         {
             buckets = new int[size];
             Array.Fill(buckets, -1);
-            elements = new LinkedList < Entry<TKey, TValue>>[size];
+            elements = new List<Entry<TKey, TValue>>[size];
         }
+        public TValue this[TKey key]
+        {
+            get
+            {
+                if (ContainsKey(key))
+                {
+                    int bucket = GetBucket(key);
+                    foreach (var element in elements[bucket])
+                    {
+                        if (element.Key.Equals(key))
+                        {
+                            return element.Value;
+                        }
+                    }
+                }
 
-        public TValue this[TKey key] { get => this[key]; set => this[key] = value; }
+                return default;
+            }
 
-        public ICollection<TKey> Keys { get; }
-        public ICollection<TValue> Values { get; }
+            set
+            {
+                int bucket = GetBucket(key);
+                foreach (var element in elements[bucket])
+                {
+                    if (element.Key.Equals(key))
+                    {
+                        element.Value = value;
+                    }
+                }
+            }
+        }
+        public ICollection<TKey> Keys
+        {
+            get
+            {
+                var listOfKeys = new List<TKey>();
+                for (int i = 0; i < elements.Length; i++)
+                {
+                    if (elements[i] != null)
+                    {
+                        foreach (var element in elements[i])
+                        {
+                            listOfKeys.Add(element.Key);
+                        }
+                    }
+                }
+
+                return listOfKeys;
+            }
+        }
+        public ICollection<TValue> Values
+        {
+            get
+            {
+                var listOfValues = new List<TValue>();
+                for (int i = 0; i < elements.Length; i++)
+                {
+                    if (elements[i] != null)
+                    {
+                        foreach (var element in elements[i])
+                        {
+                            listOfValues.Add(element.Value);
+                        }
+                    }
+                }
+
+                return listOfValues;
+            }
+        }
         public int Count { get; set; }
         public bool IsReadOnly { get; }
 
@@ -32,18 +91,17 @@ namespace Dictionary
             int bucketIndex = GetBucket(key);
             var element = new Entry<TKey, TValue>(key, value);
             element.Index = Count;
-          
-            if (buckets[bucketIndex] == -1) 
+
+            if (buckets[bucketIndex] == -1)
             {
-                elements[bucketIndex] = new LinkedList<Entry<TKey, TValue>>(); 
+                elements[bucketIndex] = new List<Entry<TKey, TValue>>();
             }
 
-            elements[bucketIndex].AddFirst(element);
+            elements[bucketIndex].Insert(0, element);
             element.Next = buckets[bucketIndex];
             buckets[bucketIndex] = element.Index;
             Count++;
         }
-
         public void Add(KeyValuePair<TKey, TValue> item)
         {
             Add(item.Key, item.Value);
@@ -51,7 +109,12 @@ namespace Dictionary
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            Count = 0;
+            Array.Clear(buckets, 0, Count);
+            foreach (var entry in elements)
+            {
+                entry.Clear();
+            }
         }
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
@@ -61,9 +124,7 @@ namespace Dictionary
 
         public bool ContainsKey(TKey key)
         {
-            //int bucketIndex = GetBucket(key);
-            //return bucketIndex > 0 && bucketIndex < this.Count;
-            return false;
+            return Keys.Contains(key);
         }
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
@@ -71,14 +132,7 @@ namespace Dictionary
             throw new NotImplementedException();
         }
 
-        public int GetBucket(TKey key)
-        {
-            var absoluteValue = Math.Abs(key.GetHashCode());
-            Math.DivRem(absoluteValue, buckets.Length, out int position);
-            return position;
-        }
-
-        public IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>> GetEnumerator()
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             throw new NotImplementedException();
         }
@@ -88,19 +142,38 @@ namespace Dictionary
             throw new NotImplementedException();
         }
 
-        public bool Remove(System.Collections.Generic.KeyValuePair<TKey, TValue> item)
+        public bool Remove(KeyValuePair<TKey, TValue> item)
         {
             throw new NotImplementedException();
         }
 
-        public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
+        public bool TryGetValue(TKey key, out TValue value)
         {
-            throw new NotImplementedException();
+            value = this[key];
+            return value != null;
         }
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             throw new NotImplementedException();
+        }
+        public int GetBucket(TKey key)
+        {
+            var absoluteValue = Math.Abs(key.GetHashCode());
+            Math.DivRem(absoluteValue, buckets.Length, out int position);
+            return position;
+        }
+        public Entry<TKey, TValue> GetElement(TKey key)
+        {
+            Entry<TKey, TValue> entry = null;
+            var bucket = GetBucket(key);
+            foreach(var element in elements[bucket])
+            {
+                if (element.Key.Equals(key))
+                {
+                    entry = element;
+                }
+            }
+            return entry;
         }
     }
 }
