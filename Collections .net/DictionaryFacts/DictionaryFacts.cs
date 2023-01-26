@@ -65,6 +65,15 @@ namespace Dictionary
         }
 
         [Fact]
+        public void GetValueForMissingKey()
+        {
+            var dictionar = new Dictionary<int, string>(5);
+            dictionar.Add(1, "a");
+            dictionar.Add(2, "b");
+            Assert.Null(dictionar[3]);
+        }
+
+        [Fact]
         public void TryGetValueForExistentKey()
         {
             var dictionar = new Dictionary<int, string>(5);
@@ -97,7 +106,34 @@ namespace Dictionary
             Assert.Equal(1, dictionar.GetElement(7).Next);
             Assert.Equal(3, dictionar.GetElement(12).Next);
         }
-        
+
+        [Fact]
+        public void AddPairsToDictionary()
+        {
+            var dictionar = new Dictionary<int, string>(5);
+            var pair1 = new KeyValuePair<int, string>(1, "a");
+            var pair2 = new KeyValuePair<int, string>(2, "b");
+            var pair3 = new KeyValuePair<int, string>(10, "c");
+            var pair4 = new KeyValuePair<int, string>(7, "d");
+            var pair5 = new KeyValuePair<int, string>(12, "e");
+            var pair6 = new KeyValuePair<int, string>(18, "f");
+            dictionar.Add(pair1); dictionar.Add(pair2); dictionar.Add(pair3);
+            dictionar.Add(pair4); dictionar.Add(pair5);
+            Assert.True(dictionar.Contains(pair1));
+            Assert.False(dictionar.Contains(pair6));
+        }
+
+        [Fact]
+        public void AddPairsAndElements()
+        {
+            var dictionar = new Dictionary<int, string>(5);
+            dictionar.Add(1, "a");
+            dictionar.Add(2, "b");
+            dictionar.Add(new KeyValuePair<int, string>(10, "c"));
+            dictionar.Add(new KeyValuePair<int, string>(7, "d"));
+            dictionar.Add(new KeyValuePair<int, string>(12, "e"));
+            Assert.Equal(5, dictionar.Count);
+        }
 
     }
 }

@@ -6,13 +6,14 @@ namespace Dictionary
     {
         int[] buckets;
         List<Entry<TKey, TValue>>[] elements;
-        //System.Collections.Generic.Dictionary<TKey, TValue> dictionary;
-
+        private int freeIndex;
+       // System.Collections.Generic.Dictionary<TKey, TValue> dictionary;
         public Dictionary(int size)
         {
             buckets = new int[size];
             Array.Fill(buckets, -1);
             elements = new List<Entry<TKey, TValue>>[size];
+            freeIndex = -1;
         }
         public TValue this[TKey key]
         {
@@ -20,14 +21,7 @@ namespace Dictionary
             {
                 if (ContainsKey(key))
                 {
-                    int bucket = GetBucket(key);
-                    foreach (var element in elements[bucket])
-                    {
-                        if (element.Key.Equals(key))
-                        {
-                            return element.Value;
-                        }
-                    }
+                    return GetElement(key).Value;
                 }
 
                 return default;
@@ -35,13 +29,9 @@ namespace Dictionary
 
             set
             {
-                int bucket = GetBucket(key);
-                foreach (var element in elements[bucket])
+                if (ContainsKey(key))
                 {
-                    if (element.Key.Equals(key))
-                    {
-                        element.Value = value;
-                    }
+                   GetElement(key).Value = value;
                 }
             }
         }
@@ -106,7 +96,6 @@ namespace Dictionary
         {
             Add(item.Key, item.Value);
         }
-
         public void Clear()
         {
             Count = 0;
@@ -119,7 +108,7 @@ namespace Dictionary
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            throw new NotImplementedException();
+            return ContainsKey(item.Key) && GetElement(item.Key).Value.Equals(item.Value);
         }
 
         public bool ContainsKey(TKey key)
@@ -139,6 +128,11 @@ namespace Dictionary
 
         public bool Remove(TKey key)
         {
+            if (key == null || !ContainsKey(key))
+            {
+                return false;
+            }
+          
             throw new NotImplementedException();
         }
 
@@ -158,15 +152,14 @@ namespace Dictionary
         }
         public int GetBucket(TKey key)
         {
-            var absoluteValue = Math.Abs(key.GetHashCode());
-            Math.DivRem(absoluteValue, buckets.Length, out int position);
+            Math.DivRem(Math.Abs(key.GetHashCode()), buckets.Length, out int position);
             return position;
         }
         public Entry<TKey, TValue> GetElement(TKey key)
         {
             Entry<TKey, TValue> entry = null;
             var bucket = GetBucket(key);
-            foreach(var element in elements[bucket])
+            foreach (var element in elements[bucket])
             {
                 if (element.Key.Equals(key))
                 {
