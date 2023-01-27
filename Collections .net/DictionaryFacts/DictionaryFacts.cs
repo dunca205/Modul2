@@ -102,9 +102,9 @@ namespace Dictionary
             dictionar.Add(10, "c");
             dictionar.Add(7, "d");
             dictionar.Add(12, "e");
-            Assert.Equal(-1, dictionar.GetElement(2).Next);
-            Assert.Equal(1, dictionar.GetElement(7).Next);
-            Assert.Equal(3, dictionar.GetElement(12).Next);
+            Assert.Equal(-1, dictionar.Find(2).Next);
+            Assert.Equal(1, dictionar.Find(7).Next);
+            Assert.Equal(3, dictionar.Find(12).Next);
         }
 
         [Fact]
@@ -133,6 +133,28 @@ namespace Dictionary
             dictionar.Add(new KeyValuePair<int, string>(7, "d"));
             dictionar.Add(new KeyValuePair<int, string>(12, "e"));
             Assert.Equal(5, dictionar.Count);
+        }
+
+        [Fact]
+        public void GetEnumeratorForEntrys()
+        {
+            var dictionar = new Dictionary<int, string>(5);
+            dictionar.Add(1, "a");
+            dictionar.Add(2, "b");
+            dictionar.Add(10, "c");
+            dictionar.Add(7, "d");
+            dictionar.Add(12, "e");
+            var enumerator = dictionar.GetEnumerator();
+            int enumeratorElements = 0;
+            string values = "";
+            while(enumerator.MoveNext())
+            {
+                enumeratorElements++;
+                values += enumerator.Current.Value;
+            }
+            Assert.Equal(enumeratorElements, dictionar.Count);
+            Assert.Equal("caedb", values);
+
         }
 
     }

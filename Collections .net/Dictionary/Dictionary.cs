@@ -7,7 +7,7 @@ namespace Dictionary
         int[] buckets;
         List<Entry<TKey, TValue>>[] elements;
         private int freeIndex;
-       // System.Collections.Generic.Dictionary<TKey, TValue> dictionary;
+        // System.Collections.Generic.Dictionary<TKey, TValue> dictionary;
         public Dictionary(int size)
         {
             buckets = new int[size];
@@ -21,7 +21,7 @@ namespace Dictionary
             {
                 if (ContainsKey(key))
                 {
-                    return GetElement(key).Value;
+                    return Find(key).Value;
                 }
 
                 return default;
@@ -31,7 +31,7 @@ namespace Dictionary
             {
                 if (ContainsKey(key))
                 {
-                   GetElement(key).Value = value;
+                    Find(key).Value = value;
                 }
             }
         }
@@ -108,7 +108,7 @@ namespace Dictionary
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            return ContainsKey(item.Key) && GetElement(item.Key).Value.Equals(item.Value);
+            return ContainsKey(item.Key) && Find(item.Key).Value.Equals(item.Value);
         }
 
         public bool ContainsKey(TKey key)
@@ -123,7 +123,16 @@ namespace Dictionary
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < buckets.Length; i++)
+            {
+                if (buckets[i] != -1)
+                {
+                    foreach (var element in elements[i])
+                    {
+                        yield return new KeyValuePair<TKey, TValue>(key: element.Key, value: element.Value);
+                    }
+                }
+            }
         }
 
         public bool Remove(TKey key)
@@ -132,7 +141,7 @@ namespace Dictionary
             {
                 return false;
             }
-          
+
             throw new NotImplementedException();
         }
 
@@ -148,14 +157,14 @@ namespace Dictionary
         }
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
         public int GetBucket(TKey key)
         {
             Math.DivRem(Math.Abs(key.GetHashCode()), buckets.Length, out int position);
             return position;
         }
-        public Entry<TKey, TValue> GetElement(TKey key)
+        public Entry<TKey, TValue> Find(TKey key)
         {
             Entry<TKey, TValue> entry = null;
             var bucket = GetBucket(key);
