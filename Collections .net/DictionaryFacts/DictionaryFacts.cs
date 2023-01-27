@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using Xunit;
 namespace Dictionary
 {
@@ -154,6 +155,21 @@ namespace Dictionary
             }
             Assert.Equal(enumeratorElements, dictionar.Count);
             Assert.Equal("caedb", values);
+
+        }
+
+        [Fact]
+        public void CopyElementsFromDictionaryToArray()
+        {
+            var dictionar = new Dictionary<int, string>(5);
+            dictionar.Add(1, "a");
+            dictionar.Add(2, "b");
+            dictionar.Add(10, "c");
+            dictionar.Add(7, "d");
+            dictionar.Add(12, "e");
+            var array = new KeyValuePair<int, string>[5];
+            dictionar.CopyTo(array, 0);
+            Assert.Equal("c", array[0].Value);
 
         }
 
