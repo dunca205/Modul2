@@ -6,13 +6,15 @@ namespace Dictionary
     {
         int[] buckets;
         List<Entry<TKey, TValue>>[] elements;
-        private int freeIndex;
         // System.Collections.Generic.Dictionary<TKey, TValue> dictionary;
+        private List<Entry<TKey, TValue>> removedElements;
+        public int freeIndex;
         public Dictionary(int size)
         {
             buckets = new int[size];
             Array.Fill(buckets, -1);
             elements = new List<Entry<TKey, TValue>>[size];
+            removedElements = new List<Entry<TKey, TValue>>();
             freeIndex = -1;
         }
         public TValue this[TKey key]
@@ -80,12 +82,10 @@ namespace Dictionary
         {
             int bucketIndex = GetBucket(key);
             var element = new Entry<TKey, TValue>(key, value);
-            element.Index = Count;
 
-            if (buckets[bucketIndex] == -1)
-            {
-                elements[bucketIndex] = new List<Entry<TKey, TValue>>();
-            }
+            CreateListForBucket(bucketIndex);
+
+            SetIndex(element);
 
             elements[bucketIndex].Insert(0, element);
             element.Next = buckets[bucketIndex];
@@ -126,7 +126,7 @@ namespace Dictionary
                 array[arrayIndex] = new KeyValuePair<TKey, TValue>(enumeratorKeys.Current, enumeratorValues.Current);
                 arrayIndex++;
             }
-            
+
         }
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
@@ -150,7 +150,14 @@ namespace Dictionary
                 return false;
             }
 
-            throw new NotImplementedException();
+            int bucket = GetBucket(key);
+            var elementToRemove = Find(key);
+            removedElements.Insert(0, elementToRemove);// punem elementul sters in capul listei de elemente sterse
+            elements[bucket].Remove(elementToRemove);
+            UpdateFreeIndex();
+            Count--;
+
+            return false;
         }
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
@@ -184,6 +191,36 @@ namespace Dictionary
                 }
             }
             return entry;
+        }
+        private void UpdateFreeIndex()
+        {
+            if (removedElements.Count == 0)
+            {
+                freeIndex = -1;
+                return;
+            }
+
+            freeIndex = removedElements[0].Index;
+        }
+        private void CreateListForBucket(int bucketIndex)
+        {
+            if (buckets[bucketIndex] != -1)
+            {
+                return;
+            }
+            elements[bucketIndex] = new List<Entry<TKey, TValue>>();
+        }
+        private void SetIndex(Entry<TKey, TValue> element)
+        {
+            if (removedElements.Count > 0)
+            {
+                element.Index = removedElements[0].Index;
+                removedElements.RemoveAt(0);
+                UpdateFreeIndex();
+                return;
+            }
+
+            element.Index = Count;
         }
     }
 }

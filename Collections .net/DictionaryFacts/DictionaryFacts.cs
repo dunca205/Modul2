@@ -1,4 +1,3 @@
-using Newtonsoft.Json.Linq;
 using Xunit;
 namespace Dictionary
 {
@@ -148,14 +147,13 @@ namespace Dictionary
             var enumerator = dictionar.GetEnumerator();
             int enumeratorElements = 0;
             string values = "";
-            while(enumerator.MoveNext())
+            while (enumerator.MoveNext())
             {
                 enumeratorElements++;
                 values += enumerator.Current.Value;
             }
             Assert.Equal(enumeratorElements, dictionar.Count);
             Assert.Equal("caedb", values);
-
         }
 
         [Fact]
@@ -170,7 +168,39 @@ namespace Dictionary
             var array = new KeyValuePair<int, string>[5];
             dictionar.CopyTo(array, 0);
             Assert.Equal("c", array[0].Value);
+        }
 
+        [Fact]
+        public void RemoveTwoElementsFromDictionar_CheckFreeIndex()
+        {
+            var dictionar = new Dictionary<int, string>(5);
+            dictionar.Add(1, "a"); //0
+            dictionar.Add(2, "b"); //1
+            dictionar.Add(10, "c");//2
+            dictionar.Add(7, "d"); //3
+            dictionar.Add(12, "e");//4
+            dictionar.Remove(7);
+            Assert.Equal(3, dictionar.freeIndex);
+            dictionar.Remove(1);
+            Assert.Equal(0, dictionar.freeIndex);
+        }
+
+        [Fact]
+        public void AddNewElements_IndexOfElementsIsEqualWithIndexOfRemovedElement()
+        {
+            var dictionar = new Dictionary<int, string>(5);
+            dictionar.Add(1, "a"); //0
+            dictionar.Add(2, "b"); //1
+            dictionar.Add(10, "c");//2
+            dictionar.Add(7, "d"); //3
+            dictionar.Add(12, "e");//4
+            dictionar.Remove(7);//3
+            dictionar.Remove(1);//0
+            dictionar.Add(17, "f");
+            Assert.Equal(0, dictionar.Find(17).Index);
+            Assert.Equal(3, dictionar.freeIndex);
+            dictionar.Add(3, "g");
+            Assert.Equal(3,dictionar.Find(3).Index);
         }
 
     }
