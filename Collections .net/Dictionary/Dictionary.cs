@@ -6,7 +6,6 @@ namespace Dictionary
     {
         int[] buckets;
         List<Entry<TKey, TValue>>[] elements;
-        // System.Collections.Generic.Dictionary<TKey, TValue> dictionary;
         private List<Entry<TKey, TValue>> removedElements;
         public int freeIndex;
         public Dictionary(int size)
@@ -15,7 +14,6 @@ namespace Dictionary
             Array.Fill(buckets, -1);
             elements = new List<Entry<TKey, TValue>>[size];
             removedElements = new List<Entry<TKey, TValue>>();
-            freeIndex = -1;
         }
         public TValue this[TKey key]
         {
@@ -157,12 +155,12 @@ namespace Dictionary
             UpdateFreeIndex();
             Count--;
 
-            return false;
+            return Find(key) != null;
         }
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            throw new NotImplementedException();
+           return Remove(item.Key);
         }
 
         public bool TryGetValue(TKey key, out TValue value)
