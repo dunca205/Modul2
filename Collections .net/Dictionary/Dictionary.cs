@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics;
 
 namespace Dictionary
 {
@@ -106,7 +107,7 @@ namespace Dictionary
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            return ContainsKey(item.Key) && Find(item.Key).Value.Equals(item.Value);
+            return ContainsKey(item.Key) && this[item.Key].Equals(item.Value);
         }
 
         public bool ContainsKey(TKey key)
@@ -151,7 +152,7 @@ namespace Dictionary
             int bucket = GetBucket(key);
             var elementToRemove = Find(key);
             removedElements.Insert(0, elementToRemove);// punem elementul sters in capul listei de elemente sterse
-            elements[bucket].Remove(elementToRemove);
+            elements[bucket].Remove(elementToRemove); //stergem elementul din lista
             UpdateFreeIndex();
             Count--;
 
