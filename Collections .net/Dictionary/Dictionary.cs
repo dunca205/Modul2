@@ -5,7 +5,7 @@ namespace Dictionary
 {
     public class Dictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
-        int[] buckets;
+        public int[] buckets;
         List<Entry<TKey, TValue>>[] elements;
         private List<Entry<TKey, TValue>> removedElements;
         public int freeIndex;
@@ -149,11 +149,13 @@ namespace Dictionary
                 return false;
             }
 
-            int bucket = GetBucket(key);
+            int bucketIndex = GetBucket(key);
             var elementToRemove = Find(key);
             removedElements.Insert(0, elementToRemove);// punem elementul sters in capul listei de elemente sterse
-            elements[bucket].Remove(elementToRemove); //stergem elementul din lista
+            elements[bucketIndex].Remove(elementToRemove); //stergem elementul din lista
             UpdateFreeIndex();
+            UpdadeBucket(bucketIndex);
+            
             Count--;
 
             return Find(key) != null;
@@ -191,6 +193,18 @@ namespace Dictionary
             }
             return entry;
         }
+
+        private void UpdadeBucket(int bucketIndex)
+        {
+            if (elements[bucketIndex].Count == 0)
+            {
+                buckets[bucketIndex] = -1;
+                return;
+            }
+
+            buckets[bucketIndex] = elements[bucketIndex][0].Index;
+        }
+
         private void UpdateFreeIndex()
         {
             if (removedElements.Count == 0)
