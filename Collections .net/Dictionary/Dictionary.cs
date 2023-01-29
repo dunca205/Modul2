@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Xml.Linq;
 
 namespace Dictionary
 {
@@ -72,15 +73,23 @@ namespace Dictionary
         }
         public int Count { get; set; }
         public bool IsReadOnly { get; }
-
         public void Add(TKey key, TValue value)
         {
-            var element = new Entry<TKey, TValue>(key, value);
-
             int bucketIndex = GetBucket(key);
             CreateListForBucket(bucketIndex);
 
-            SetIndex(element);
+            Entry<TKey, TValue> element;
+            if (removedElements.Count > 0)
+            {
+                element = RenewRemovedElements(key, value);
+                removedElements.RemoveAt(0);
+                UpdateFreeIndex();
+            }
+            else
+            {
+                element = new Entry<TKey, TValue>(key, value);
+                element.Index = Count;
+            }
 
             elements[bucketIndex].Insert(0, element);
             element.Next = buckets[bucketIndex];
@@ -100,12 +109,10 @@ namespace Dictionary
                 entry.Clear();
             }
         }
-
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
             return ContainsKey(item.Key) && this[item.Key].Equals(item.Value);
         }
-
         public bool ContainsKey(TKey key)
         {
             return Keys.Contains(key);
@@ -121,7 +128,6 @@ namespace Dictionary
                 arrayIndex++;
             }
         }
-
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             for (int i = 0; i < buckets.Length; i++)
@@ -173,6 +179,12 @@ namespace Dictionary
         {
             return GetEnumerator();
         }
+        public Entry<TKey, TValue> RenewRemovedElements(TKey key, TValue value)
+        {
+            removedElements[0].Key = key;
+            removedElements[0].Value = value;
+            return removedElements[0];
+        }
         public int GetBucket(TKey key)
         {
             Math.DivRem(Math.Abs(key.GetHashCode()), buckets.Length, out int position);
@@ -218,18 +230,6 @@ namespace Dictionary
                 return;
             }
             elements[bucketIndex] = new List<Entry<TKey, TValue>>();
-        }
-        private void SetIndex(Entry<TKey, TValue> element)
-        {
-            if (removedElements.Count > 0)
-            {
-                element.Index = removedElements[0].Index;
-                removedElements.RemoveAt(0);
-                UpdateFreeIndex();
-                return;
-            }
-
-            element.Index = Count;
         }
         private void UpdatePrevElementPointer(int bucket, int indexOfRemovedElement, int newPointer)
         {
