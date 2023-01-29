@@ -219,21 +219,22 @@ namespace Dictionary
             dictionar.Add(3, "g"); //3
             Assert.Equal(4, dictionar.Find(17).Next);
         }
+
         [Fact]
-        public void CheckBucketAfterAllElementsWereRemovedFromItsList()
+        public void RemoveAllElementsFromAList()
         {
             var dictionar = new Dictionary<int, string>(5);
-            dictionar.Add(1, "a"); //0
-            dictionar.Add(2, "b"); //1
-            dictionar.Add(10, "c");//2
-            dictionar.Add(7, "d"); //3
-            dictionar.Add(12, "e");//4
-            dictionar.Remove(12);
+            dictionar.Add(1, "a");
+            dictionar.Add(2, "b"); 
+            dictionar.Add(10, "c");
+            dictionar.Add(7, "d"); 
+            dictionar.Add(12, "e");
             dictionar.Remove(7);
             dictionar.Remove(2);
-            Assert.Equal(-1, dictionar.buckets[2]);
-           
-        }
+            dictionar.Remove(12);
+            Assert.Equal(2, dictionar.Count);
 
+        }
+        
     }
 }

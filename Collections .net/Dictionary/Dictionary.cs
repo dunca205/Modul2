@@ -5,7 +5,7 @@ namespace Dictionary
 {
     public class Dictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
-        public int[] buckets;
+        private int[] buckets;
         List<Entry<TKey, TValue>>[] elements;
         private List<Entry<TKey, TValue>> removedElements;
         public int freeIndex;
@@ -79,14 +79,16 @@ namespace Dictionary
 
         public void Add(TKey key, TValue value)
         {
-            int bucketIndex = GetBucket(key);
             var element = new Entry<TKey, TValue>(key, value);
 
+            int bucketIndex = GetBucket(key);
             CreateListForBucket(bucketIndex);
 
             SetIndex(element);
 
             elements[bucketIndex].Insert(0, element);
+
+          //  UpdatePrevElementPointer(elements[bucketIndex],(elements[bucketIndex][0]));
             element.Next = buckets[bucketIndex];
             buckets[bucketIndex] = element.Index;
             Count++;
@@ -151,6 +153,13 @@ namespace Dictionary
 
             int bucketIndex = GetBucket(key);
             var elementToRemove = Find(key);
+
+            int indexOfElementToRemove = elements[bucketIndex].IndexOf(elementToRemove);
+            if(indexOfElementToRemove > 0)
+            {
+                UpdatePrevElementPointer(elements[bucketIndex], indexOfElementToRemove, elementToRemove.Next);
+            }
+            
             removedElements.Insert(0, elementToRemove);// punem elementul sters in capul listei de elemente sterse
             elements[bucketIndex].Remove(elementToRemove); //stergem elementul din lista
             UpdateFreeIndex();
@@ -192,6 +201,10 @@ namespace Dictionary
                 }
             }
             return entry;
+        }
+        private void UpdatePrevElementPointer(List<Entry<TKey,TValue>> list, int indexOfRemovedElement, int newPointer)
+        {
+            list[indexOfRemovedElement - 1].Next = newPointer;
         }
 
         private void UpdadeBucket(int bucketIndex)
