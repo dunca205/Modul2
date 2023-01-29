@@ -200,7 +200,7 @@ namespace Dictionary
             Assert.Equal(0, dictionar.Find(17).Index);
             Assert.Equal(3, dictionar.freeIndex);
             dictionar.Add(3, "g");
-            Assert.Equal(3,dictionar.Find(3).Index);
+            Assert.Equal(3, dictionar.Find(3).Index);
             Assert.Equal(-1, dictionar.freeIndex);
         }
 
@@ -215,8 +215,8 @@ namespace Dictionary
             dictionar.Add(12, "e");//4
             dictionar.Remove(7);//3
             dictionar.Remove(1);//0
-            dictionar.Add(17, "f"); //0
-            dictionar.Add(3, "g"); //3
+            dictionar.Add(17, "f");
+            dictionar.Add(3, "g");
             Assert.Equal(4, dictionar.Find(17).Next);
         }
 
@@ -225,9 +225,9 @@ namespace Dictionary
         {
             var dictionar = new Dictionary<int, string>(5);
             dictionar.Add(1, "a");
-            dictionar.Add(2, "b"); 
+            dictionar.Add(2, "b");
             dictionar.Add(10, "c");
-            dictionar.Add(7, "d"); 
+            dictionar.Add(7, "d");
             dictionar.Add(12, "e");
             dictionar.Remove(7);
             dictionar.Remove(2);
@@ -235,6 +235,6 @@ namespace Dictionary
             Assert.Equal(2, dictionar.Count);
 
         }
-        
+
     }
 }

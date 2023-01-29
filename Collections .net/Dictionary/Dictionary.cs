@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Diagnostics;
 
 namespace Dictionary
 {
@@ -20,20 +19,17 @@ namespace Dictionary
         {
             get
             {
-                if (ContainsKey(key))
-                {
-                    return Find(key).Value;
-                }
-
-                return default;
+                return ContainsKey(key) ? Find(key).Value : default;
             }
 
             set
             {
-                if (ContainsKey(key))
+                if (!ContainsKey(key))
                 {
-                    Find(key).Value = value;
+                    return;
                 }
+
+                Find(key).Value = value;
             }
         }
         public ICollection<TKey> Keys
@@ -87,8 +83,6 @@ namespace Dictionary
             SetIndex(element);
 
             elements[bucketIndex].Insert(0, element);
-
-          //  UpdatePrevElementPointer(elements[bucketIndex],(elements[bucketIndex][0]));
             element.Next = buckets[bucketIndex];
             buckets[bucketIndex] = element.Index;
             Count++;
@@ -116,7 +110,6 @@ namespace Dictionary
         {
             return Keys.Contains(key);
         }
-
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             var enumeratorKeys = Keys.GetEnumerator();
@@ -127,7 +120,6 @@ namespace Dictionary
                 array[arrayIndex] = new KeyValuePair<TKey, TValue>(enumeratorKeys.Current, enumeratorValues.Current);
                 arrayIndex++;
             }
-
         }
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
@@ -138,12 +130,11 @@ namespace Dictionary
                 {
                     foreach (var element in elements[i])
                     {
-                        yield return new KeyValuePair<TKey, TValue>(key: element.Key, value: element.Value);
+                        yield return new KeyValuePair<TKey, TValue>(key: element.Key, value: element.Value); 
                     }
                 }
             }
         }
-
         public bool Remove(TKey key)
         {
             if (key == null || !ContainsKey(key))
@@ -155,26 +146,24 @@ namespace Dictionary
             var elementToRemove = Find(key);
 
             int indexOfElementToRemove = elements[bucketIndex].IndexOf(elementToRemove);
-            if(indexOfElementToRemove > 0)
+            if (indexOfElementToRemove > 0)
             {
-                UpdatePrevElementPointer(elements[bucketIndex], indexOfElementToRemove, elementToRemove.Next);
+                UpdatePrevElementPointer(bucketIndex, indexOfElementToRemove, elementToRemove.Next);
             }
-            
+
             removedElements.Insert(0, elementToRemove);// punem elementul sters in capul listei de elemente sterse
             elements[bucketIndex].Remove(elementToRemove); //stergem elementul din lista
             UpdateFreeIndex();
             UpdadeBucket(bucketIndex);
-            
+
             Count--;
 
             return Find(key) != null;
         }
-
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-           return Remove(item.Key);
+            return Remove(item.Key);
         }
-
         public bool TryGetValue(TKey key, out TValue value)
         {
             value = this[key];
@@ -202,11 +191,6 @@ namespace Dictionary
             }
             return entry;
         }
-        private void UpdatePrevElementPointer(List<Entry<TKey,TValue>> list, int indexOfRemovedElement, int newPointer)
-        {
-            list[indexOfRemovedElement - 1].Next = newPointer;
-        }
-
         private void UpdadeBucket(int bucketIndex)
         {
             if (elements[bucketIndex].Count == 0)
@@ -217,7 +201,6 @@ namespace Dictionary
 
             buckets[bucketIndex] = elements[bucketIndex][0].Index;
         }
-
         private void UpdateFreeIndex()
         {
             if (removedElements.Count == 0)
@@ -247,6 +230,10 @@ namespace Dictionary
             }
 
             element.Index = Count;
+        }
+        private void UpdatePrevElementPointer(int bucket, int indexOfRemovedElement, int newPointer)
+        {
+          elements[bucket][indexOfRemovedElement - 1].Next = newPointer;
         }
     }
 }
