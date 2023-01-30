@@ -28,13 +28,14 @@ namespace Dictionary
 
             set
             {
-                if (!ContainsKey(key))
+                var element = Find(key);
+                if (element == null)
                 {
                     Add(key, value);
                     return;
                 }
 
-                Find(key).Value = value;
+                element.Value = value;
             }
         }
         public ICollection<TKey> Keys
@@ -58,7 +59,7 @@ namespace Dictionary
             get
             {
                 var listOfValues = new List<TValue>();
-                for (int i = 0; i < Count; i++)
+                for (int i = 0; i < elements.Length; i++)
                 {
                     if (elements[i] != null)
                     {
@@ -76,23 +77,23 @@ namespace Dictionary
             int bucketIndex = GetBucket(key);
             Entry<TKey, TValue> element;
 
-            if (freeIndex == -1) 
+            if (freeIndex == -1)
             {
                 elements[Count] = new Entry<TKey, TValue>(key, value);
                 elements[Count].Index = Count;
-                elements[Count].Next = buckets[bucketIndex]; 
+                elements[Count].Next = buckets[bucketIndex];
                 buckets[bucketIndex] = Count;
                 Count++;
                 return;
             }
 
             int nextFreeIndex = elements[freeIndex].Next;
-           
-            elements[freeIndex].Key= key; 
-            elements[freeIndex].Value= value; 
-            elements[freeIndex].Next = buckets[bucketIndex]; 
+
+            elements[freeIndex].Key = key;
+            elements[freeIndex].Value = value;
+            elements[freeIndex].Next = buckets[bucketIndex];
             buckets[bucketIndex] = freeIndex;
-            freeIndex = nextFreeIndex; 
+            freeIndex = nextFreeIndex;
 
             return;
         }
@@ -187,6 +188,6 @@ namespace Dictionary
             }
             return default;
         }
-     
+
     }
 }

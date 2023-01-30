@@ -222,7 +222,7 @@ namespace Dictionary
             dictionar.Add(17, "f"); // intra pe 0 in bucket 2 
             Assert.Equal(4, dictionar.Find(17).Next);
             dictionar.Add(3, "g"); // intra pe 3
-            
+
         }
 
         [Fact]
