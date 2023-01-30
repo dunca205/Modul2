@@ -153,7 +153,7 @@ namespace Dictionary
                 values += enumerator.Current.Value;
             }
             Assert.Equal(enumeratorElements, dictionar.Count);
-            Assert.Equal("caedb", values);
+            Assert.Equal("abcde", values);
         }
 
         [Fact]
@@ -167,7 +167,7 @@ namespace Dictionary
             dictionar.Add(12, "e");
             var array = new KeyValuePair<int, string>[5];
             dictionar.CopyTo(array, 0);
-            Assert.Equal("c", array[0].Value);
+            Assert.Equal("a", array[0].Value);
         }
 
         [Fact]
@@ -194,11 +194,15 @@ namespace Dictionary
             dictionar.Add(10, "c");//2
             dictionar.Add(7, "d"); //3
             dictionar.Add(12, "e");//4
+
             dictionar.Remove(7);//3
             dictionar.Remove(1);//0
-            dictionar.Add(17, "f");
+
+            dictionar.Add(17, "f"); //0
+
             Assert.Equal(0, dictionar.Find(17).Index);
             Assert.Equal(3, dictionar.freeIndex);
+
             dictionar.Add(3, "g");
             Assert.Equal(3, dictionar.Find(3).Index);
             Assert.Equal(-1, dictionar.freeIndex);
@@ -215,9 +219,10 @@ namespace Dictionary
             dictionar.Add(12, "e");//4
             dictionar.Remove(7);//3
             dictionar.Remove(1);//0
-            dictionar.Add(17, "f");
-            dictionar.Add(3, "g");
+            dictionar.Add(17, "f"); // intra pe 0 in bucket 2 
             Assert.Equal(4, dictionar.Find(17).Next);
+            dictionar.Add(3, "g"); // intra pe 3
+            
         }
 
         [Fact]

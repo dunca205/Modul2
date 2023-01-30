@@ -1,32 +1,36 @@
 ﻿using System.Collections;
-using System.Xml.Linq;
 
 namespace Dictionary
 {
     public class Dictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
         private int[] buckets;
-        List<Entry<TKey, TValue>>[] elements;
-        private List<Entry<TKey, TValue>> removedElements;
+        private Entry<TKey, TValue>[] elements;
         public int freeIndex;
         public Dictionary(int size)
         {
             buckets = new int[size];
             Array.Fill(buckets, -1);
-            elements = new List<Entry<TKey, TValue>>[size];
-            removedElements = new List<Entry<TKey, TValue>>();
+            elements = new Entry<TKey, TValue>[size];
+            freeIndex = -1;
         }
         public TValue this[TKey key]
         {
             get
             {
-                return ContainsKey(key) ? Find(key).Value : default;
+                if (!Keys.Contains(key))
+                {
+                    return default;
+                }
+
+                return Find(key).Value;
             }
 
             set
             {
                 if (!ContainsKey(key))
                 {
+                    Add(key, value);
                     return;
                 }
 
@@ -42,10 +46,7 @@ namespace Dictionary
                 {
                     if (elements[i] != null)
                     {
-                        foreach (var element in elements[i])
-                        {
-                            listOfKeys.Add(element.Key);
-                        }
+                        listOfKeys.Add(elements[i].Key);
                     }
                 }
 
@@ -57,14 +58,11 @@ namespace Dictionary
             get
             {
                 var listOfValues = new List<TValue>();
-                for (int i = 0; i < elements.Length; i++)
+                for (int i = 0; i < Count; i++)
                 {
                     if (elements[i] != null)
                     {
-                        foreach (var element in elements[i])
-                        {
-                            listOfValues.Add(element.Value);
-                        }
+                        listOfValues.Add(elements[i].Value);
                     }
                 }
 
@@ -76,25 +74,27 @@ namespace Dictionary
         public void Add(TKey key, TValue value)
         {
             int bucketIndex = GetBucket(key);
-            CreateListForBucket(bucketIndex);
-
             Entry<TKey, TValue> element;
-            if (removedElements.Count > 0)
+
+            if (freeIndex == -1) 
             {
-                element = RenewRemovedElements(key, value);
-                removedElements.RemoveAt(0);
-                UpdateFreeIndex();
-            }
-            else
-            {
-                element = new Entry<TKey, TValue>(key, value);
-                element.Index = Count;
+                elements[Count] = new Entry<TKey, TValue>(key, value);
+                elements[Count].Index = Count;
+                elements[Count].Next = buckets[bucketIndex]; 
+                buckets[bucketIndex] = Count;
+                Count++;
+                return;
             }
 
-            elements[bucketIndex].Insert(0, element);
-            element.Next = buckets[bucketIndex];
-            buckets[bucketIndex] = element.Index;
-            Count++;
+            int nextFreeIndex = elements[freeIndex].Next;
+           
+            elements[freeIndex].Key= key; 
+            elements[freeIndex].Value= value; 
+            elements[freeIndex].Next = buckets[bucketIndex]; 
+            buckets[bucketIndex] = freeIndex;
+            freeIndex = nextFreeIndex; 
+
+            return;
         }
         public void Add(KeyValuePair<TKey, TValue> item)
         {
@@ -104,10 +104,10 @@ namespace Dictionary
         {
             Count = 0;
             Array.Clear(buckets, 0, Count);
-            foreach (var entry in elements)
-            {
-                entry.Clear();
-            }
+            //foreach (var entry in elements)
+            //{
+            //    entry.Clear();
+            //}
         }
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
@@ -130,15 +130,11 @@ namespace Dictionary
         }
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            for (int i = 0; i < buckets.Length; i++)
+            var keys = Keys.GetEnumerator();
+            var values = Values.GetEnumerator();
+            while (keys.MoveNext() && values.MoveNext())
             {
-                if (buckets[i] != -1)
-                {
-                    foreach (var element in elements[i])
-                    {
-                        yield return new KeyValuePair<TKey, TValue>(key: element.Key, value: element.Value); 
-                    }
-                }
+                yield return new KeyValuePair<TKey, TValue>(keys.Current, values.Current);
             }
         }
         public bool Remove(TKey key)
@@ -148,23 +144,19 @@ namespace Dictionary
                 return false;
             }
 
-            int bucketIndex = GetBucket(key);
             var elementToRemove = Find(key);
+            int bucketIndex = GetBucket(key);
 
-            int indexOfElementToRemove = elements[bucketIndex].IndexOf(elementToRemove);
-            if (indexOfElementToRemove > 0)
+            if (buckets[bucketIndex] == elementToRemove.Index)
             {
-                UpdatePrevElementPointer(bucketIndex, indexOfElementToRemove, elementToRemove.Next);
+                buckets[bucketIndex] = elementToRemove.Next;
             }
 
-            removedElements.Insert(0, elementToRemove);// punem elementul sters in capul listei de elemente sterse
-            elements[bucketIndex].Remove(elementToRemove); //stergem elementul din lista
-            UpdateFreeIndex();
-            UpdadeBucket(bucketIndex);
-
+            elementToRemove.Next = freeIndex;
+            freeIndex = elementToRemove.Index;
             Count--;
 
-            return Find(key) != null;
+            return true;
         }
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
@@ -179,12 +171,6 @@ namespace Dictionary
         {
             return GetEnumerator();
         }
-        public Entry<TKey, TValue> RenewRemovedElements(TKey key, TValue value)
-        {
-            removedElements[0].Key = key;
-            removedElements[0].Value = value;
-            return removedElements[0];
-        }
         public int GetBucket(TKey key)
         {
             Math.DivRem(Math.Abs(key.GetHashCode()), buckets.Length, out int position);
@@ -192,48 +178,15 @@ namespace Dictionary
         }
         public Entry<TKey, TValue> Find(TKey key)
         {
-            Entry<TKey, TValue> entry = null;
-            var bucket = GetBucket(key);
-            foreach (var element in elements[bucket])
+            foreach (var element in elements)
             {
                 if (element.Key.Equals(key))
                 {
-                    entry = element;
+                    return element;
                 }
             }
-            return entry;
+            return default;
         }
-        private void UpdadeBucket(int bucketIndex)
-        {
-            if (elements[bucketIndex].Count == 0)
-            {
-                buckets[bucketIndex] = -1;
-                return;
-            }
-
-            buckets[bucketIndex] = elements[bucketIndex][0].Index;
-        }
-        private void UpdateFreeIndex()
-        {
-            if (removedElements.Count == 0)
-            {
-                freeIndex = -1;
-                return;
-            }
-
-            freeIndex = removedElements[0].Index;
-        }
-        private void CreateListForBucket(int bucketIndex)
-        {
-            if (buckets[bucketIndex] != -1)
-            {
-                return;
-            }
-            elements[bucketIndex] = new List<Entry<TKey, TValue>>();
-        }
-        private void UpdatePrevElementPointer(int bucket, int indexOfRemovedElement, int newPointer)
-        {
-          elements[bucket][indexOfRemovedElement - 1].Next = newPointer;
-        }
+     
     }
 }
