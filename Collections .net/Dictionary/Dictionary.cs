@@ -43,6 +43,11 @@ namespace Dictionary
             get
             {
                 var listOfKeys = new List<TKey>();
+                //var enumerator = GetEnumerator();
+                //while (enumerator.MoveNext()) 
+                //{
+                //    listOfKeys.Add(enumerator.Current.Key);
+                //}
                 for (int i = 0; i < elements.Length; i++)
                 {
                     if (elements[i] != null && freeIndex != elements[i].Index)
@@ -133,23 +138,29 @@ namespace Dictionary
         {
             for (int i = 0; i < buckets.Length; i++)
             {
-                if (buckets[i] != -1) // avem elemente in bucket
+
+                for (int elementBucket = buckets[i]; elementBucket != -1; elementBucket = elements[elementBucket].Next)
                 {
-                    var elementBucket = elements[buckets[i]]; // elementul din bucket
-                    for (int j = freeIndex; j != -1; j = elements[freeIndex].Next) // comparam elementele din bucket cu fiecare element free 
-                    {
-                        if (elementBucket.Index != elements[j].Index) // verificam daca tem este ultimul din bucket, apoi daca este pe lista de elemente sterse 
-                        {
-                            yield return new KeyValuePair<TKey, TValue>(key: elementBucket.Key, value: elementBucket.Value);
-                            if(elementBucket.Next == -1)
-                            {
-                                break;
-                            }
-                            elementBucket = elements[elementBucket.Next];
-                        }
-                    }
+                    yield return new KeyValuePair<TKey, TValue>(key: elements[elementBucket].Key, value: elements[elementBucket].Value);
                 }
+
+                //var elementBucket = elements[buckets[i]]; // elementul din bucketul i 
+
+                //for (int j = freeIndex; j != -1; j = elements[freeIndex].Next) // comparam elementele din bucket cu fiecare element free 
+                //{
+                //    if (elementBucket.Index != elements[j].Index) // verificam daca elementBucket  este pe lista de elemente sterse 
+                //    {
+                //        yield return new KeyValuePair<TKey, TValue>(key: elementBucket.Key, value: elementBucket.Value);
+                //        if (elementBucket.Next == -1)
+                //        {
+                //            break;// break daca elementBucket  este ultimul din bucket
+                //        }
+                //        elementBucket = elements[elementBucket.Next]; // inaintam cu un el
+                //    }
+                //}
+
             }
+
 
         }
         public bool Remove(TKey key)
@@ -166,7 +177,7 @@ namespace Dictionary
             {
                 buckets[bucketIndex] = elementToRemove.Next;
             }
-           
+
             for (int i = buckets[bucketIndex]; i != -1; i = elements[i].Next) // parcurgem bucketu; 
             {
                 if (elements[i].Next == elementToRemove.Index)

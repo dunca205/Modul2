@@ -135,26 +135,26 @@ namespace Dictionary
             Assert.Equal(5, dictionar.Count);
         }
 
-        //[Fact]
-        //public void GetEnumeratorForEntrys()
-        //{
-        //    var dictionar = new Dictionary<int, string>(5);
-        //    dictionar.Add(1, "a");
-        //    dictionar.Add(2, "b");
-        //    dictionar.Add(10, "c");
-        //    dictionar.Add(7, "d");
-        //    dictionar.Add(12, "e");
-        //    var enumerator = dictionar.GetEnumerator();
-        //    int enumeratorElements = 0;
-        //    string values = "";
-        //    while (enumerator.MoveNext())
-        //    {
-        //        enumeratorElements++;
-        //        values += enumerator.Current.Value;
-        //    }
-        //    Assert.Equal(enumeratorElements, dictionar.Count);
-        //    Assert.Equal("abcde", values);
-        //}
+        [Fact]
+        public void GetEnumeratorForEntrys()
+        {
+            var dictionar = new Dictionary<int, string>(5);
+            dictionar.Add(1, "a");
+            dictionar.Add(2, "b");
+            dictionar.Add(10, "c");
+            dictionar.Add(7, "d");
+            dictionar.Add(12, "e");
+            var enumerator = dictionar.GetEnumerator();
+            int enumeratorElements = 0;
+            string values = "";
+            while (enumerator.MoveNext())
+            {
+                enumeratorElements++;
+                values += enumerator.Current.Value;
+            }
+            Assert.Equal(enumeratorElements, dictionar.Count);
+            Assert.Equal("caedb", values);
+        }
 
         [Fact]
         public void CopyElementsFromDictionaryToArray()
