@@ -45,7 +45,7 @@ namespace Dictionary
                 var listOfKeys = new List<TKey>();
                 for (int i = 0; i < elements.Length; i++)
                 {
-                    if (elements[i] != null)
+                    if (elements[i] != null && freeIndex != elements[i].Index)
                     {
                         listOfKeys.Add(elements[i].Key);
                     }
@@ -131,12 +131,26 @@ namespace Dictionary
         }
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            var keys = Keys.GetEnumerator();
-            var values = Values.GetEnumerator();
-            while (keys.MoveNext() && values.MoveNext())
+            for (int i = 0; i < buckets.Length; i++)
             {
-                yield return new KeyValuePair<TKey, TValue>(keys.Current, values.Current);
+                if (buckets[i] != -1) // avem elemente in bucket
+                {
+                    var elementBucket = elements[buckets[i]]; // elementul din bucket
+                    for (int j = freeIndex; j != -1; j = elements[freeIndex].Next) // comparam elementele din bucket cu fiecare element free 
+                    {
+                        if (elementBucket.Index != elements[j].Index) // verificam daca tem este ultimul din bucket, apoi daca este pe lista de elemente sterse 
+                        {
+                            yield return new KeyValuePair<TKey, TValue>(key: elementBucket.Key, value: elementBucket.Value);
+                            if(elementBucket.Next == -1)
+                            {
+                                break;
+                            }
+                            elementBucket = elements[elementBucket.Next];
+                        }
+                    }
+                }
             }
+
         }
         public bool Remove(TKey key)
         {
@@ -152,12 +166,20 @@ namespace Dictionary
             {
                 buckets[bucketIndex] = elementToRemove.Next;
             }
-
-            elementToRemove.Next = freeIndex;
+           
+            for (int i = buckets[bucketIndex]; i != -1; i = elements[i].Next) // parcurgem bucketu; 
+            {
+                if (elements[i].Next == elementToRemove.Index)
+                {
+                    elements[i].Next = elementToRemove.Next;
+                    break;
+                }
+            }
+            elements[elementToRemove.Index].Next = freeIndex;
             freeIndex = elementToRemove.Index;
             Count--;
 
-            return true;
+            return !Keys.Contains(key);
         }
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {

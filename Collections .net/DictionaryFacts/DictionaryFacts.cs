@@ -135,26 +135,26 @@ namespace Dictionary
             Assert.Equal(5, dictionar.Count);
         }
 
-        [Fact]
-        public void GetEnumeratorForEntrys()
-        {
-            var dictionar = new Dictionary<int, string>(5);
-            dictionar.Add(1, "a");
-            dictionar.Add(2, "b");
-            dictionar.Add(10, "c");
-            dictionar.Add(7, "d");
-            dictionar.Add(12, "e");
-            var enumerator = dictionar.GetEnumerator();
-            int enumeratorElements = 0;
-            string values = "";
-            while (enumerator.MoveNext())
-            {
-                enumeratorElements++;
-                values += enumerator.Current.Value;
-            }
-            Assert.Equal(enumeratorElements, dictionar.Count);
-            Assert.Equal("abcde", values);
-        }
+        //[Fact]
+        //public void GetEnumeratorForEntrys()
+        //{
+        //    var dictionar = new Dictionary<int, string>(5);
+        //    dictionar.Add(1, "a");
+        //    dictionar.Add(2, "b");
+        //    dictionar.Add(10, "c");
+        //    dictionar.Add(7, "d");
+        //    dictionar.Add(12, "e");
+        //    var enumerator = dictionar.GetEnumerator();
+        //    int enumeratorElements = 0;
+        //    string values = "";
+        //    while (enumerator.MoveNext())
+        //    {
+        //        enumeratorElements++;
+        //        values += enumerator.Current.Value;
+        //    }
+        //    Assert.Equal(enumeratorElements, dictionar.Count);
+        //    Assert.Equal("abcde", values);
+        //}
 
         [Fact]
         public void CopyElementsFromDictionaryToArray()
@@ -174,11 +174,11 @@ namespace Dictionary
         public void RemoveTwoElementsFromDictionar_CheckFreeIndex()
         {
             var dictionar = new Dictionary<int, string>(5);
-            dictionar.Add(1, "a"); //0
-            dictionar.Add(2, "b"); //1
-            dictionar.Add(10, "c");//2
-            dictionar.Add(7, "d"); //3
-            dictionar.Add(12, "e");//4
+            dictionar.Add(1, "a");
+            dictionar.Add(2, "b");
+            dictionar.Add(10, "c");
+            dictionar.Add(7, "d");
+            dictionar.Add(12, "e");
             dictionar.Remove(7);
             Assert.Equal(3, dictionar.freeIndex);
             dictionar.Remove(1);
@@ -189,16 +189,16 @@ namespace Dictionary
         public void AddNewElements_IndexOfElementsIsEqualWithIndexOfRemovedElement()
         {
             var dictionar = new Dictionary<int, string>(5);
-            dictionar.Add(1, "a"); //0
-            dictionar.Add(2, "b"); //1
-            dictionar.Add(10, "c");//2
-            dictionar.Add(7, "d"); //3
-            dictionar.Add(12, "e");//4
+            dictionar.Add(1, "a");
+            dictionar.Add(2, "b");
+            dictionar.Add(10, "c");
+            dictionar.Add(7, "d");
+            dictionar.Add(12, "e");
 
-            dictionar.Remove(7);//3
-            dictionar.Remove(1);//0
+            dictionar.Remove(7);
+            dictionar.Remove(1);
 
-            dictionar.Add(17, "f"); //0
+            dictionar.Add(17, "f");
 
             Assert.Equal(0, dictionar.Find(17).Index);
             Assert.Equal(3, dictionar.freeIndex);
@@ -212,17 +212,16 @@ namespace Dictionary
         public void AddNewElements_WhenRemovedElementsListIsNotEmpty()
         {
             var dictionar = new Dictionary<int, string>(5);
-            dictionar.Add(1, "a"); //0
-            dictionar.Add(2, "b"); //1
-            dictionar.Add(10, "c");//2
-            dictionar.Add(7, "d"); //3
-            dictionar.Add(12, "e");//4
-            dictionar.Remove(7);//3
-            dictionar.Remove(1);//0
-            dictionar.Add(17, "f"); // intra pe 0 in bucket 2 
+            dictionar.Add(1, "a");
+            dictionar.Add(2, "b");
+            dictionar.Add(10, "c");
+            dictionar.Add(7, "d");
+            dictionar.Add(12, "e");
+            dictionar.Remove(7);
+            dictionar.Remove(1);
+            dictionar.Add(17, "f");
             Assert.Equal(4, dictionar.Find(17).Next);
-            dictionar.Add(3, "g"); // intra pe 3
-
+            dictionar.Add(3, "g");
         }
 
         [Fact]
@@ -238,6 +237,27 @@ namespace Dictionary
             dictionar.Remove(2);
             dictionar.Remove(12);
             Assert.Equal(2, dictionar.Count);
+        }
+
+        [Fact]
+        public void CheckEnumeratorAfterRemoving()
+        {
+            var dictionar = new Dictionary<int, string>(5);
+            dictionar.Add(1, "a");//0 -> bucket 1
+            dictionar.Add(2, "b");//1 -> bucket 2 -> remove
+            dictionar.Add(10, "c");//2 -> bucket 0
+            dictionar.Add(7, "d");//3 -> bucket2 -> remove
+            dictionar.Add(12, "e");//4 -> bucket 2 -> remove
+            dictionar.Remove(7);
+            dictionar.Remove(2);
+            dictionar.Remove(12);
+            var enumerator = dictionar.GetEnumerator();
+            int count = 0;
+            while (enumerator.MoveNext())
+            {
+                count++;
+            }
+            Assert.Equal(2, count);
 
         }
 

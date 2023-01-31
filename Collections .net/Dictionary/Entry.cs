@@ -10,6 +10,7 @@
             this.key = key;
             this.value = value;
             this.Next = -1;
+            this.Index = -1;
         }
 
         public TKey Key { get => this.key; set => this.key = value; }
