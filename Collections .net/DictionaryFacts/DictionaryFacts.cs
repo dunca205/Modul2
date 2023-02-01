@@ -252,6 +252,79 @@ namespace Dictionary
             Assert.False(dictionar.Values.Contains("a"));
 
         }
+        [Fact]
+        public void ArgumentNullException_AddingElementWithNullKey()
+        {
+            var dictionar = new Dictionary<string, string>(5);
+            Assert.Throws<ArgumentNullException>(() => dictionar.Add(key: null, value: "a"));
+        }
+        [Fact]
+        public void ArgumentException_AddingElementWithExistingKey()
+        {
+            var dictionar = new Dictionary<int, string>(5);
+            dictionar.Add(1, "a");
 
+            Assert.Throws<ArgumentException>(() => dictionar.Add(key: 1, value: "c"));
+        }
+        [Fact]
+        public void NotSuportedException_AddingWhenDictionaryIsFull()
+        {
+            var dictionar = new Dictionary<int, string>(3);
+            dictionar.Add(1, "a");
+            dictionar.Add(2, "b");
+            dictionar.Add(10, "c");
+            Assert.Throws<InvalidOperationException>(() => dictionar.Add(key: 3, value: "c"));
+
+        }
+        [Fact]
+        public void ArgumentNullException_CheckingIfDictionarContainsNullKey()
+        {
+            var dictionar = new Dictionary<string, string>(5);
+            dictionar.Add("b", "a");
+            Assert.Throws<ArgumentNullException>(() => dictionar.ContainsKey(key:default));
+        }
+
+        [Fact]
+        public void ArgumentOutOfRangeException_WhenIndexIsLessThanZero()
+        {
+            var dictionar = new Dictionary<int, string>(5);
+            var array = new KeyValuePair<int, string>[5];
+            Assert.Throws<ArgumentOutOfRangeException>(() => dictionar.CopyTo(array, -1));
+        }
+
+        [Fact]
+        public void ArgumentException_WhenArraySizeIsLessThanTheNumberOfElements()
+        {
+            var dictionar = new Dictionary<int, string>(6);
+            dictionar.Add(1, "a");
+            dictionar.Add(2, "b");
+            dictionar.Add(10, "c");
+            dictionar.Add(7, "d");
+            dictionar.Add(12, "e");
+            var array = new KeyValuePair<int, string>[5];
+            Assert.Throws<ArgumentException>(() => dictionar.CopyTo(array, 2));
+        }
+
+        [Fact]
+        public void InvalidOperationException_WhenRemovingAnIndexistentKey()
+        {
+            var dictionar = new Dictionary<int, string>(6);
+            dictionar.Add(1, "a");
+            Assert.Throws<KeyNotFoundException>(() => dictionar.Remove(2));
+        }
+
+        [Fact]
+        public void InvalidOperationException_WhenRemovingAnNulltKey()
+        {
+            var dictionar = new Dictionary<string, string>(6);
+            dictionar.Add("1", "a");
+            Assert.Throws<ArgumentNullException>(() => dictionar.Remove(null));
+        }
+        [Fact]
+        public void TryGetValueForNullKey()
+        {
+            var dictionar = new Dictionary<string, string>(3);
+            Assert.Throws<ArgumentNullException>(() => dictionar.TryGetValue(null, out string value));
+        }
     }
 }

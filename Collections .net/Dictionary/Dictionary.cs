@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Reflection;
 
 namespace Dictionary
 {
@@ -9,8 +8,6 @@ namespace Dictionary
         private int[] buckets;
         private Entry<TKey, TValue>[] elements;
         private int freeIndex;
-        System.Collections.Generic.Dictionary<TKey, TValue> dictionay;
-
 
         public Dictionary(int size)
         {
@@ -74,11 +71,11 @@ namespace Dictionary
         public bool IsReadOnly { get; }
         public void Add(TKey key, TValue value)
         {
-            int bucketIndex = GetBucket(key);
-
+            InvalidOperationException();
             ArgumentNullExceptions(key);
             ArgumentException(key);
 
+            int bucketIndex = GetBucket(key);
             if (freeIndex == -1)
             {
                 elements[Count] = new Entry<TKey, TValue>(key, value);
@@ -147,6 +144,7 @@ namespace Dictionary
         {
             ArgumentNullExceptions(key);
             KeyNotFoundException(key);
+
             var elementToRemove = Find(key);
             int bucketIndex = GetBucket(key);
 
@@ -155,7 +153,7 @@ namespace Dictionary
                 buckets[bucketIndex] = elementToRemove.Next;
             }
 
-            for (int i = buckets[bucketIndex]; i != -1; i = elements[i].Next) // parcurgem bucketu ca sa actualizam elementul care pointa spre cel ce trb sters
+            for (int i = buckets[bucketIndex]; i != -1; i = elements[i].Next)
             {
                 if (elements[i].Next == elementToRemove.Index)
                 {
@@ -208,6 +206,15 @@ namespace Dictionary
 
             return default;
         }
+        private void InvalidOperationException()
+        {
+            if (Count < elements.Length)
+            {
+                return;
+            }
+
+            throw new InvalidOperationException("The dictionary cannot hold any more items.");
+        }
         private static void ArgumentNullExceptions(object obj)
         {
             if (obj != null)
@@ -242,13 +249,8 @@ namespace Dictionary
 
             throw new ArgumentOutOfRangeException(paramName: nameof(arrayIndex), "is less than zero.");
         }
-        private  void ArgumentException(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+        private void ArgumentException(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            if (array.Rank > 1)
-            {
-                throw new ArgumentException(" is multidimensional", nameof(array));
-            }
-
             if (Count <= array.Length - arrayIndex)
             {
                 return;
