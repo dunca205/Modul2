@@ -215,14 +215,6 @@ namespace Dictionary
 
             throw new InvalidOperationException("The dictionary cannot hold any more items.");
         }
-        private static void ArgumentNullExceptions(object obj)
-        {
-            if (obj != null)
-            {
-                return;
-            }
-            throw new ArgumentNullException(nameof(obj));
-        }
         private void KeyNotFoundException(TKey key)
         {
             if (ContainsKey(key))
@@ -240,15 +232,6 @@ namespace Dictionary
 
             throw new ArgumentException("An element with the same key already exists in the Dictionary.");
         }
-        private static void ArgumentOutOfRangeException(int arrayIndex)
-        {
-            if (arrayIndex >= 0)
-            {
-                return;
-            }
-
-            throw new ArgumentOutOfRangeException(paramName: nameof(arrayIndex), "is less than zero.");
-        }
         private void ArgumentException(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             if (Count <= array.Length - arrayIndex)
@@ -257,6 +240,23 @@ namespace Dictionary
             }
 
             throw new ArgumentException("The number of elements in the source ICollection is greater than the available space from index to the end of the destination array.}");
+        }
+        private static void ArgumentNullExceptions(object obj)
+        {
+            if (obj != null)
+            {
+                return;
+            }
+            throw new ArgumentNullException(nameof(obj));
+        }
+        private static void ArgumentOutOfRangeException(int arrayIndex)
+        {
+            if (arrayIndex >= 0)
+            {
+                return;
+            }
+
+            throw new ArgumentOutOfRangeException(paramName: nameof(arrayIndex), "is less than zero.");
         }
 
     }

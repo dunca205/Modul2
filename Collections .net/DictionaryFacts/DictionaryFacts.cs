@@ -326,5 +326,20 @@ namespace Dictionary
             var dictionar = new Dictionary<string, string>(3);
             Assert.Throws<ArgumentNullException>(() => dictionar.TryGetValue(null, out string value));
         }
+
+        [Fact]
+        public void GetValueForNullAndInexistentKey()
+        {
+            var dictionar = new Dictionary<string, string>(3);
+            Assert.Throws<ArgumentNullException>(() => dictionar[null]);
+            Assert.Throws<KeyNotFoundException>(() => dictionar["a"]);
+        }
+        [Fact]
+        public void SetValueForNullKey()
+        {
+            var dictionar = new Dictionary<string, string>(3);
+            Assert.Throws<ArgumentNullException>(() => dictionar[null] = "a");
+            
+        }
     }
 }
