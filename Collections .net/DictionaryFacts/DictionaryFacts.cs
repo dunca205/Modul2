@@ -283,7 +283,7 @@ namespace Dictionary
             dictionar.Add("b", "a");
             Assert.Throws<ArgumentNullException>(() => dictionar.ContainsKey(key:default));
         }
-
+       
         [Fact]
         public void ArgumentOutOfRangeException_WhenIndexIsLessThanZero()
         {
