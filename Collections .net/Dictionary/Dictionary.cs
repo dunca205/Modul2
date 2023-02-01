@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Reflection;
 
 namespace Dictionary
 {
@@ -6,7 +8,10 @@ namespace Dictionary
     {
         private int[] buckets;
         private Entry<TKey, TValue>[] elements;
-        public int freeIndex;
+        private int freeIndex;
+        System.Collections.Generic.Dictionary<TKey, TValue> dictionay;
+
+
         public Dictionary(int size)
         {
             buckets = new int[size];
@@ -18,24 +23,23 @@ namespace Dictionary
         {
             get
             {
-                if (!Keys.Contains(key))
-                {
-                    return default;
-                }
+                ArgumentNullExceptions(key);
+                KeyNotFoundException(key);
 
                 return Find(key).Value;
             }
 
             set
             {
+                ArgumentNullExceptions(key);
                 var element = Find(key);
-                if (element == null)
+                if (element == default)
                 {
                     Add(key, value);
                     return;
                 }
 
-                element.Value = value;
+                elements[element.Index].Value = value;
             }
         }
         public ICollection<TKey> Keys
@@ -43,17 +47,10 @@ namespace Dictionary
             get
             {
                 var listOfKeys = new List<TKey>();
-                //var enumerator = GetEnumerator();
-                //while (enumerator.MoveNext()) 
-                //{
-                //    listOfKeys.Add(enumerator.Current.Key);
-                //}
-                for (int i = 0; i < elements.Length; i++)
+                var enumerator = GetEnumerator();
+                while (enumerator.MoveNext())
                 {
-                    if (elements[i] != null && freeIndex != elements[i].Index)
-                    {
-                        listOfKeys.Add(elements[i].Key);
-                    }
+                    listOfKeys.Add(enumerator.Current.Key);
                 }
 
                 return listOfKeys;
@@ -64,12 +61,10 @@ namespace Dictionary
             get
             {
                 var listOfValues = new List<TValue>();
-                for (int i = 0; i < elements.Length; i++)
+                var enumerator = GetEnumerator();
+                while (enumerator.MoveNext())
                 {
-                    if (elements[i] != null)
-                    {
-                        listOfValues.Add(elements[i].Value);
-                    }
+                    listOfValues.Add(enumerator.Current.Value);
                 }
 
                 return listOfValues;
@@ -80,7 +75,9 @@ namespace Dictionary
         public void Add(TKey key, TValue value)
         {
             int bucketIndex = GetBucket(key);
-            Entry<TKey, TValue> element;
+
+            ArgumentNullExceptions(key);
+            ArgumentException(key);
 
             if (freeIndex == -1)
             {
@@ -108,12 +105,8 @@ namespace Dictionary
         }
         public void Clear()
         {
+            Array.Fill(buckets, -1);
             Count = 0;
-            Array.Clear(buckets, 0, Count);
-            //foreach (var entry in elements)
-            //{
-            //    entry.Clear();
-            //}
         }
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
@@ -121,10 +114,15 @@ namespace Dictionary
         }
         public bool ContainsKey(TKey key)
         {
+            ArgumentNullExceptions(key);
             return Keys.Contains(key);
         }
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
+            ArgumentNullExceptions(array);
+            ArgumentOutOfRangeException(arrayIndex);
+            ArgumentException(array, arrayIndex);
+
             var enumeratorKeys = Keys.GetEnumerator();
             var enumeratorValues = Values.GetEnumerator();
 
@@ -138,38 +136,17 @@ namespace Dictionary
         {
             for (int i = 0; i < buckets.Length; i++)
             {
-
                 for (int elementBucket = buckets[i]; elementBucket != -1; elementBucket = elements[elementBucket].Next)
                 {
                     yield return new KeyValuePair<TKey, TValue>(key: elements[elementBucket].Key, value: elements[elementBucket].Value);
                 }
-
-                //var elementBucket = elements[buckets[i]]; // elementul din bucketul i 
-
-                //for (int j = freeIndex; j != -1; j = elements[freeIndex].Next) // comparam elementele din bucket cu fiecare element free 
-                //{
-                //    if (elementBucket.Index != elements[j].Index) // verificam daca elementBucket  este pe lista de elemente sterse 
-                //    {
-                //        yield return new KeyValuePair<TKey, TValue>(key: elementBucket.Key, value: elementBucket.Value);
-                //        if (elementBucket.Next == -1)
-                //        {
-                //            break;// break daca elementBucket  este ultimul din bucket
-                //        }
-                //        elementBucket = elements[elementBucket.Next]; // inaintam cu un el
-                //    }
-                //}
-
             }
-
 
         }
         public bool Remove(TKey key)
         {
-            if (key == null || !ContainsKey(key))
-            {
-                return false;
-            }
-
+            ArgumentNullExceptions(key);
+            KeyNotFoundException(key);
             var elementToRemove = Find(key);
             int bucketIndex = GetBucket(key);
 
@@ -178,7 +155,7 @@ namespace Dictionary
                 buckets[bucketIndex] = elementToRemove.Next;
             }
 
-            for (int i = buckets[bucketIndex]; i != -1; i = elements[i].Next) // parcurgem bucketu; 
+            for (int i = buckets[bucketIndex]; i != -1; i = elements[i].Next) // parcurgem bucketu ca sa actualizam elementul care pointa spre cel ce trb sters
             {
                 if (elements[i].Next == elementToRemove.Index)
                 {
@@ -190,7 +167,7 @@ namespace Dictionary
             freeIndex = elementToRemove.Index;
             Count--;
 
-            return !Keys.Contains(key);
+            return ContainsKey(key);
         }
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
@@ -198,8 +175,17 @@ namespace Dictionary
         }
         public bool TryGetValue(TKey key, out TValue value)
         {
-            value = this[key];
-            return value != null;
+            ArgumentNullExceptions(key);
+
+            if (ContainsKey(key))
+            {
+                value = this[key];
+                return true;
+            }
+
+            value = default;
+            return false;
+
         }
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -214,12 +200,61 @@ namespace Dictionary
         {
             foreach (var element in elements)
             {
-                if (element.Key.Equals(key))
+                if (element?.Key.Equals(key) == true)
                 {
                     return element;
                 }
             }
+
             return default;
+        }
+        private static void ArgumentNullExceptions(object obj)
+        {
+            if (obj != null)
+            {
+                return;
+            }
+            throw new ArgumentNullException(nameof(obj));
+        }
+        private void KeyNotFoundException(TKey key)
+        {
+            if (ContainsKey(key))
+            {
+                return;
+            }
+            throw new KeyNotFoundException();
+        }
+        private void ArgumentException(TKey key)
+        {
+            if (!ContainsKey(key))
+            {
+                return;
+            }
+
+            throw new ArgumentException("An element with the same key already exists in the Dictionary.");
+        }
+        private static void ArgumentOutOfRangeException(int arrayIndex)
+        {
+            if (arrayIndex >= 0)
+            {
+                return;
+            }
+
+            throw new ArgumentOutOfRangeException(paramName: nameof(arrayIndex), "is less than zero.");
+        }
+        private  void ArgumentException(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+        {
+            if (array.Rank > 1)
+            {
+                throw new ArgumentException(" is multidimensional", nameof(array));
+            }
+
+            if (Count <= array.Length - arrayIndex)
+            {
+                return;
+            }
+
+            throw new ArgumentException("The number of elements in the source ICollection is greater than the available space from index to the end of the destination array.}");
         }
 
     }

@@ -65,12 +65,13 @@ namespace Dictionary
         }
 
         [Fact]
-        public void GetValueForMissingKey()
+        public void SetValueForInexistentKey()
         {
             var dictionar = new Dictionary<int, string>(5);
             dictionar.Add(1, "a");
             dictionar.Add(2, "b");
-            Assert.Null(dictionar[3]);
+            dictionar[12] = "f";
+            Assert.True(dictionar.ContainsKey(12));
         }
 
         [Fact]
@@ -89,8 +90,7 @@ namespace Dictionary
             var dictionar = new Dictionary<int, string>(5);
             dictionar.Add(1, "a");
             dictionar.Add(2, "b");
-            Assert.False(dictionar.TryGetValue(4, out var invalid));
-            Assert.Null(invalid);
+            Assert.False(dictionar.TryGetValue(4, out string value));
         }
 
         [Fact]
@@ -167,11 +167,11 @@ namespace Dictionary
             dictionar.Add(12, "e");
             var array = new KeyValuePair<int, string>[5];
             dictionar.CopyTo(array, 0);
-            Assert.Equal("a", array[0].Value);
+            Assert.Equal("c", array[0].Value);
         }
 
         [Fact]
-        public void RemoveTwoElementsFromDictionar_CheckFreeIndex()
+        public void RemoveOneElementsFromDictionar_CheckNextPointer()
         {
             var dictionar = new Dictionary<int, string>(5);
             dictionar.Add(1, "a");
@@ -180,32 +180,7 @@ namespace Dictionary
             dictionar.Add(7, "d");
             dictionar.Add(12, "e");
             dictionar.Remove(7);
-            Assert.Equal(3, dictionar.freeIndex);
-            dictionar.Remove(1);
-            Assert.Equal(0, dictionar.freeIndex);
-        }
-
-        [Fact]
-        public void AddNewElements_IndexOfElementsIsEqualWithIndexOfRemovedElement()
-        {
-            var dictionar = new Dictionary<int, string>(5);
-            dictionar.Add(1, "a");
-            dictionar.Add(2, "b");
-            dictionar.Add(10, "c");
-            dictionar.Add(7, "d");
-            dictionar.Add(12, "e");
-
-            dictionar.Remove(7);
-            dictionar.Remove(1);
-
-            dictionar.Add(17, "f");
-
-            Assert.Equal(0, dictionar.Find(17).Index);
-            Assert.Equal(3, dictionar.freeIndex);
-
-            dictionar.Add(3, "g");
-            Assert.Equal(3, dictionar.Find(3).Index);
-            Assert.Equal(-1, dictionar.freeIndex);
+            Assert.Equal(1, dictionar.Find(12).Next);
         }
 
         [Fact]
@@ -225,7 +200,7 @@ namespace Dictionary
         }
 
         [Fact]
-        public void RemoveAllElementsFromAList()
+        public void RemoveAllElementsFromABucket()
         {
             var dictionar = new Dictionary<int, string>(5);
             dictionar.Add(1, "a");
@@ -236,6 +211,9 @@ namespace Dictionary
             dictionar.Remove(7);
             dictionar.Remove(2);
             dictionar.Remove(12);
+            Assert.False(dictionar.Keys.Contains(7));
+            Assert.False(dictionar.Keys.Contains(2));
+            Assert.False(dictionar.Keys.Contains(12));
             Assert.Equal(2, dictionar.Count);
         }
 
@@ -258,6 +236,20 @@ namespace Dictionary
                 count++;
             }
             Assert.Equal(2, count);
+
+        }
+        [Fact]
+        public void ClearList()
+        {
+            var dictionar = new Dictionary<int, string>(5);
+            dictionar.Add(1, "a");
+            dictionar.Add(2, "b");
+            dictionar.Add(10, "c");
+            dictionar.Add(7, "d");
+            dictionar.Add(12, "e");
+            dictionar.Clear();
+            Assert.False(dictionar.ContainsKey(1));
+            Assert.False(dictionar.Values.Contains("a"));
 
         }
 
