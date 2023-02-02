@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 
 namespace Dictionary
 {
@@ -23,20 +22,20 @@ namespace Dictionary
                 ArgumentNullExceptions(key);
                 KeyNotFoundException(key);
 
-                return Find(key).Value;
+                return elements[FindIndex(key)].Value;
             }
 
             set
             {
                 ArgumentNullExceptions(key);
-                var element = Find(key);
-                if (element == default)
+                var elementIndex = FindIndex(key);
+                if (elementIndex == -1)
                 {
                     Add(key, value);
                     return;
                 }
 
-                elements[element.Index].Value = value;
+                elements[elementIndex].Value = value;
             }
         }
         public ICollection<TKey> Keys
@@ -76,23 +75,13 @@ namespace Dictionary
             ArgumentException(key);
 
             int bucketIndex = GetBucket(key);
-            if (freeIndex == -1)
-            {
-                elements[Count] = new Entry<TKey, TValue>(key, value);
-                elements[Count].Index = Count;
-                elements[Count].Next = buckets[bucketIndex];
-                buckets[bucketIndex] = Count;
-                Count++;
-                return;
-            }
+            int elementIndex = GetIndexForNewElement();
 
-            int nextFreeIndex = elements[freeIndex].Next;
-
-            elements[freeIndex].Key = key;
-            elements[freeIndex].Value = value;
-            elements[freeIndex].Next = buckets[bucketIndex];
-            buckets[bucketIndex] = freeIndex;
-            freeIndex = nextFreeIndex;
+            elements[elementIndex].Key = key;
+            elements[elementIndex].Value = value;
+            elements[elementIndex].Next = buckets[bucketIndex];
+            buckets[bucketIndex] = elementIndex;
+            Count++;
 
             return;
         }
@@ -107,12 +96,13 @@ namespace Dictionary
         }
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            return ContainsKey(item.Key) && this[item.Key].Equals(item.Value);
+            int index = FindIndex(item.Key);
+            return index != -1 && elements[index].Value.Equals(item.Value);
         }
         public bool ContainsKey(TKey key)
         {
             ArgumentNullExceptions(key);
-            return Keys.Contains(key);
+            return FindIndex(key) != -1;
         }
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
@@ -120,14 +110,13 @@ namespace Dictionary
             ArgumentOutOfRangeException(arrayIndex);
             ArgumentException(array, arrayIndex);
 
-            var enumeratorKeys = Keys.GetEnumerator();
-            var enumeratorValues = Values.GetEnumerator();
-
-            while (enumeratorKeys.MoveNext() && enumeratorValues.MoveNext())
+            var getEnumerator = GetEnumerator();
+            while (getEnumerator.MoveNext())
             {
-                array[arrayIndex] = new KeyValuePair<TKey, TValue>(enumeratorKeys.Current, enumeratorValues.Current);
+                array[arrayIndex] = getEnumerator.Current;
                 arrayIndex++;
             }
+
         }
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
@@ -145,24 +134,24 @@ namespace Dictionary
             ArgumentNullExceptions(key);
             KeyNotFoundException(key);
 
-            var elementToRemove = Find(key);
+            var elementToRemove = FindIndex(key);
             int bucketIndex = GetBucket(key);
 
-            if (buckets[bucketIndex] == elementToRemove.Index)
+            if (buckets[bucketIndex] == elementToRemove)
             {
-                buckets[bucketIndex] = elementToRemove.Next;
+                buckets[bucketIndex] = elements[elementToRemove].Next;
             }
 
             for (int i = buckets[bucketIndex]; i != -1; i = elements[i].Next)
             {
-                if (elements[i].Next == elementToRemove.Index)
+                if (elements[i].Next == elementToRemove)
                 {
-                    elements[i].Next = elementToRemove.Next;
+                    elements[i].Next = elements[elementToRemove].Next;
                     break;
                 }
             }
-            elements[elementToRemove.Index].Next = freeIndex;
-            freeIndex = elementToRemove.Index;
+            elements[elementToRemove].Next = freeIndex;
+            freeIndex = elementToRemove;
             Count--;
 
             return ContainsKey(key);
@@ -175,36 +164,51 @@ namespace Dictionary
         {
             ArgumentNullExceptions(key);
 
-            if (ContainsKey(key))
+            int index = FindIndex(key);
+            if (index == -1)
             {
-                value = this[key];
-                return true;
+                value = default;
+                return false;
             }
 
-            value = default;
-            return false;
+            value = elements[index].Value;
+            return true;
 
         }
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
-        public int GetBucket(TKey key)
+        private int GetBucket(TKey key)
         {
             Math.DivRem(Math.Abs(key.GetHashCode()), buckets.Length, out int position);
             return position;
         }
-        public Entry<TKey, TValue> Find(TKey key)
+        private int GetIndexForNewElement()
         {
-            foreach (var element in elements)
+            if (freeIndex == -1)
             {
-                if (element?.Key.Equals(key) == true)
+                elements[Count] = new Entry<TKey, TValue>(default, default);
+                return Count;
+            }
+
+            int tempFreeIndex = freeIndex;
+            freeIndex = elements[freeIndex].Next;
+            return tempFreeIndex;
+
+        }
+        private int FindIndex(TKey key)
+        {
+            int bucketIndex = GetBucket(key);
+            for (int i = buckets[bucketIndex]; i != -1; i = elements[i].Next)
+            {
+                if (elements[i].Key.Equals(key))
                 {
-                    return element;
+                    return i;
                 }
             }
 
-            return default;
+            return -1;
         }
         private void InvalidOperationException()
         {

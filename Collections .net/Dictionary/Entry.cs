@@ -10,13 +10,13 @@
             this.key = key;
             this.value = value;
             this.Next = -1;
-            this.Index = -1;
         }
 
         public TKey Key { get => this.key; set => this.key = value; }
+
         public TValue Value { get => this.value; set => this.value = value; }
+
         public int Next { get; set; }
-        public int Index { get; set; }
     }
 }
 

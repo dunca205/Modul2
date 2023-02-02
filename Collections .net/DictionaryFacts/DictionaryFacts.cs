@@ -4,17 +4,6 @@ namespace Dictionary
     public class DictionaryFacts
     {
         [Fact]
-        public void GetBucketReturnsTheReminderBasedOnSize()
-        {
-            var dictionar = new Dictionary<int, string>(5);
-            Assert.Equal(0, dictionar.GetBucket(10));
-            Assert.Equal(1, dictionar.GetBucket(1));
-            Assert.Equal(2, dictionar.GetBucket(2));
-            Assert.Equal(2, dictionar.GetBucket(7));
-            Assert.Equal(2, dictionar.GetBucket(12));
-        }
-
-        [Fact]
         public void AddOneElementInEachBucket()
         {
             var dictionar = new Dictionary<int, string>(5);
@@ -94,20 +83,6 @@ namespace Dictionary
         }
 
         [Fact]
-        public void CheckNextPointer()
-        {
-            var dictionar = new Dictionary<int, string>(5);
-            dictionar.Add(1, "a");
-            dictionar.Add(2, "b");
-            dictionar.Add(10, "c");
-            dictionar.Add(7, "d");
-            dictionar.Add(12, "e");
-            Assert.Equal(-1, dictionar.Find(2).Next);
-            Assert.Equal(1, dictionar.Find(7).Next);
-            Assert.Equal(3, dictionar.Find(12).Next);
-        }
-
-        [Fact]
         public void AddPairsToDictionary()
         {
             var dictionar = new Dictionary<int, string>(5);
@@ -168,35 +143,6 @@ namespace Dictionary
             var array = new KeyValuePair<int, string>[5];
             dictionar.CopyTo(array, 0);
             Assert.Equal("c", array[0].Value);
-        }
-
-        [Fact]
-        public void RemoveOneElementsFromDictionar_CheckNextPointer()
-        {
-            var dictionar = new Dictionary<int, string>(5);
-            dictionar.Add(1, "a");
-            dictionar.Add(2, "b");
-            dictionar.Add(10, "c");
-            dictionar.Add(7, "d");
-            dictionar.Add(12, "e");
-            dictionar.Remove(7);
-            Assert.Equal(1, dictionar.Find(12).Next);
-        }
-
-        [Fact]
-        public void AddNewElements_WhenRemovedElementsListIsNotEmpty()
-        {
-            var dictionar = new Dictionary<int, string>(5);
-            dictionar.Add(1, "a");
-            dictionar.Add(2, "b");
-            dictionar.Add(10, "c");
-            dictionar.Add(7, "d");
-            dictionar.Add(12, "e");
-            dictionar.Remove(7);
-            dictionar.Remove(1);
-            dictionar.Add(17, "f");
-            Assert.Equal(4, dictionar.Find(17).Next);
-            dictionar.Add(3, "g");
         }
 
         [Fact]
@@ -276,14 +222,15 @@ namespace Dictionary
             Assert.Throws<InvalidOperationException>(() => dictionar.Add(key: 3, value: "c"));
 
         }
+
         [Fact]
         public void ArgumentNullException_CheckingIfDictionarContainsNullKey()
         {
             var dictionar = new Dictionary<string, string>(5);
             dictionar.Add("b", "a");
-            Assert.Throws<ArgumentNullException>(() => dictionar.ContainsKey(key:default));
+            Assert.Throws<ArgumentNullException>(() => dictionar.ContainsKey(key: default));
         }
-       
+
         [Fact]
         public void ArgumentOutOfRangeException_WhenIndexIsLessThanZero()
         {
@@ -339,7 +286,7 @@ namespace Dictionary
         {
             var dictionar = new Dictionary<string, string>(3);
             Assert.Throws<ArgumentNullException>(() => dictionar[null] = "a");
-            
+
         }
     }
 }
