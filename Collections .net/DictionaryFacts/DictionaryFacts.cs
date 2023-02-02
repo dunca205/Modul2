@@ -292,7 +292,6 @@ namespace Dictionary
         {
             var dictionar = new Dictionary<string, string>(3);
             Assert.Throws<ArgumentNullException>(() => dictionar[null] = "a");
-
         }
     }
 }

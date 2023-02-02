@@ -255,7 +255,7 @@ namespace Dictionary
 
         private void KeyNotFoundException(TKey key)
         {
-            if (ContainsKey(key))
+            if (FindIndex(key) != -1)
             {
                 return;
             }
@@ -265,7 +265,7 @@ namespace Dictionary
 
         private void ArgumentException(TKey key)
         {
-            if (!ContainsKey(key))
+            if (FindIndex(key) == -1)
             {
                 return;
             }
