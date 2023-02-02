@@ -15,6 +15,39 @@ namespace Dictionary
             elements = new Entry<TKey, TValue>[size];
             freeIndex = -1;
         }
+
+        public ICollection<TKey> Keys
+        {
+            get
+            {
+                var listOfKeys = new List<TKey>();
+                foreach (var kvp in this)
+                {
+                    listOfKeys.Add(kvp.Key);
+                }
+
+                return listOfKeys;
+            }
+        }
+
+        public ICollection<TValue> Values
+        {
+            get
+            {
+                var listOfValues = new List<TValue>();
+                foreach (var kvp in this)
+                {
+                    listOfValues.Add(kvp.Value);
+                }
+
+                return listOfValues;
+            }
+        }
+
+        public int Count { get; set; }
+
+        public bool IsReadOnly { get; }
+
         public TValue this[TKey key]
         {
             get
@@ -38,36 +71,7 @@ namespace Dictionary
                 elements[elementIndex].Value = value;
             }
         }
-        public ICollection<TKey> Keys
-        {
-            get
-            {
-                var listOfKeys = new List<TKey>();
-                var enumerator = GetEnumerator();
-                while (enumerator.MoveNext())
-                {
-                    listOfKeys.Add(enumerator.Current.Key);
-                }
 
-                return listOfKeys;
-            }
-        }
-        public ICollection<TValue> Values
-        {
-            get
-            {
-                var listOfValues = new List<TValue>();
-                var enumerator = GetEnumerator();
-                while (enumerator.MoveNext())
-                {
-                    listOfValues.Add(enumerator.Current.Value);
-                }
-
-                return listOfValues;
-            }
-        }
-        public int Count { get; set; }
-        public bool IsReadOnly { get; }
         public void Add(TKey key, TValue value)
         {
             InvalidOperationException();
@@ -85,39 +89,43 @@ namespace Dictionary
 
             return;
         }
+
         public void Add(KeyValuePair<TKey, TValue> item)
         {
             Add(item.Key, item.Value);
         }
+
         public void Clear()
         {
             Array.Fill(buckets, -1);
             Count = 0;
         }
+
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
             int index = FindIndex(item.Key);
             return index != -1 && elements[index].Value.Equals(item.Value);
         }
+
         public bool ContainsKey(TKey key)
         {
             ArgumentNullExceptions(key);
             return FindIndex(key) != -1;
         }
+
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             ArgumentNullExceptions(array);
             ArgumentOutOfRangeException(arrayIndex);
             ArgumentException(array, arrayIndex);
 
-            var getEnumerator = GetEnumerator();
-            while (getEnumerator.MoveNext())
+            foreach (var element in this)
             {
-                array[arrayIndex] = getEnumerator.Current;
+                array[arrayIndex] = element;
                 arrayIndex++;
             }
-
         }
+
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             for (int i = 0; i < buckets.Length; i++)
@@ -127,8 +135,8 @@ namespace Dictionary
                     yield return new KeyValuePair<TKey, TValue>(key: elements[elementBucket].Key, value: elements[elementBucket].Value);
                 }
             }
-
         }
+
         public bool Remove(TKey key)
         {
             ArgumentNullExceptions(key);
@@ -150,16 +158,19 @@ namespace Dictionary
                     break;
                 }
             }
+
             elements[elementToRemove].Next = freeIndex;
             freeIndex = elementToRemove;
             Count--;
 
             return ContainsKey(key);
         }
+
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
             return Remove(item.Key);
         }
+
         public bool TryGetValue(TKey key, out TValue value)
         {
             ArgumentNullExceptions(key);
@@ -173,17 +184,38 @@ namespace Dictionary
 
             value = elements[index].Value;
             return true;
-
         }
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
+
+        private static void ArgumentNullExceptions(object obj)
+        {
+            if (obj != null)
+            {
+                return;
+            }
+
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        private static void ArgumentOutOfRangeException(int arrayIndex)
+        {
+            if (arrayIndex >= 0)
+            {
+                return;
+            }
+
+            throw new ArgumentOutOfRangeException(paramName: nameof(arrayIndex), "is less than zero.");
+        }
+
         private int GetBucket(TKey key)
         {
-            Math.DivRem(Math.Abs(key.GetHashCode()), buckets.Length, out int position);
-            return position;
+            return Math.Abs(key.GetHashCode()) % buckets.Length;
         }
+
         private int GetIndexForNewElement()
         {
             if (freeIndex == -1)
@@ -195,8 +227,8 @@ namespace Dictionary
             int tempFreeIndex = freeIndex;
             freeIndex = elements[freeIndex].Next;
             return tempFreeIndex;
-
         }
+
         private int FindIndex(TKey key)
         {
             int bucketIndex = GetBucket(key);
@@ -210,6 +242,7 @@ namespace Dictionary
 
             return -1;
         }
+
         private void InvalidOperationException()
         {
             if (Count < elements.Length)
@@ -219,14 +252,17 @@ namespace Dictionary
 
             throw new InvalidOperationException("The dictionary cannot hold any more items.");
         }
+
         private void KeyNotFoundException(TKey key)
         {
             if (ContainsKey(key))
             {
                 return;
             }
+
             throw new KeyNotFoundException();
         }
+
         private void ArgumentException(TKey key)
         {
             if (!ContainsKey(key))
@@ -236,6 +272,7 @@ namespace Dictionary
 
             throw new ArgumentException("An element with the same key already exists in the Dictionary.");
         }
+
         private void ArgumentException(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             if (Count <= array.Length - arrayIndex)
@@ -245,23 +282,5 @@ namespace Dictionary
 
             throw new ArgumentException("The number of elements in the source ICollection is greater than the available space from index to the end of the destination array.}");
         }
-        private static void ArgumentNullExceptions(object obj)
-        {
-            if (obj != null)
-            {
-                return;
-            }
-            throw new ArgumentNullException(nameof(obj));
-        }
-        private static void ArgumentOutOfRangeException(int arrayIndex)
-        {
-            if (arrayIndex >= 0)
-            {
-                return;
-            }
-
-            throw new ArgumentOutOfRangeException(paramName: nameof(arrayIndex), "is less than zero.");
-        }
-
     }
 }

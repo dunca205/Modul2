@@ -87,15 +87,21 @@ namespace Dictionary
         {
             var dictionar = new Dictionary<int, string>(5);
             var pair1 = new KeyValuePair<int, string>(1, "a");
-            var pair2 = new KeyValuePair<int, string>(2, "b");
-            var pair3 = new KeyValuePair<int, string>(10, "c");
-            var pair4 = new KeyValuePair<int, string>(7, "d");
             var pair5 = new KeyValuePair<int, string>(12, "e");
             var pair6 = new KeyValuePair<int, string>(18, "f");
-            dictionar.Add(pair1); dictionar.Add(pair2); dictionar.Add(pair3);
-            dictionar.Add(pair4); dictionar.Add(pair5);
+
+            var sameKeyDifferetValue = new KeyValuePair<int, string>(12, "s");
+
+
+            dictionar.Add(pair1); 
+            dictionar.Add(pair5);
+
+            Assert.True(dictionar.ContainsKey(12));
+            Assert.False(dictionar.Contains(sameKeyDifferetValue));
+
             Assert.True(dictionar.Contains(pair1));
             Assert.False(dictionar.Contains(pair6));
+            
         }
 
         [Fact]
@@ -144,7 +150,7 @@ namespace Dictionary
             dictionar.CopyTo(array, 0);
             Assert.Equal("c", array[0].Value);
         }
-
+       
         [Fact]
         public void RemoveAllElementsFromABucket()
         {
