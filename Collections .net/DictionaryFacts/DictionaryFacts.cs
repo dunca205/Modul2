@@ -284,6 +284,7 @@ namespace Dictionary
             dictionar.Add(2, "two");
             var kVp = new KeyValuePair<int, string>(1, "two");
             Assert.False(dictionar.Remove(kVp));
+            Assert.True(dictionar.Keys.Contains(1));
         }
 
         [Fact]

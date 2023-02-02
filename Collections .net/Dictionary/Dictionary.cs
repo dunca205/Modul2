@@ -181,7 +181,9 @@ namespace Dictionary
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            return this[item.Key].Equals(item.Value) ? Remove(item.Key) : false;
+            return this[item.Key].Equals(item.Value)
+                ? Remove(item.Key)
+                : false;
         }
 
         public bool TryGetValue(TKey key, out TValue value)
