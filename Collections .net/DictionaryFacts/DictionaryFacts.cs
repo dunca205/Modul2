@@ -268,6 +268,25 @@ namespace Dictionary
         }
 
         [Fact]
+        public void RemovePairWithSameKeyAndValueAsTheOnesInTheDictionay()
+        {
+            var dictionar = new Dictionary<int, string>(6);
+            dictionar.Add(1, "one");
+            dictionar.Add(2, "two");
+            Assert.True(dictionar.Remove(new KeyValuePair<int, string>(1, "one")));
+            Assert.False(dictionar.Keys.Contains(1));
+        }
+        [Fact]
+        public void RemovePairWithSameKeyAndDifferentValue()
+        {
+            var dictionar = new Dictionary<int, string>(6);
+            dictionar.Add(1, "one");
+            dictionar.Add(2, "two");
+            var kVp = new KeyValuePair<int, string>(1, "two");
+            Assert.False(dictionar.Remove(kVp));
+        }
+
+        [Fact]
         public void InvalidOperationException_WhenRemovingAnNulltKey()
         {
             var dictionar = new Dictionary<string, string>(6);

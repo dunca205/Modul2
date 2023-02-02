@@ -173,7 +173,6 @@ namespace Dictionary
             }
 
             elements[indexOfelementToRemove].Next = freeIndex;
-
             freeIndex = indexOfelementToRemove;
             Count--;
 
@@ -182,7 +181,7 @@ namespace Dictionary
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            return Remove(item.Key);
+            return this[item.Key].Equals(item.Value) ? Remove(item.Key) : false;
         }
 
         public bool TryGetValue(TKey key, out TValue value)
