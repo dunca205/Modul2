@@ -53,9 +53,14 @@ namespace Dictionary
             get
             {
                 ArgumentNullExceptions(key);
-                KeyNotFoundException(key);
+                int index = FindIndex(key);
 
-                return elements[FindIndex(key)].Value;
+                if (index < 0)
+                {
+                    throw new KeyNotFoundException();
+                }
+
+                return elements[index].Value;
             }
 
             set
@@ -140,30 +145,39 @@ namespace Dictionary
         public bool Remove(TKey key)
         {
             ArgumentNullExceptions(key);
-            KeyNotFoundException(key);
 
-            var elementToRemove = FindIndex(key);
-            int bucketIndex = GetBucket(key);
+            var indexOfelementToRemove = FindIndex(key);
 
-            if (buckets[bucketIndex] == elementToRemove)
+            if (indexOfelementToRemove == -1)
             {
-                buckets[bucketIndex] = elements[elementToRemove].Next;
+                return false;
             }
 
-            for (int i = buckets[bucketIndex]; i != -1; i = elements[i].Next)
+            int bucketIndex = GetBucket(key);
+
+            if (buckets[bucketIndex] == indexOfelementToRemove)
             {
-                if (elements[i].Next == elementToRemove)
+                buckets[bucketIndex] = elements[indexOfelementToRemove].Next;
+            }
+            else
+            {
+                for (int i = buckets[bucketIndex]; i != -1; i = elements[i].Next)
                 {
-                    elements[i].Next = elements[elementToRemove].Next;
-                    break;
+                    if (elements[i].Next == indexOfelementToRemove)
+                    {
+                        elements[i].Next = elements[indexOfelementToRemove].Next;
+
+                        break;
+                    }
                 }
             }
 
-            elements[elementToRemove].Next = freeIndex;
-            freeIndex = elementToRemove;
+            elements[indexOfelementToRemove].Next = freeIndex;
+
+            freeIndex = indexOfelementToRemove;
             Count--;
 
-            return ContainsKey(key);
+            return true;
         }
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
@@ -251,16 +265,6 @@ namespace Dictionary
             }
 
             throw new InvalidOperationException("The dictionary cannot hold any more items.");
-        }
-
-        private void KeyNotFoundException(TKey key)
-        {
-            if (FindIndex(key) != -1)
-            {
-                return;
-            }
-
-            throw new KeyNotFoundException();
         }
 
         private void ArgumentException(TKey key)

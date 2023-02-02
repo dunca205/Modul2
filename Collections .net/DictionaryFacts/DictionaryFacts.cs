@@ -1,3 +1,4 @@
+using SonarAnalyzer.Rules.CSharp;
 using Xunit;
 namespace Dictionary
 {
@@ -93,7 +94,7 @@ namespace Dictionary
             var sameKeyDifferetValue = new KeyValuePair<int, string>(12, "s");
 
 
-            dictionar.Add(pair1); 
+            dictionar.Add(pair1);
             dictionar.Add(pair5);
 
             Assert.True(dictionar.ContainsKey(12));
@@ -101,7 +102,7 @@ namespace Dictionary
 
             Assert.True(dictionar.Contains(pair1));
             Assert.False(dictionar.Contains(pair6));
-            
+
         }
 
         [Fact]
@@ -150,7 +151,7 @@ namespace Dictionary
             dictionar.CopyTo(array, 0);
             Assert.Equal("c", array[0].Value);
         }
-       
+
         [Fact]
         public void RemoveAllElementsFromABucket()
         {
@@ -259,11 +260,11 @@ namespace Dictionary
         }
 
         [Fact]
-        public void InvalidOperationException_WhenRemovingAnIndexistentKey()
+        public void RemoveNonExistentKey()
         {
             var dictionar = new Dictionary<int, string>(6);
             dictionar.Add(1, "a");
-            Assert.Throws<KeyNotFoundException>(() => dictionar.Remove(2));
+            Assert.False( dictionar.Remove(2));
         }
 
         [Fact]
