@@ -19,4 +19,3 @@
         public int Next { get; set; }
     }
 }
-
