@@ -53,7 +53,7 @@ namespace Dictionary
             get
             {
                 ArgumentNullExceptions(key);
-                int index = FindIndex(key, out int previous);
+                int index = FindIndex(key);
 
                 if (index < 0)
                 {
@@ -108,14 +108,14 @@ namespace Dictionary
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            int index = FindIndex(item.Key, out int previous);
+            int index = FindIndex(item.Key);
             return index != -1 && elements[index].Value.Equals(item.Value);
         }
 
         public bool ContainsKey(TKey key)
         {
             ArgumentNullExceptions(key);
-            return FindIndex(key, out int previous) != -1;
+            return FindIndex(key) != -1;
         }
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
@@ -178,7 +178,7 @@ namespace Dictionary
         {
             ArgumentNullExceptions(key);
 
-            int index = FindIndex(key, out int previous);
+            int index = FindIndex(key);
             if (index == -1)
             {
                 value = default;
@@ -232,6 +232,8 @@ namespace Dictionary
             return tempFreeIndex;
         }
 
+        private int FindIndex(TKey key) => FindIndex(key, out int _);
+
         private int FindIndex(TKey key, out int previous)
         {
             int bucketIndex = GetBucket(key);
@@ -248,7 +250,7 @@ namespace Dictionary
                 temp = i;
             }
 
-            previous = temp;
+            previous = -1;
             return -1;
         }
 
@@ -264,7 +266,7 @@ namespace Dictionary
 
         private void ArgumentException(TKey key)
         {
-            if (FindIndex(key, out int previous) == -1)
+            if (FindIndex(key) == -1)
             {
                 return;
             }
