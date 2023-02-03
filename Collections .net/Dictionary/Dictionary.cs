@@ -53,7 +53,7 @@ namespace Dictionary
             get
             {
                 ArgumentNullExceptions(key);
-                int index = FindIndex(key);
+                int index = FindIndex(key, out int previous);
 
                 if (index < 0)
                 {
@@ -66,7 +66,7 @@ namespace Dictionary
             set
             {
                 ArgumentNullExceptions(key);
-                var elementIndex = FindIndex(key);
+                var elementIndex = FindIndex(key, out int previous);
                 if (elementIndex == -1)
                 {
                     Add(key, value);
@@ -108,14 +108,14 @@ namespace Dictionary
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            int index = FindIndex(item.Key);
+            int index = FindIndex(item.Key, out int previous);
             return index != -1 && elements[index].Value.Equals(item.Value);
         }
 
         public bool ContainsKey(TKey key)
         {
             ArgumentNullExceptions(key);
-            return FindIndex(key) != -1;
+            return FindIndex(key, out int previous) != -1;
         }
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
@@ -146,30 +146,20 @@ namespace Dictionary
         {
             ArgumentNullExceptions(key);
 
-            var indexOfelementToRemove = FindIndex(key);
+            var indexOfelementToRemove = FindIndex(key, out int previous);
 
             if (indexOfelementToRemove == -1)
             {
                 return false;
             }
 
-            int bucketIndex = GetBucket(key);
-
-            if (buckets[bucketIndex] == indexOfelementToRemove)
+            if (previous == -1)
             {
-                buckets[bucketIndex] = elements[indexOfelementToRemove].Next;
+                buckets[GetBucket(key)] = elements[indexOfelementToRemove].Next;
             }
             else
             {
-                for (int i = buckets[bucketIndex]; i != -1; i = elements[i].Next)
-                {
-                    if (elements[i].Next == indexOfelementToRemove)
-                    {
-                        elements[i].Next = elements[indexOfelementToRemove].Next;
-
-                        break;
-                    }
-                }
+                elements[previous].Next = elements[indexOfelementToRemove].Next;
             }
 
             elements[indexOfelementToRemove].Next = freeIndex;
@@ -181,16 +171,14 @@ namespace Dictionary
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            return this[item.Key].Equals(item.Value)
-                ? Remove(item.Key)
-                : false;
+            return this[item.Key].Equals(item.Value) && Remove(item.Key);
         }
 
         public bool TryGetValue(TKey key, out TValue value)
         {
             ArgumentNullExceptions(key);
 
-            int index = FindIndex(key);
+            int index = FindIndex(key, out int previous);
             if (index == -1)
             {
                 value = default;
@@ -244,17 +232,23 @@ namespace Dictionary
             return tempFreeIndex;
         }
 
-        private int FindIndex(TKey key)
+        private int FindIndex(TKey key, out int previous)
         {
             int bucketIndex = GetBucket(key);
+            int temp = -1;
+
             for (int i = buckets[bucketIndex]; i != -1; i = elements[i].Next)
             {
                 if (elements[i].Key.Equals(key))
                 {
+                    previous = temp;
                     return i;
                 }
+
+                temp = i;
             }
 
+            previous = temp;
             return -1;
         }
 
@@ -270,7 +264,7 @@ namespace Dictionary
 
         private void ArgumentException(TKey key)
         {
-            if (FindIndex(key) == -1)
+            if (FindIndex(key, out int previous) == -1)
             {
                 return;
             }

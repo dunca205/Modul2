@@ -1,4 +1,3 @@
-using SonarAnalyzer.Rules.CSharp;
 using Xunit;
 namespace Dictionary
 {
@@ -264,7 +263,7 @@ namespace Dictionary
         {
             var dictionar = new Dictionary<int, string>(6);
             dictionar.Add(1, "a");
-            Assert.False( dictionar.Remove(2));
+            Assert.False(dictionar.Remove(2));
         }
 
         [Fact]
