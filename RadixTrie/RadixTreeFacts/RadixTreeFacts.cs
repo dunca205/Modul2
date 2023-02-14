@@ -4,11 +4,15 @@ namespace RadixTree
     public class RadixTreeFacts
     {
         [Fact]
-        public void Test1()
+        public void AddNodesWithSameRadical()
         {
             var tree = new RadixTree<string>();
-            tree.Insert("ana");
-            tree.Insert("are");
+            tree.Insert("mar");
+            tree.Insert("margine");
+            tree.Insert("maria");
+            tree.Insert("cristina");
+            tree.Insert("mariana");
+
         }
     }
 }

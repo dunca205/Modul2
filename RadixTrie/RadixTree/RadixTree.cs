@@ -11,13 +11,21 @@
         public void Insert(T value)
         {
             string stringValue = value.ToString();
-            if (!root.HasChildren)
+            int indexOfnewValue = root.Children.IndexOfKey(stringValue[0]);
+            if (indexOfnewValue == -1) // primul copil al radacinii
             {
-                
+                root.Children.Add(stringValue[0], new RadixNode<string>(stringValue));
+                root.Children[stringValue[0]].IsWord = true;
+                return;
             }
 
-           
-           
+            if (indexOfnewValue != -1) // cheia exista si adaugam in continuarea ei
+            {
+                root.AddSibling(stringValue);
+            }
+
+
+
         }
     }
 }
