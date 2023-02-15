@@ -21,7 +21,7 @@
 
             if (indexOfnewValue != -1) // cheia exista si adaugam in continuarea ei
             {
-                root.AddSibling(stringValue);
+                root.AddChild(stringValue);
             }
 
 
