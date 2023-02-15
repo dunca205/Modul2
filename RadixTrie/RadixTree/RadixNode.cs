@@ -1,4 +1,7 @@
-﻿namespace RadixTree
+﻿using System.Windows.Markup;
+using System.Xml.Linq;
+
+namespace RadixTree
 {
     public class RadixNode<T>
     {
@@ -17,52 +20,79 @@
         public bool IsWord { get; set; }
         public void AddChild(string stringValue) // daca aceasta metoda a fost apleala are radacina comuna cu primii copii ai radacinii
         {
-            const char notMatched = '\u0000';
             var index = children.IndexOfKey(stringValue[0]);
             var key = children.GetKeyAtIndex(index);
-            bool matched = IsPerfectMatch(ref stringValue, children[key], out char next);
+            var next = new RadixNode<string>("");
+            bool matched = true; /*= IsPerfectMatch(ref stringValue, children[key], out next);*/
+            for (var node = children[key];stringValue.Length > 0; node = next)
+            {
+                matched = IsPerfectMatch(ref stringValue, node, ref next);
+            }
 
+            if (!matched && stringValue.Length > 0) 
+            {
+                var newRadix = new RadixNode<string>(default);
+                SplitNode(children[key], stringValue, out newRadix);
+                children[key] = newRadix;
+            }
 
-
-            //string valueOfSibling = children[stringValue[0]].value.ToString(); // valoare nodului cu cheie comuna
-            //if (stringValue.StartsWith(valueOfSibling)) // au aceeasi radacina comuna (mar) 
-            //{
-            //    var leftOver = GetSubstring(stringValue, valueOfSibling); //  iana
-            //    var commonRadix = children[stringValue[0]]; // in copii lui trb sa caut pana cand raman fara litere in substring
-
-            //    commonRadix.children.Add(leftOver[0], new RadixNode<string>(leftOver));
-            //}
         }
-        private bool IsPerfectMatch(ref string leftOver, RadixNode<string> existingNode, out char next)
+        private bool IsPerfectMatch(ref string leftOver, RadixNode<string> existingNode, ref RadixNode<string> next)
         {
-            string existingNodeValue = (existingNode.value).ToString(); //ia
-                                                                        // ia ..............<..........iana --> trb split
+            string existingNodeValue = existingNode.value; 
+                                                                        
             if (existingNodeValue.Length < leftOver.Length && leftOver.StartsWith(existingNodeValue))
             {
                 string subsString = GetSubstring(leftOver, existingNodeValue);
-                // na
-                leftOver = subsString;//na
-                if (existingNode.children.Count == 0) // nu mai avem copii mai departe deci nu avem ce alte prefixe sa cautam inseram ce a ramas
+                leftOver = subsString;
+                int indexOfNextKey = existingNode.children.IndexOfKey(leftOver[0]);
+                if (existingNode.children.Count == 0 || indexOfNextKey == -1)
                 {
                     existingNode.children.Add(leftOver[0], new RadixNode<string>(leftOver));
                     existingNode.children[leftOver[0]].IsWord = true;
-                    next = default(char);   // '\u0000'
-                    return true; // a fost perfect match
+                    leftOver = "";
+                    return true; 
 
                 }
-                else // daca  mai are copii .. cautam  daca are cheie comuna cu ce a ramas (na)
+                else if (indexOfNextKey > -1)
                 {
-                    int indexOfNextKey = existingNode.children.IndexOfKey(leftOver[0]);
-                    if (indexOfNextKey > -1)
-                    {
-                        next = existingNode.children.GetKeyAtIndex(indexOfNextKey); // n 
-                        return true;
-                    }
+                    var key =  existingNode.children.GetKeyAtIndex(indexOfNextKey); 
+                    next = existingNode.children[key];
+                    return true;
                 }
             }
 
-            next = default;
-            return false; // daca a fost fals trebuie facut split la nodul repsectiv
+            return false; 
+        }
+        private void SplitNode(RadixNode<string> existingNode,string value, out RadixNode<string> newRadix)
+        {
+            // ex : Mar - ia- na
+            //          - gine
+            //  add:Merge
+            // 
+            //  commonRadix = M;
+            //  existingNodeLeftOver = ar 
+            //         leftoverValue = erge
+            //  new Node = commonRadix(m)
+            //      add Child( existing node, si schimba valoarea lui existing node cu leftoverul sau)
+            //             M - ar - ia -na
+            //               - gine
+            //             M - erge
+            string existingNodeValue = existingNode.Value;
+            string commonRadix = "";
+            int i = 0;
+            while (existingNodeValue[i] == value[i])
+            { 
+                commonRadix += existingNodeValue[i];
+                i++;
+            }
+            string existigNodeLeftOver = GetSubstring(existingNodeValue, commonRadix);
+            string leftOverValue = GetSubstring(value, commonRadix);
+            newRadix = new RadixNode<string>(commonRadix); // m 
+            existingNode.value = existigNodeLeftOver; // actualizam cu noul radical ar, si key va deveni astfel a
+            newRadix.children.Add(existigNodeLeftOver[0], existingNode); // adauga ar
+            newRadix.children.Add(leftOverValue[0], new RadixNode<string>(leftOverValue));
+           
         }
         private string GetSubstring(string stringValue, string valueOfSibling)
         {
