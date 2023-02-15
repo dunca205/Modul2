@@ -21,12 +21,12 @@ namespace RadixTree
             tree.Insert("margine");
             tree.Insert("margea");
             tree.Insert("merge");
-            //tree.Insert("minune");
+            tree.Insert("minune");
             //tree.Insert("maria");
             //tree.Insert("mariana");
             //tree.Insert("munte");
             //tree.Insert("miracol");
-          
+
         }
     }
 }

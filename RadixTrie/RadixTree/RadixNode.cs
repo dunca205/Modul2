@@ -4,6 +4,7 @@
     {
         private string value;
         private SortedList<char, RadixNode<string>> children;
+
         public RadixNode(string value)
         {
             this.value = value;
@@ -19,20 +20,22 @@
         {
             var index = children.IndexOfKey(stringValue[0]);
             var key = children.GetKeyAtIndex(index);
+           
             var next = new RadixNode<string>("");
             bool matched = true;
             for (var node = children[key]; stringValue.Length > 0 && matched; node = next)
             {
                 matched = IsPerfectMatch(ref stringValue, node, ref next);
+                
             }
 
             if (!matched && stringValue.Length > 0)
             {
                 var newRadix = new RadixNode<string>(default);
 
-                if(next.value!= "")
+                if (next.value!= "") // trb actualizat si ceva nod din mijloc
                 {
-                    SplitNode(next,stringValue, out newRadix);  
+                    SplitNode(next,stringValue, out newRadix);
                     next = newRadix;
                     return;
                 }
@@ -40,6 +43,10 @@
                 SplitNode(children[key], stringValue, out newRadix);
                 children[key] = newRadix;
             }
+
+        }
+        public void UpdateMidNode(RadixNode<string> node)
+        {
 
         }
         private bool IsPerfectMatch(ref string leftOver, RadixNode<string> existingNode, ref RadixNode<string> next)
