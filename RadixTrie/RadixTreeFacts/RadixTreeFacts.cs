@@ -19,9 +19,14 @@ namespace RadixTree
             var tree = new RadixTree<string>();
             tree.Insert("mar");
             tree.Insert("margine");
-            tree.Insert("maria");
+            tree.Insert("margea");
             tree.Insert("merge");
-            tree.Insert("mare");
+            //tree.Insert("minune");
+            //tree.Insert("maria");
+            //tree.Insert("mariana");
+            //tree.Insert("munte");
+            //tree.Insert("miracol");
+          
         }
     }
 }

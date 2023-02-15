@@ -23,9 +23,6 @@
             {
                 root.AddChild(stringValue);
             }
-
-
-
         }
     }
 }
