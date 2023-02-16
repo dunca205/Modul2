@@ -1,4 +1,4 @@
-﻿namespace RadixTree
+﻿namespace Radix
 {
     public class RadixNode<T>
     {
@@ -10,7 +10,7 @@
             children = new SortedList<char, RadixNode<string>>();
         }
 
-        public SortedList<char, RadixNode<string>> Children { get => this.children; }
+        public SortedList<char, RadixNode<string>> Children { get => this.children; set => children = value; }
 
         public string Value { get; set; }
 
@@ -56,7 +56,7 @@
             }
 
             SplitNode(existingNode, leftOver, out RadixNode<string> temp);
-            existingNode.children[key] = temp;
+            existingNode = temp;
             key = ' ';
             leftOver = "";
         }
@@ -70,19 +70,14 @@
                 commonRadix += existingNodeValue[i];
             }
 
-            string existigNodeLeftOver = GetSubstring(existingNodeValue, commonRadix);
-            string leftOverValue = GetSubstring(value, commonRadix);
+            existingNodeValue = GetSubstring(existingNodeValue, commonRadix);
+            value = GetSubstring(value, commonRadix);
 
-            // daca avem margine si adaugam margea, gine si gea=>
-            //                                      g-> ((ine) && (ea))
-            temp = new RadixNode<string>(commonRadix); // g
-            temp.children.Add(leftOverValue[0], new RadixNode<string>(leftOverValue)); // ea key:e value:ea
-            temp.children[leftOverValue[0]].IsWord = true;
-
-            temp.children.Add(existigNodeLeftOver[0], existingNode);
-            temp.children[existigNodeLeftOver[0]].Value = existigNodeLeftOver;
-
-            // temp = nod cu radicalul comun dintre existingNode si value
+            temp = new RadixNode<string>(commonRadix); // temp = g
+            temp.children.Add(value[0], new RadixNode<string>(value)); // add-> rest din value ea.. din marg ea
+            temp.children[value[0]].IsWord = true;
+            existingNode.Value = existingNodeValue; // inainte era gine si acum este ine..
+            temp.children.Add(existingNodeValue[0], existingNode);
         }
 
         private static void Matching(ref string newValue, RadixNode<string> existingNode)

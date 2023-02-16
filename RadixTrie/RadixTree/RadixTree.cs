@@ -1,4 +1,4 @@
-﻿namespace RadixTree
+﻿namespace Radix
 {
     public class RadixTree<T>
     {

@@ -1,5 +1,5 @@
 global using Xunit;
-namespace RadixTree
+namespace Radix
 {
     public class RadixTreeFacts
     {
@@ -24,6 +24,7 @@ namespace RadixTree
             tree.Insert("minune");
             tree.Insert("maria");
             tree.Insert("mariana");
+            tree.Insert("marianara");
             tree.Insert("munte");
             tree.Insert("miracol");
 
