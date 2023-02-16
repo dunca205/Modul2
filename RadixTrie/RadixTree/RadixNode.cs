@@ -12,72 +12,66 @@
             children = new SortedList<char, RadixNode<string>>();
         }
         public SortedList<char, RadixNode<string>> Children { get => this.children; set => this.children = value; }
-        public RadixNode<T> Set { get; set; }
         public string Value { get => this.value; set => this.value = value; }
         public char Key { get => value[0]; }
         public bool IsWord { get; set; }
         public void AddChild(string stringValue, int index)
         {
-            //if(!stringValue.StartsWith(this.value))
-            //{
-            //    // split this node
-            //}
-
-            //  var index = children.IndexOfKey(stringValue[0]);
-          
             var key = children.GetKeyAtIndex(index);
-            IsMatching(ref stringValue, children[key]);
-            if (stringValue.Length > 0) 
+            Matching(ref stringValue, children[key]);
+            // daca se potrivesc radicalii, Matching va potrivi toate silabele/literele cuvantului 
+
+            if (stringValue.Length > 0)  // daca nu a facut Match nici cu priul radical, trebuie impartit nodul
             {
                 SplitNode(children[key], stringValue, out RadixNode<string> temp);
                 children[key] = temp;
             }
-         
+
         }
-        private void IsMatching(ref string newValue, RadixNode<string> existingNode)
+        private void Matching(ref string newValue, RadixNode<string> existingNode)
         {
             string existingNodeValue = existingNode.value;
 
-            if (newValue.StartsWith(existingNodeValue)) // daca avem (mar) si adaugam (mar gine) sau (mar ia)
+            if (newValue.StartsWith(existingNodeValue))// potriveste primul radical
             {
-                string subsString = GetSubstring(newValue, existingNodeValue);
-                newValue = subsString;
+                newValue = GetSubstring(newValue, existingNodeValue);
+
                 int indexOfNextKey = existingNode.children.IndexOfKey(newValue[0]);
-                if (existingNode.children.Count == 0 || indexOfNextKey == -1)
+                if (indexOfNextKey != -1)
                 {
-                    existingNode.children.Add(newValue[0], new RadixNode<string>(newValue));
-                    existingNode.children[newValue[0]].IsWord = true;
-                    newValue = "";
+                    var key = existingNode.children.GetKeyAtIndex(indexOfNextKey);
+                    for (RadixNode<string> matchedNode = existingNode.children[key]; newValue.Length > 0; matchedNode = matchedNode.children[key])
+                    {
+                        NextKey(ref matchedNode, ref newValue, ref key);
+                        if (key == ' ')
+                        {
+                            break;
+                        }
+                    }
                     return;
                 }
 
-                var key = existingNode.children.GetKeyAtIndex(indexOfNextKey); // coboram in ierarhie
-                for (RadixNode<string> matchedNode = existingNode.children[key]; newValue.Length > 0; matchedNode = matchedNode.children[key])
-                {
-                    NextKey(ref matchedNode, ref newValue, ref key);
-                    if (key == ' ')
-                    {
-                        break;
-                    }
-                }
-              
+                // adaugam restul in continuarea prefixului comun
+                existingNode.children.Add(newValue[0], new RadixNode<string>(newValue));
+                existingNode.children[newValue[0]].IsWord = true;
+                newValue = "";
+                return;
             }
 
         }
         private void NextKey(ref RadixNode<string> existingNode, ref string leftOver, ref char key)
         {
-            if (leftOver.StartsWith(existingNode.value)) // ar
+            if (leftOver.StartsWith(existingNode.value))
             {
-                char matched = leftOver[0];
-                leftOver = GetSubstring(leftOver, existingNode.value); // ariana- ar = iana
-               
-                if (existingNode.children.IndexOfKey(leftOver[0]) > -1)// copii nodului conti o cheie cu i ?
-                { 
-                    key = leftOver[0]; // key of next node
+                leftOver = GetSubstring(leftOver, existingNode.value);
+
+                if (existingNode.children.IndexOfKey(leftOver[0]) > -1)
+                {
+                    key = leftOver[0];
                     return;
                 }
 
-                existingNode.children.Add(leftOver[0], new RadixNode<string>(leftOver)); // a avut radical comun dar 
+                existingNode.children.Add(leftOver[0], new RadixNode<string>(leftOver));
                 leftOver = "";
                 key = ' ';
                 return;
@@ -105,7 +99,7 @@
             string existigNodeLeftOver = GetSubstring(existingNodeValue, commonRadix);
             string leftOverValue = GetSubstring(value, commonRadix);
             // daca avem margine si adaugam margea, gine si gea=>
-            //                                      g--ine && g--ea
+            //                                      g-> ((ine) && (ea))
             temp = new RadixNode<string>(commonRadix);//g
             temp.children.Add(leftOverValue[0], new RadixNode<string>(leftOverValue));//ea key:e value:ea
             temp.children[leftOverValue[0]].IsWord = true;
