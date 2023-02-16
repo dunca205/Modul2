@@ -4,7 +4,7 @@ namespace RadixTree
     public class RadixTreeFacts
     {
         [Fact]
-        public void AddNodesWithSameRadical()
+        public void AddNodesWithSameRadicalNoNeedToSplit()
         {
             var tree = new RadixTree<string>();
             tree.Insert("mar");
@@ -22,10 +22,10 @@ namespace RadixTree
             tree.Insert("margea");
             tree.Insert("merge");
             tree.Insert("minune");
-            //tree.Insert("maria");
-            //tree.Insert("mariana");
-            //tree.Insert("munte");
-            //tree.Insert("miracol");
+            tree.Insert("maria");
+            tree.Insert("mariana");
+            tree.Insert("munte");
+            tree.Insert("miracol");
 
         }
     }
