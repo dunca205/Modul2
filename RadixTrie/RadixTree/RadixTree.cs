@@ -13,7 +13,7 @@
         {
             string stringValue = value.ToString();
             int indexOfnewValue = root.Children.IndexOfKey(stringValue[0]);
-            if (indexOfnewValue != -1) // cheia exista si adaugam in continuarea ei
+            if (indexOfnewValue != -1)
             {
                 root.AddChild(stringValue, indexOfnewValue);
                 return;
