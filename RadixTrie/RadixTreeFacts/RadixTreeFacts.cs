@@ -29,7 +29,7 @@ namespace Radix
             tree.Insert("munte");
             tree.Insert("miracol");
             Assert.True(tree.Search("marianara"));
-            
+
         }
 
         [Fact]
@@ -52,6 +52,29 @@ namespace Radix
             tree.Insert(747999853);
             tree.Insert(747988234);
             Assert.True(tree.Search(747999852));
+        }
+
+        [Fact]
+        public void RemoveNodeWithNoChildren()
+        {
+            var tree = new RadixTree<string>();
+            tree.Insert("mar");
+            tree.Insert("margine");
+            tree.Insert("maria");
+            tree.Insert("mariana");
+            tree.Delete("mariana");
+            Assert.False(tree.Search("mariana"));
+        }
+
+        [Fact]
+        public void RemoveNodeWithOnechild()
+        {
+            var tree = new RadixTree<string>();
+            tree.Insert("mar");
+            tree.Insert("margine");
+            tree.Insert("maria");
+            tree.Insert("mariana");
+            tree.Delete("maria");
         }
     }
 }
