@@ -42,7 +42,8 @@
                 return false;
             }
 
-            for (RadixNode<string> temp = root.Children[key]; temp.Value != null && valueToFind.Length > 0; temp = temp.Children[key])
+            RadixNode<string> temp = root.Children[key];
+            while (valueToFind.Length > 0)
             {
                 if (valueToFind.StartsWith(temp.Value))
                 {
@@ -60,6 +61,7 @@
                 }
 
                 key = valueToFind[0];
+                temp = temp.Children[key];
             }
 
             return true;
