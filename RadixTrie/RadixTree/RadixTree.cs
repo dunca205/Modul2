@@ -65,6 +65,11 @@
             return true;
         }
 
+        public void Delete(T value)
+        {
+
+        }
+
         private static void SplitNode(RadixNode<string> existingNode, string value, out RadixNode<string> newNode)
         {
             string existingNodeValue = existingNode.Value;

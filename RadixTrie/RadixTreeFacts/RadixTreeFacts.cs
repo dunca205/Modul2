@@ -29,8 +29,18 @@ namespace Radix
             tree.Insert("munte");
             tree.Insert("miracol");
             Assert.True(tree.Search("marianara"));
-            Assert.False(tree.Search("marg"));
+            
+        }
 
+        [Fact]
+        public void SearchForExistingValue_WhitchIsNotMarkedAsWord()
+        {
+            var tree = new RadixTree<string>();
+            tree.Insert("mar");
+            tree.Insert("margine");
+            tree.Insert("margea");
+            tree.Insert("merge");
+            Assert.False(tree.Search("marg"));
         }
 
         [Fact]
