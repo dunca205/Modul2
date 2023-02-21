@@ -28,6 +28,11 @@
             root.Children[key].IsWord = true;
         }
 
+        public bool Search(RadixNode<T> node)
+        {
+           return Search(node.Value);
+        }
+
         public bool Search(T value)
         {
             string valueToFind = value.ToString();
@@ -44,9 +49,9 @@
                     valueToFind = GetSubstring(valueToFind, temp.Value);
                 }
 
-                if (valueToFind.Length == 0 && temp.IsWord)
+                if (valueToFind.Length == 0)
                 {
-                    return true;
+                    return temp.IsWord;
                 }
 
                 if (temp.Children.IndexOfKey(valueToFind[0]) == -1)
