@@ -29,7 +29,6 @@ namespace Radix
             tree.Insert("munte");
             tree.Insert("miracol");
             Assert.True(tree.Search("marianara"));
-
         }
 
         [Fact]
@@ -75,6 +74,19 @@ namespace Radix
             tree.Insert("maria");
             tree.Insert("mariana");
             tree.Delete("maria");
+            Assert.False(tree.Search("maria"));
+            Assert.True(tree.Search("mariana"));
+        }
+
+        [Fact]
+        public void RemoveNodeFromParentWith2kids()
+        {
+            var tree = new RadixTree<string>();
+            tree.Insert("mar");
+            tree.Insert("margine");
+            tree.Insert("margea");
+            tree.Delete("margea");
+
         }
     }
 }

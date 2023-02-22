@@ -94,6 +94,11 @@
                 if (temp.Children[key].Value == valueToDelete)
                 {
                     RemoveNode(ref temp, valueToDelete);
+                    if (temp.Children.Count == 1)
+                    {
+                        temp = CombineNodes(temp);
+                    }
+
                     return;
                 }
 
@@ -105,35 +110,33 @@
         {
             char key = childValue[0];
 
-            // 1.  daca parintele il are doar pe el copil => stergem copilul parintelui(ex avem maria , mariana si vrem sa stergem mariana
-            // iar nodul de sters nu are alti copii
-            if (parentNode.Children.Count == 1 && parentNode.Children[key].Children.Count == 0)
+            // 1. nodul de sters nu are copii, il stergem actualizam parintele daca e cazul
+            // (ex avem maria si mariana, vrem sa stergem mariana)
+            if (parentNode.Children[key].Children.Count == 0)
             {
-                parentNode.Children.RemoveAt(0);
+                parentNode.Children.Remove(key);
                 return;
             }
 
-            // 2.  daca parintele are 2 copii && copilul de sters nu mai are alti copii
-            // => combinam parintele cu copilului ramas  ex avem: parinte 99 si copii 852 si 853, stergem 99852 -> parintele devine 99853
-            if (parentNode.Children.Count == 2 && parentNode.Children[key].Children.Count == 1)
+            // 2. nodul de sters are 1 singur copil atunci  => combinam nodul de sters cu singurul copil
+            // ex avem maria si mariana, vrem sa stergem maria... ia->iana
+            if (parentNode.Children[key].Children.Count == 1)
             {
-                int indexOfKey = parentNode.Children.IndexOfKey(key); // copilul ia
-                char keyOfnephew = parentNode.Children[key].Children.GetKeyAtIndex(0);
-                parentNode.Children.SetValueAtIndex(indexOfKey, parentNode.Children[key].Children[keyOfnephew]);
+                parentNode.Children[key] = CombineNodes(parentNode.Children[key]);
+                return;
             }
 
             // 2.  daca copilul are mai multi copii, schimbam valoarea lui isWord = false, inca avem nevoie de radicalul sau
-            if (parentNode.Children[key].Children.Count >= 2)
-            {
-                parentNode.Children[key].IsWord = false;
-            }
-
-            // 3.  daca copilul are doar 1 copil, combinam nodul de sters cu cel succesor
+            parentNode.Children[key].IsWord = false;
         }
 
-        private static void CombineNodes(RadixNode<string> parentNode)
+        private static RadixNode<string> CombineNodes(RadixNode<string> parentNode)
         {
             char keyOfOnlyChild = parentNode.Children.GetKeyAtIndex(0);
+            string combinedValue = parentNode.Value + parentNode.Children[keyOfOnlyChild].Value;
+            parentNode = parentNode.Children[keyOfOnlyChild];
+            parentNode.Value = combinedValue;
+            return parentNode;
         }
 
         private static void SplitNode(RadixNode<string> existingNode, string value, out RadixNode<string> newNode)
