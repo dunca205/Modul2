@@ -85,6 +85,7 @@ namespace Radix
             tree.Insert("mar");
             tree.Insert("margine");
             tree.Insert("margea");
+            
             tree.Delete("margea");
 
         }

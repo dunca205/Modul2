@@ -20,7 +20,7 @@
             char key = stringValue[0];
             if (root.Children.ContainsKey(stringValue[0]))
             {
-                Add(ref stringValue, ref key);
+                Add(stringValue, ref key);
                 return;
             }
 
@@ -69,10 +69,9 @@
 
         public void Delete(T value)
         {
-            // 1.  daca parintele il are doar pe el copil => stergem copilul parintelui
-            // 2.  daca parinte are 2 copii => combinam parintele cu copilul ramas
-            // 3.  daca copilul are mai multi copii, schimbam valoarea lui isWord = false
-            // 4.  daca copilul are doar 1 copil, combinam nodul de sters cu cel succesor
+            // 1.  daca nodul de sters nu are deloc copii
+            // 2.  daca nodul de sters are 1 copil il combinam cu nodul de sters
+            // 3.  daca nodul de sters are mai multi copii modificam doar isWord
             string valueToDelete = value.ToString();
             char key = valueToDelete[0];
             if (!root.Children.ContainsKey(key))
@@ -93,7 +92,7 @@
 
                 if (temp.Children[key].Value == valueToDelete)
                 {
-                    RemoveNode(ref temp, valueToDelete);
+                    RemoveFromParent(temp, valueToDelete);
                     if (temp.Children.Count == 1)
                     {
                         temp = CombineNodes(temp);
@@ -106,19 +105,17 @@
             }
         }
 
-        private static void RemoveNode(ref RadixNode<string> parentNode, string childValue)
+        private static void RemoveFromParent(RadixNode<string> parentNode, string childValue)
         {
             char key = childValue[0];
 
-            // 1. nodul de sters nu are copii, il stergem actualizam parintele daca e cazul
-            // (ex avem maria si mariana, vrem sa stergem mariana)
+            // ex avem maria si mariana, vrem sa stergem mariana -> doar stergem nodul na
             if (parentNode.Children[key].Children.Count == 0)
             {
                 parentNode.Children.Remove(key);
                 return;
             }
 
-            // 2. nodul de sters are 1 singur copil atunci  => combinam nodul de sters cu singurul copil
             // ex avem maria si mariana, vrem sa stergem maria... ia->iana
             if (parentNode.Children[key].Children.Count == 1)
             {
@@ -163,11 +160,13 @@
             return stringValue[radix.Length..];
         }
 
-        private void Add(ref string value, ref char key)
+        private void Add(string value, ref char key)
         {
+            // value are prefix comun
             if (value.StartsWith(root.Children[key].Value))
             {
-                for (RadixNode<string> temp = root.Children[key]; temp.Value != null && value.Length > 0; temp = temp.Children[key])
+                RadixNode<string> temp = root.Children[key];
+                while (value.Length > 0)
                 {
                     value = GetSubstring(value, temp.Value);
                     key = value[0];
@@ -188,9 +187,10 @@
                         RadixNode<string> newNode;
                         SplitNode(temp.Children[key], value, out newNode);
                         temp.Children[key] = newNode;
-                        value = "";
                         return;
                     }
+
+                    temp = temp.Children[key];
                 }
 
                 return;
