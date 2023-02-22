@@ -67,6 +67,11 @@
             return true;
         }
 
+        public void Delete(RadixNode<T> node)
+        {
+            Delete(node.Value);
+        }
+
         public void Delete(T value)
         {
             // 1.  daca nodul de sters nu are deloc copii

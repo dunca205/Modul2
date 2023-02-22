@@ -84,10 +84,9 @@ namespace Radix
             var tree = new RadixTree<string>();
             tree.Insert("mar");
             tree.Insert("margine");
-            tree.Insert("margea");
-            
+            tree.Insert("margea");     
             tree.Delete("margea");
-
+            Assert.False(tree.Search("margea"));
         }
     }
 }
