@@ -2,17 +2,18 @@
 {
     public class RadixNode<T>
     {
-        private SortedList<char, RadixNode<T>> children;
+        private SortedList<T, RadixNode<T>> children;
+        private T value;
 
         public RadixNode(T value)
         {
-            this.Value = value;
-            children = new SortedList<char, RadixNode<T>>();
+            this.value = value;
+            children = new SortedList<T, RadixNode<T>>();
         }
 
-        public SortedList<char, RadixNode<T>> Children { get => this.children; }
+        public SortedList<T, RadixNode<T>> Children { get => this.children; }
 
-        public T Value { get; set; }
+        public T Value { get => value; set => this.value = value; }
 
         public bool IsWord { get; set; }
     }
