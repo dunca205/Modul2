@@ -11,40 +11,61 @@
 
         public void Insert(T value)
         {
-            int match = -1;
-            foreach (var kid in root.Children)
+            int parentFound = FindParent(root.Children, value);
+            if (parentFound == -1)
             {
-                match = Compare(kid.Key, value);
-                if (match == 0)
-                {
-                    T reminder = Substract(kid.Key, value, out _, out _);
-                    Add(reminder, kid.Key);
-                    return;
-                }
-
-                if (match == 1)
-                {
-                    var C = kid.Value;
-                    SplitNode(kid, kid.Key, value);
-                    return;
-                }
+                root.Children.Add(value, new RadixNode<T>(default));
+                root.Children[value].IsWord = true;
+                return;
             }
 
-            root.Children.Add(value, new RadixNode<T>(default));
-            root.Children[value].IsWord = true;
+            Add(value, root.Children.GetKeyAtIndex(parentFound));
         }
 
         public void Add(T value, T key)
         {
-            var parentNode = root.Children[key];
-            if (parentNode.Children.Count == 0)
+            RadixNode<T> parent = root.Children[key];
+            SortedList<T, RadixNode<T>> parentList = root.Children;
+            int matched = Compare(key, value);
+            while (matched != -1)
             {
-                parentNode.Children.Add(value, new RadixNode<T>(default));
-                parentNode.Children[value].IsWord = true;
-                return;
-            }
+                if (matched == 0)
+                {
+                    value = Substract(key, value, out _, out T commonRadix);
+                    if (parent.Children.Count == 0)
+                    {
+                        NormalInsertion(parent, value);
+                        return;
+                    }
 
-            parentNode.Children.Add(value, default);
+                    int parentIndex = FindParent(parent.Children, value);
+                    if (parentIndex != -1)
+                    {
+                        key = parent.Children.GetKeyAtIndex(parentIndex);
+                        parentList = parent.Children;
+                        parent = parent.Children[key];
+                    }
+                    else
+                    {
+                        NormalInsertion(parent, value);
+                        break;
+                    }
+                }
+
+                if (matched == 1)
+                {
+                   SplitNode(ref parentList, key, value);
+                   break;
+                }
+
+                matched = Compare(key, value);
+            }
+        }
+
+        public void NormalInsertion(RadixNode<T> parentNode, T value)
+        {
+            parentNode.Children.Add(value, new RadixNode<T>(default));
+            parentNode.Children[value].IsWord = true;
         }
 
         public int Compare(T? x, T? y)
@@ -65,19 +86,39 @@
 
             if (left.Length.CompareTo(existStr.Length) == 0)
             {
-                return 0;
+                return 0; // x este prefix perfect pt y
             }
             else if (left.Length.CompareTo(existStr.Length) == -1 && left.Length > 0)
             {
-                return 1;
+                return 1; // x este prefix partial pentru y
             }
 
             return -1;
         }
 
-        private static void SplitNode(KeyValuePair<T, RadixNode<T>> children, T key, T newValue)
+        public int FindParent(SortedList<T, RadixNode<T>> list, T value)
         {
-            T substract = Substract(children.Key, newValue, out _, out _);
+            int found = -1;
+            foreach (var child in list)
+            {
+                found = Compare(child.Key, value);
+                if (found == 0 || found == 1)
+                {
+                    return list.IndexOfKey(child.Key);
+                }
+            }
+
+            return found;
+        }
+
+        private static void SplitNode(ref SortedList<T, RadixNode<T>> parent, T key, T newValue)
+        {
+            T newValueLeft = Substract(key, newValue, out T newValueOfParentKey, out T commonRadix);
+
+            var newNode = new RadixNode<T>(commonRadix);
+            newNode.Children.Add(newValueLeft, new RadixNode<T>(default));
+            newNode.Children.Add(newValueOfParentKey, parent[key]);
+            parent[key] = newNode;
         }
 
         private static T Substract(T parentKey, T newValue, out T newValueOfParentKey, out T commonRadix)

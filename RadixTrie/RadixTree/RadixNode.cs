@@ -11,7 +11,7 @@
             children = new SortedList<T, RadixNode<T>>();
         }
 
-        public SortedList<T, RadixNode<T>> Children { get => this.children; }
+        public SortedList<T, RadixNode<T>> Children { get => this.children; set => this.children = value; }
 
         public T Value { get => value; set => this.value = value; }
 

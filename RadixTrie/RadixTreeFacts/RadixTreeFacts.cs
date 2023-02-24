@@ -8,9 +8,11 @@ namespace Radix
         {
             var tree = new RadixTree<string>();
             tree.Insert("mar");
+            tree.Insert("cristina");
             tree.Insert("margine");
             tree.Insert("maria");
             tree.Insert("mariana");
+            tree.Insert("marianara");
             //Assert.True(tree.Search("maria"));
         }
 
