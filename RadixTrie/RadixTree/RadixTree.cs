@@ -25,7 +25,7 @@
         public void Add(T value, T key)
         {
             RadixNode<T> parent = root.Children[key];
-            SortedList<T, RadixNode<T>> parentList = root.Children;
+            RadixNode<T> grandParent = root;
             int matched = Compare(key, value);
             while (matched != -1)
             {
@@ -42,7 +42,7 @@
                     if (parentIndex != -1)
                     {
                         key = parent.Children.GetKeyAtIndex(parentIndex);
-                        parentList = parent.Children;
+                        grandParent = parent;
                         parent = parent.Children[key];
                     }
                     else
@@ -54,7 +54,7 @@
 
                 if (matched == 1)
                 {
-                   SplitNode(ref parentList, key, value);
+                   SplitNode(ref grandParent, key, value);
                    break;
                 }
 
@@ -65,6 +65,7 @@
         public void NormalInsertion(RadixNode<T> parentNode, T value)
         {
             parentNode.Children.Add(value, new RadixNode<T>(default));
+            parentNode.Value = value;
             parentNode.Children[value].IsWord = true;
         }
 
@@ -111,14 +112,17 @@
             return found;
         }
 
-        private static void SplitNode(ref SortedList<T, RadixNode<T>> parent, T key, T newValue)
+        private static void SplitNode(ref RadixNode<T> parent, T key, T newValue)
         {
             T newValueLeft = Substract(key, newValue, out T newValueOfParentKey, out T commonRadix);
 
             var newNode = new RadixNode<T>(commonRadix);
             newNode.Children.Add(newValueLeft, new RadixNode<T>(default));
-            newNode.Children.Add(newValueOfParentKey, parent[key]);
-            parent[key] = newNode;
+            newNode.Children.Add(newValueOfParentKey, parent.Children[key]);
+
+            parent.Children.Remove(key);
+
+            parent.Children.Add(newNode.Value, newNode);
         }
 
         private static T Substract(T parentKey, T newValue, out T newValueOfParentKey, out T commonRadix)
@@ -138,7 +142,6 @@
 
             string parentKeyLeftOver = parent[commonRadixS.Length..];
             string newValueLeftOver = kid[commonRadixS.Length..];
-
             newValueOfParentKey = (T)Convert.ChangeType(parentKeyLeftOver, typeof(T));
             commonRadix = (T)Convert.ChangeType(commonRadixS, typeof(T));
             return (T)Convert.ChangeType(newValueLeftOver, typeof(T));
