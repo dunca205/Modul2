@@ -18,7 +18,7 @@
                 return;
             }
 
-            Add(value, root.Children.GetKeyAtIndex(parentFound));
+            Add(value, root.Children.GetKeyAtIndex(parent));
         }
 
         public void Add(T value, T key)

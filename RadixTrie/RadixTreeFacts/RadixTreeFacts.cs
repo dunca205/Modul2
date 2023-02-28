@@ -11,6 +11,7 @@ namespace Radix
             tree.Insert("marginea");
             tree.Insert("mar");
         }
+
         [Fact]
         public void AddNodesWithSameRadicalNoNeedToSplit()
         {
