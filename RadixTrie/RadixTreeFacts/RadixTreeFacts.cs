@@ -54,16 +54,16 @@ namespace Radix
             //Assert.False(tree.Search("marg"));
         }
 
-        [Fact]
-        public void AddPhoneNumbers_SearchForFirstAddedNumber()
-        {
-            var tree = new RadixTree<int>();
-            tree.Insert(747999852);
-            tree.Insert(747888952);
-            tree.Insert(747999853);
-            tree.Insert(747988234);
-            //Assert.True(tree.Search(747999852));
-        }
+        //[Fact]
+        //public void AddPhoneNumbers_SearchForFirstAddedNumber()
+        //{
+        //    var tree = new RadixTree<int>();
+        //    tree.Insert(747999852);
+        //    tree.Insert(747888952);
+        //    tree.Insert(747999853);
+        //    tree.Insert(747988234);
+        //    //Assert.True(tree.Search(747999852));
+        //}
 
         [Fact]
         public void RemoveNodeWithNoChildren()

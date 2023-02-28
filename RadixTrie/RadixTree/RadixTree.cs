@@ -25,7 +25,7 @@
         {
             RadixNode<T> parent = root.Children[key];
             RadixNode<T> grandParent = root;
-            int matched = Compare(key, value);
+            int matched = parent.CompareTo(value);
             while (matched != -1)
             {
                 if (matched == 0)
@@ -51,7 +51,7 @@
                    break;
                 }
 
-                matched = Compare(key, value);
+                matched = parent.CompareTo(value);
             }
         }
 
@@ -62,40 +62,12 @@
             parentNode.Children[value].IsWord = true;
         }
 
-        public int Compare(T? x, T? y)
-        {
-            string existStr = x.ToString();
-            string newStr = y.ToString();
-            string left = "";
-
-            for (int i = 0; i < existStr.Length && i < newStr.Length; i++)
-            {
-                if (newStr[i] != existStr[i])
-                {
-                    break;
-                }
-
-                left += newStr[i];
-            }
-
-            if (left.Length.CompareTo(existStr.Length) == 0)
-            {
-                return 0; // x este prefix perfect pt y
-            }
-            else if (left.Length.CompareTo(existStr.Length) == -1 && left.Length > 0)
-            {
-                return 1; // x este prefix partial pentru y
-            }
-
-            return -1;
-        }
-
         public int FindParent(SortedList<T, RadixNode<T>> list, T value)
         {
             int found = -1;
             foreach (var child in list)
             {
-                found = Compare(child.Key, value);
+                found = child.Value.CompareTo(value);
                 if (found == 0 || found == 1)
                 {
                     return list.IndexOfKey(child.Key);
@@ -121,8 +93,11 @@
             else
             {
                 newNode.Children.Add(newValueLeft, new RadixNode<T>(default));
+                newNode.Children[newValueLeft].Value = newValueLeft;
+                newNode.Children[newValueLeft].IsWord = true;
                 newNode.Children.Add(newValueOfParentKey, parent.Children[key]);
                 newNode.Children[newValueOfParentKey].Value = newValueOfParentKey;
+                newNode.Children[newValueOfParentKey].IsWord = parent.Children[key].IsWord;
             }
 
             parent.Children.Remove(key);
