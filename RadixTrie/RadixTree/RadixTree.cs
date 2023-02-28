@@ -11,11 +11,10 @@
 
         public void Insert(T value)
         {
-            int parentFound = FindParent(root.Children, value);
-            if (parentFound == -1)
+            int parent = FindParent(root.Children, value);
+            if (parent == -1)
             {
-                root.Children.Add(value, new RadixNode<T>(default));
-                root.Children[value].IsWord = true;
+                NormalInsertion(root, value);
                 return;
             }
 
@@ -31,13 +30,7 @@
             {
                 if (matched == 0)
                 {
-                    value = Substract(key, value, out _, out T commonRadix);
-                    if (parent.Children.Count == 0)
-                    {
-                        NormalInsertion(parent, value);
-                        return;
-                    }
-
+                    value = Subtract(key, value, out _, out T commonRadix);
                     int parentIndex = FindParent(parent.Children, value);
                     if (parentIndex != -1)
                     {
@@ -65,7 +58,7 @@
         public void NormalInsertion(RadixNode<T> parentNode, T value)
         {
             parentNode.Children.Add(value, new RadixNode<T>(default));
-            parentNode.Value = value;
+            parentNode.Children[value].Value = value;
             parentNode.Children[value].IsWord = true;
         }
 
@@ -114,18 +107,30 @@
 
         private static void SplitNode(ref RadixNode<T> parent, T key, T newValue)
         {
-            T newValueLeft = Substract(key, newValue, out T newValueOfParentKey, out T commonRadix);
-
-            var newNode = new RadixNode<T>(commonRadix);
-            newNode.Children.Add(newValueLeft, new RadixNode<T>(default));
-            newNode.Children.Add(newValueOfParentKey, parent.Children[key]);
+            RadixNode<T> newNode;
+            T newValueLeft = Subtract(key, newValue, out T newValueOfParentKey, out T commonRadix);
+            newNode = new RadixNode<T>(commonRadix);
+            if (newValueLeft.ToString().Length == 0)
+            {
+                // daca avem margine si adaugam mar, impartim margine in mar si gine.., si marcam mar ca fiind cuvant
+                newNode.IsWord = true;
+                newNode.Children.Add(newValueOfParentKey, parent.Children[key]);
+                newNode.Children[newValueOfParentKey].Value = newValueOfParentKey;
+                newNode.Children[newValueOfParentKey].IsWord = parent.Children[key].IsWord;
+            }
+            else
+            {
+                newNode.Children.Add(newValueLeft, new RadixNode<T>(default));
+                newNode.Children.Add(newValueOfParentKey, parent.Children[key]);
+                newNode.Children[newValueOfParentKey].Value = newValueOfParentKey;
+            }
 
             parent.Children.Remove(key);
 
             parent.Children.Add(newNode.Value, newNode);
         }
 
-        private static T Substract(T parentKey, T newValue, out T newValueOfParentKey, out T commonRadix)
+        private static T Subtract(T parentKey, T newValue, out T newValueOfParentKey, out T commonRadix)
         {
             var parent = parentKey.ToString();
             var kid = newValue.ToString();

@@ -4,6 +4,14 @@ namespace Radix
     public class RadixTreeFacts
     {
         [Fact]
+        public void NewNodeIsPrefixOfExistingNode()
+        {
+            var tree = new RadixTree<string>();
+            tree.Insert("margine");
+            tree.Insert("marginea");
+            tree.Insert("mar");
+        }
+        [Fact]
         public void AddNodesWithSameRadicalNoNeedToSplit()
         {
             var tree = new RadixTree<string>();
@@ -13,6 +21,7 @@ namespace Radix
             tree.Insert("maria");
             tree.Insert("mariana");
             tree.Insert("marianara");
+            tree.Insert("mere");
             //Assert.True(tree.Search("maria"));
         }
 
