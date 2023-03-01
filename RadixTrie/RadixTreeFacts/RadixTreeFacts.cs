@@ -4,6 +4,34 @@ namespace Radix
     public class RadixTreeFacts
     {
         [Fact]
+        public void CompareNodesString()
+        {
+            var nodeMar = new RadixNode<string>("mar");
+            var nodeMargine = new RadixNode<string>("margine");
+            var secondNodeMar = new RadixNode<string>("mar");
+            Assert.Equal(-1, nodeMar.CompareTo(nodeMargine)); // nodul mar nu incepe cu margine
+            Assert.Equal(1, nodeMargine.CompareTo(nodeMar));  // nodul margine incepe cu mar
+            Assert.Equal(0, nodeMar.CompareTo(secondNodeMar)); // mar = mar
+            Assert.Equal(-1, new RadixNode<string>("ola").CompareTo(nodeMar));
+        }
+
+        [Fact]
+        public void CompareNodesInt()
+        {
+            var OneOneTwo = new RadixNode<int>(112);
+            var OneOneTwoThreee = new RadixNode<int>(1123);
+            var secondOneOneTwo = new RadixNode<int>(112);
+
+            Assert.Equal(-1, OneOneTwo.CompareTo(OneOneTwoThreee));
+            Assert.Equal(1, OneOneTwoThreee.CompareTo(OneOneTwo));
+            Assert.Equal(0, OneOneTwo.CompareTo(secondOneOneTwo));
+
+            var largerValue = new RadixNode<int>(21123);
+            Assert.Equal(-1, largerValue.CompareTo(OneOneTwoThreee));
+
+        }
+
+        [Fact]
         public void NewNodeIsPrefixOfExistingNode()
         {
             var tree = new RadixTree<string>();
