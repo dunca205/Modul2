@@ -11,19 +11,16 @@ namespace LinqExercise
             this.word = word;
         }
 
-        public int VowelsCount()
-        {
-            return word.ToLower().Count(character => "aeiou".Contains(character));
-        }
-
-        public int ConsonantsCount()
+        public (int,int) VowelsAndConsonantsCount()
         {
             int letters = word.ToLower().Count(character => char.IsLetter(character));
-            return letters - VowelsCount();
+            int vowels = word.ToLower().Count(character => "aeiou".Contains(character));
+            return(vowels, letters - vowels);
         }
+
         public char FirstNonRepetableCharacter()
         {
-            var rezult = word.ToArray().First(character => !word[word.IndexOf(character)..].Contains(character));
+            var rezult = word.First();
             return rezult;
 
         }

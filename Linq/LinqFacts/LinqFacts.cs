@@ -8,15 +8,22 @@ namespace LinqExercise
         {
             var vowels = new Linq("aeiouAEIOU");
            
-            Assert.Equal(10, vowels.VowelsCount());
+            Assert.Equal((10,0), vowels.VowelsAndConsonantsCount());
+        }
+
+        [Fact] public void CountConsonants() 
+        {
+            var consonants = new Linq("crstn");
+            Assert.Equal((0, 5), consonants.VowelsAndConsonantsCount());
         }
 
         [Fact]
-        public void CountConsonat() 
+        public void CountVowelsAndConsonats()
         {
-            var constant = new Linq("cccbbbnnnaei");
-            Assert.Equal(9, constant.ConsonantsCount());
+            var words = new Linq("Ana are mere");
+            Assert.Equal((6,4), words.VowelsAndConsonantsCount());
         }
+
 
         [Fact]   
         public void FindFirstNonRepetableLetter()
