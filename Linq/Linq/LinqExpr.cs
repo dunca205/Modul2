@@ -2,7 +2,8 @@
 {
     public class Linq
     {
-        private string word;
+        private readonly string word;
+
         public Linq(string word)
         {
             this.word = word;
@@ -11,18 +12,18 @@
         public (int, int) VowelsAndConsonantsCount()
         {
             var vowelsAndConsonant = (0, 0);
-            vowelsAndConsonant = word.ToLower().Where(x => char.IsLetter(x)).
-            Aggregate((0, 0), (counter, character)
+            vowelsAndConsonant = this.word.ToLower().Where(x => char.IsLetter(x)).
+            Aggregate((0, 0), (_, character)
             => "aeiou".Contains(character) ?
-            (vowelsAndConsonant.Item1 += 1, vowelsAndConsonant.Item2) :
-            (vowelsAndConsonant.Item1, vowelsAndConsonant.Item2 += 1));
+            (++vowelsAndConsonant.Item1, vowelsAndConsonant.Item2) :
+            (vowelsAndConsonant.Item1, ++vowelsAndConsonant.Item2));
             return vowelsAndConsonant;
         }
 
         public char FirstNonRepetableCharacter()
         {
-            var nonRepetableChar = word.GroupBy(character => character).
-                 FirstOrDefault(group => group.Count() == 1);
+            var nonRepetableChar = this.word.GroupBy(character => character).
+                 First(group => group.Count() == 1);
 
             return nonRepetableChar.Key;
         }
