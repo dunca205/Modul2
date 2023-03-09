@@ -13,9 +13,15 @@ namespace LinqExercise
 
         public (int,int) VowelsAndConsonantsCount()
         {
-            int letters = word.ToLower().Count(character => char.IsLetter(character));
-            int vowels = word.ToLower().Count(character => "aeiou".Contains(character));
-            return(vowels, letters - vowels);
+            //int letters = word.ToLower().Count(character => char.IsLetter(character));
+            //int vowels = word.ToLower().Count(character => "aeiou".Contains(character));
+            //return (vowels, letters - vowels);
+            var letters = word.ToLower().Where(character => char.IsLetter(character)).
+                Select(letter => "aeiou".Contains(letter));
+            
+
+            return (letters.Count(elements => elements == true), letters.Count(elements => elements == false));
+
         }
 
         public char FirstNonRepetableCharacter()
