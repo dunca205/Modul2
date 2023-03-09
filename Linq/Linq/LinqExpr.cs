@@ -27,7 +27,7 @@ namespace LinqExercise
         public char FirstNonRepetableCharacter()
         {
             var nonRepetableChar = word.GroupBy(character => character).
-                 First(group => group.Count() == 1);
+                 FirstOrDefault(group => group.Count() == 1);
 
             return nonRepetableChar.Key;
         }
