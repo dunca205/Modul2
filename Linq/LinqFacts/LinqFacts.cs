@@ -7,11 +7,12 @@ namespace LinqExercise
         public void CountVowels()
         {
             var vowels = new Linq("aeiouAEIOU");
-           
-            Assert.Equal((10,0), vowels.VowelsAndConsonantsCount());
+
+            Assert.Equal((10, 0), vowels.VowelsAndConsonantsCount());
         }
 
-        [Fact] public void CountConsonants() 
+        [Fact]
+        public void CountConsonants()
         {
             var consonants = new Linq("crstn");
             Assert.Equal((0, 5), consonants.VowelsAndConsonantsCount());
@@ -21,17 +22,24 @@ namespace LinqExercise
         public void CountVowelsAndConsonats()
         {
             var words = new Linq("Ana are mere");
-            Assert.Equal((6,4), words.VowelsAndConsonantsCount());
+            Assert.Equal((6, 4), words.VowelsAndConsonantsCount());
         }
 
 
-        [Fact]   
+        [Fact]
         public void FindFirstNonRepetableLetter()
         {
             var words = new Linq("ana are mere");
             Assert.Equal('n', words.FirstNonRepetableCharacter());
         }
-        
-        
+
+        [Fact]
+        public void FindFirstNonRepetableLetter_WhenNoCharMeetsTheCondition()
+        {
+            var words = new Linq("aa ae mmee");
+            Assert.Equal('\0', words.FirstNonRepetableCharacter());
+        }
+
+
     }
 }
