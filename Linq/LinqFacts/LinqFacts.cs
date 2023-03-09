@@ -28,7 +28,8 @@ namespace LinqExercise
         [Fact]   
         public void FindFirstNonRepetableLetter()
         {
-          
+            var words = new Linq("ana are mere");
+            Assert.Equal('n', words.FirstNonRepetableCharacter());
         }
         
         
