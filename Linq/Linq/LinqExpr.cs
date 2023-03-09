@@ -30,13 +30,12 @@ namespace LinqExercise
             //    }
 
             //}
-            int vow = 0;
-            int cons = 0;
-            var rez = word.ToLower().Where(x => char.IsLetter(x));
-            var re = rez.Aggregate(0,
+
+
+            var vowels = word.ToLower().Aggregate(0,
                 (a, b) => char.IsLetter(b) && "aeiou".Contains(b) ? a + 1 : a);
-            return (re, cons);
-            //"aeiou".Contains(character)
+            return (vowels, 0);
+
    
         }
 
