@@ -39,6 +39,13 @@ namespace LinqExercise
         //    var words = new Linq("aa ae mmee");
         //    Assert.Equal('\0', words.FirstNonRepetableCharacter());
         //}
+        [Fact]
+        public void FindMostRepeatedCharacter()
+        {
+            var words = new Linq("ana are meree");
+            Assert.Equal('e', words.MostRepetedCharacter());
+            Assert.False(words.MostRepetedCharacter() == ('a'));
+        }
 
 
     }
