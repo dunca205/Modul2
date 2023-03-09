@@ -30,7 +30,8 @@
 
         public char MostRepetedCharacter()
         {
-            var chars = word.GroupBy(character => character).MaxBy(occurance => occurance.Count());
+            var chars = word.GroupBy(character => character).
+                MaxBy(occurance => occurance.Count());
             return chars.Key;
         }
     }
