@@ -16,7 +16,7 @@ namespace LinqExercise
             return word.ToLower().Count(character => "aeiou".Contains(character));
         }
 
-        public int ConsonatCount()
+        public int ConsonantsCount()
         {
             int letters = word.ToLower().Count(character => char.IsLetter(character));
             return letters - VowelsCount();

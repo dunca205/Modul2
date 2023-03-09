@@ -15,7 +15,7 @@ namespace LinqExercise
         public void CountConsonat() 
         {
             var constant = new Linq("cccbbbnnnaei");
-            Assert.Equal(9, constant.ConsonatCount());
+            Assert.Equal(9, constant.ConsonantsCount());
         }
 
         [Fact]   
