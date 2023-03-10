@@ -12,12 +12,14 @@
         public (int, int) VowelsAndConsonantsCount()
         {
             var vowelsAndConsonants = (0, 0);
-            vowelsAndConsonants = this.word.ToLower().Where(x => char.IsLetter(x)).
+            int vowels = 0;
+            int consonants = 0;
+            (vowels, consonants) = this.word.ToLower().Where(x => char.IsLetter(x)).
             Aggregate((0, 0), (_, character)
             => "aeiou".Contains(character) ?
-            (++vowelsAndConsonants.Item1, vowelsAndConsonants.Item2) :
-            (vowelsAndConsonants.Item1, ++vowelsAndConsonants.Item2));
-            return vowelsAndConsonants;
+            (++vowels, consonants) :
+            (vowels, ++consonants));
+            return (vowels, consonants);
         }
 
         public char FirstNonRepetableCharacter()
