@@ -24,10 +24,8 @@
 
         public char FirstNonRepetableCharacter()
         {
-            var nonRepetableChar = this.word.GroupBy(character => character).
-                 First(group => group.Count() == 1);
-
-            return nonRepetableChar.Key;
+            return this.word.GroupBy(character => character).
+            FirstOrDefault(group => group.Count() == 1)?.Key ?? (default);
         }
 
         public char MostRepetedCharacter()
