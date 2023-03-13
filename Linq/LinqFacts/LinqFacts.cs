@@ -42,6 +42,11 @@ namespace LinqExercise
             Assert.Equal(1234, Linq.IntValueOfString("1234"));
         }
 
-
+        [Fact]
+        public void ConversionFromStringWordToPhoneNumber()
+        {
+            Assert.Equal(747999852, Linq.IntValueOfString("747999852"));
+        }
+        
     }
-}
+    }
