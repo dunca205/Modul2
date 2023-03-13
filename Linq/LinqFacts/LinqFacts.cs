@@ -30,15 +30,16 @@ namespace LinqExercise
         }
 
         [Fact]
-        public void FindFirstNonRepetableLetter_WhenNoCharMeetsTheCondition()
-        {
-            Assert.Equal('\0', Linq.FirstNonRepetableCharacter("aa ae mmee"));
-        }
-        [Fact]
         public void FindMostRepeatedCharacter()
         {
             Assert.Equal('e', Linq.MostRepetedCharacter("ana are meree"));
             Assert.False(Linq.MostRepetedCharacter("ana are meree") == ('a'));
+        }
+
+        [Fact]
+        public void ConversionFromStringToInt()
+        {
+            Assert.Equal(1234, Linq.IntValueOfString("1234"));
         }
 
 

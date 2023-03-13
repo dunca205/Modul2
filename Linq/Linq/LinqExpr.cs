@@ -1,4 +1,6 @@
-﻿namespace LinqExercise
+﻿using System.Diagnostics.Metrics;
+
+namespace LinqExercise
 {
     public class Linq
     {
@@ -12,7 +14,32 @@
             First(group => group.Count() == 1).Key;
 
         public static char MostRepetedCharacter(string word)
-            => word.GroupBy(character => character).
-            MaxBy(occurrence => occurrence.Count()).Key;
+            => word.GroupBy(character => character)
+            .MaxBy(occurrence => occurrence.Count()).Key;
+
+        public static int IntValueOfString(string word)
+        {
+            var dictionary = new Dictionary<char, int>();
+            dictionary.Add('0', 0);
+            dictionary.Add('1', 1);
+            dictionary.Add('2', 2);
+            dictionary.Add('3', 3);
+            dictionary.Add('4', 4);
+            dictionary.Add('5', 5);
+            dictionary.Add('6', 6);
+            dictionary.Add('7', 7);
+            dictionary.Add('8', 8);
+            dictionary.Add('9', 9);
+
+            var rezult = word.Select(character => dictionary[character]).ToArray();
+            int total = 0;
+            foreach (var number in rezult)
+            {
+                total = total * 10;
+                total += number;
+            }
+
+            return total;
+        }
     }
 }
