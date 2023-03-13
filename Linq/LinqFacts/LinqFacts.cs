@@ -6,7 +6,7 @@ namespace LinqExercise
         [Fact]
         public void CountVowels()
         {
-         
+
             Assert.Equal((10, 0), Linq.VowelsAndConsonantsCount("aeiouAEIOU"));
         }
 
