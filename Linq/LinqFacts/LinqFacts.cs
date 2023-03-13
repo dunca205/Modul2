@@ -6,45 +6,39 @@ namespace LinqExercise
         [Fact]
         public void CountVowels()
         {
-            var vowels = new Linq("aeiouAEIOU");
-
-            Assert.Equal((10, 0), vowels.VowelsAndConsonantsCount());
+         
+            Assert.Equal((10, 0), Linq.VowelsAndConsonantsCount("aeiouAEIOU"));
         }
 
         [Fact]
         public void CountConsonants()
         {
-            var consonants = new Linq("crstn");
-            Assert.Equal((0, 5), consonants.VowelsAndConsonantsCount());
+            Assert.Equal((0, 5), Linq.VowelsAndConsonantsCount("crstn"));
         }
 
         [Fact]
         public void CountVowelsAndConsonats()
         {
-            var words = new Linq("Ana are mere");
-            Assert.Equal((6, 4), words.VowelsAndConsonantsCount());
+            Assert.Equal((6, 4), Linq.VowelsAndConsonantsCount("Ana are mere"));
         }
 
 
         [Fact]
         public void FindFirstNonRepetableLetter()
         {
-            var words = new Linq("ana are mere");
-            Assert.Equal('n', words.FirstNonRepetableCharacter());
+            Assert.Equal('n', Linq.FirstNonRepetableCharacter("ana are mere"));
         }
 
         [Fact]
         public void FindFirstNonRepetableLetter_WhenNoCharMeetsTheCondition()
         {
-            var words = new Linq("aa ae mmee");
-            Assert.Equal('\0', words.FirstNonRepetableCharacter());
+            Assert.Equal('\0', Linq.FirstNonRepetableCharacter("aa ae mmee"));
         }
         [Fact]
         public void FindMostRepeatedCharacter()
         {
-            var words = new Linq("ana are meree");
-            Assert.Equal('e', words.MostRepetedCharacter());
-            Assert.False(words.MostRepetedCharacter() == ('a'));
+            Assert.Equal('e', Linq.MostRepetedCharacter("ana are meree"));
+            Assert.False(Linq.MostRepetedCharacter("ana are meree") == ('a'));
         }
 
 
