@@ -39,14 +39,14 @@ namespace LinqExercise
         [Fact]
         public void ConversionFromStringToInt()
         {
-            Assert.Equal(1234, Linq.IntValueOfString("1234"));
+            Assert.Equal(1234, Linq.ConversionFromStringToInteger("1234"));
         }
 
         [Fact]
-        public void ConversionFromStringWordToPhoneNumber()
+        public void ConversionFromWordToPhoneNumber()
         {
-            Assert.Equal(747999852, Linq.IntValueOfString("747999852"));
+            Assert.Equal(747999852, Linq.ConversionFromStringToInteger("747999852"));
         }
-        
+
     }
-    }
+}

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.Metrics;
-
-namespace LinqExercise
+﻿namespace LinqExercise
 {
     public class Linq
     {
@@ -17,7 +15,7 @@ namespace LinqExercise
             => word.GroupBy(character => character)
             .MaxBy(occurrence => occurrence.Count()).Key;
 
-        public static int IntValueOfString(string word)
+        public static int ConversionFromStringToInteger(string word)
         {
             var dictionary = new Dictionary<char, int>();
             dictionary.Add('0', 0);
@@ -32,14 +30,9 @@ namespace LinqExercise
             dictionary.Add('9', 9);
 
             var rezult = word.Select(character => dictionary[character]).ToArray();
-            int total = 0;
-            foreach (var number in rezult)
-            {
-                total = total * 10;
-                total += number;
-            }
 
-            return total;
+            return word.Select(character => dictionary[character]).
+                       Aggregate(0, (total, number) => total * 10 + number);
         }
     }
 }
