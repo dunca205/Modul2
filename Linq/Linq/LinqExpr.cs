@@ -17,11 +17,18 @@
 
         public static int ConversionFromStringToInteger(string word)
         {
-            const int multiplier = 10; // to make room for the next digit
-            var integer = word.Where(char.IsDigit).Select(character => character - '0').
-                Aggregate((total, number) => total * multiplier + number);
+            bool isNegative = word.StartsWith('-');
+            if (isNegative)
+            {
+                word = word[1..];
+            }
 
-            return word.StartsWith('-') ? integer * -1 : integer;
+            const int multiplier = 10;
+            var integer = word.Select(character => char.IsDigit(character) ?
+            character - '0' : throw new OverflowException("Character represents a number less than Int32.MinValue or greater than Int32.MaxValue.")).
+            Aggregate((total, number) => total * multiplier + number);
+
+            return isNegative ? -integer : integer;
         }
     }
 }

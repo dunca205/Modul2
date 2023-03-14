@@ -54,5 +54,11 @@ namespace LinqExercise
             Assert.Equal(-100, Linq.ConversionFromStringToInteger("-100"));
         }
 
+        [Fact]
+        public void ThrowExceptionWhenNotAllCharactersAreDigits()
+        {
+            Assert.Throws<OverflowException>(()=> Linq.ConversionFromStringToInteger("ana123"));
+        }
+
     }
 }
