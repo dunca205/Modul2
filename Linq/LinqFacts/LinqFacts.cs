@@ -48,5 +48,11 @@ namespace LinqExercise
             Assert.Equal(747999852, Linq.ConversionFromStringToInteger("747999852"));
         }
 
+        [Fact]
+        public void ConversionFromStringToNumberWhenNumberIsSupposeToBeNegative()
+        {
+            Assert.Equal(-100, Linq.ConversionFromStringToInteger("-100"));
+        }
+
     }
 }

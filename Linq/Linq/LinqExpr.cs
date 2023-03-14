@@ -17,8 +17,11 @@
 
         public static int ConversionFromStringToInteger(string word)
         {
-            return word.Select(character => character - '0').
-                Aggregate((total, number) => total * 10 + number);
+            const int multiplier = 10; // to make room for the next digit
+            var integer = word.Where(char.IsDigit).Select(character => character - '0').
+                Aggregate((total, number) => total * multiplier + number);
+
+            return word.StartsWith('-') ? integer * -1 : integer;
         }
     }
 }
