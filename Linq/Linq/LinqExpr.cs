@@ -17,22 +17,8 @@
 
         public static int ConversionFromStringToInteger(string word)
         {
-            var dictionary = new Dictionary<char, int>();
-            dictionary.Add('0', 0);
-            dictionary.Add('1', 1);
-            dictionary.Add('2', 2);
-            dictionary.Add('3', 3);
-            dictionary.Add('4', 4);
-            dictionary.Add('5', 5);
-            dictionary.Add('6', 6);
-            dictionary.Add('7', 7);
-            dictionary.Add('8', 8);
-            dictionary.Add('9', 9);
-
-            var rezult = word.Select(character => dictionary[character]).ToArray();
-
-            return word.Select(character => dictionary[character]).
-                       Aggregate(0, (total, number) => total * 10 + number);
+            return word.Select(character => character - '0').
+                Aggregate((total, number) => total * 10 + number);
         }
     }
 }
