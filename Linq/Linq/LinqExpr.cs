@@ -12,11 +12,16 @@
             First(group => group.Count() == 1).Key;
 
         public static char MostRepetedCharacter(string word)
-            => word.GroupBy(character => character)
-            .MaxBy(occurrence => occurrence.Count()).Key;
+            => word.GroupBy(character => character).
+            MaxBy(occurrence => occurrence.Count()).Key;
+
 
         public static int ConversionFromStringToInteger(string word)
         {
+            int ToDigit(char character) => char.IsDigit(character) ?
+            character - '0' :
+            throw new OverflowException("Character represents a number less than Int32.MinValue or greater than Int32.MaxValue.");
+
             bool isNegative = word.StartsWith('-');
             if (isNegative)
             {
@@ -24,9 +29,8 @@
             }
 
             const int multiplier = 10;
-            var integer = word.Select(character => char.IsDigit(character) ?
-            character - '0' : throw new OverflowException("Character represents a number less than Int32.MinValue or greater than Int32.MaxValue.")).
-            Aggregate((total, number) => total * multiplier + number);
+            int integer = word.Select(ToDigit).
+                         Aggregate((total, number) => total * multiplier + number);
 
             return isNegative ? -integer : integer;
         }

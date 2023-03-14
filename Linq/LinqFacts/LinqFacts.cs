@@ -57,7 +57,7 @@ namespace LinqExercise
         [Fact]
         public void ThrowExceptionWhenNotAllCharactersAreDigits()
         {
-            Assert.Throws<OverflowException>(()=> Linq.ConversionFromStringToInteger("ana123"));
+            Assert.Throws<OverflowException>(() => Linq.ConversionFromStringToInteger("ana123"));
         }
 
     }
