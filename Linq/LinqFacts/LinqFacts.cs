@@ -63,8 +63,9 @@ namespace LinqExercise
         [Fact]
         public void IsPalindromeGlobalFunction()
         {
-            var rezult = Linq.GeneratePalindrome("aabaac");
-            Assert.True(rezult.Contains("aabaa"));
+            var rezult = Linq.GeneratePalindromes("aabaac");
+            Assert.True(rezult.Contains("aaba"));
+
 
         }
 

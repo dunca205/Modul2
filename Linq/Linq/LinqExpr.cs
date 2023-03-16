@@ -33,23 +33,33 @@
             return isNegative ? -integer : integer;
         }
 
-        public static List<string> GeneratePalindrome(string word)
+        public static List<string> GeneratePalindromes(string word)
         {
-            List<string> result = new List<string>();
+            List<string> words = new List<string>();
+
             for (int i = 0; i < word.Length; i++)
             {
-                for (var c = word[i..]; c.Length > 0; c = c.Substring(0, c.Length -1))
+                var substring = word.Skip(i);
+                var enumerator = substring.GetEnumerator();
+
+                for (int letterIndex = 0; enumerator.MoveNext(); letterIndex++)
                 {
-                    if (IsPalindrom(c))
-                    {
-                        result.Add(c);
-                    }
+                    IsPalindrom(substring.SkipLast(letterIndex));
                 }
             }
 
-            bool IsPalindrom(string word) => word == word.Aggregate("", (rezult, character) => character + rezult);
+            void IsPalindrom(IEnumerable<char> sequence)
+            {
+                var reversed = sequence.Reverse();
+                if (!sequence.SequenceEqual(reversed))
+                {
+                    return;
+                }
 
-            return result;
+                words.Add(new string(sequence.ToArray()));
+            }
+
+            return words;
         }
     }
 }
