@@ -41,10 +41,11 @@
             {
                 var substring = word.Skip(i);
                 var enumerator = substring.GetEnumerator();
-
-                for (int letterIndex = 0; enumerator.MoveNext(); letterIndex++)
+                int letters = 0;
+                while (enumerator.MoveNext())
                 {
-                    IsPalindrom(substring.SkipLast(letterIndex));
+                    IsPalindrom(substring.SkipLast(letters));
+                    letters++;
                 }
             }
 
