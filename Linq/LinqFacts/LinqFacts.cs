@@ -60,5 +60,13 @@ namespace LinqExercise
             Assert.Throws<OverflowException>(() => Linq.ConversionFromStringToInteger("ana123"));
         }
 
+        [Fact]
+        public void IsPalindromeGlobalFunction()
+        {
+            var rezult = Linq.GeneratePalindrome("aabaac");
+            Assert.True(rezult.Contains("aabaa"));
+
+        }
+
     }
 }

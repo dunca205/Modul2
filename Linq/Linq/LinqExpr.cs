@@ -15,13 +15,8 @@
             => word.GroupBy(character => character).
             MaxBy(occurrence => occurrence.Count()).Key;
 
-
         public static int ConversionFromStringToInteger(string word)
         {
-            int ToDigit(char character) => char.IsDigit(character) ?
-            character - '0' :
-            throw new OverflowException("Character represents a number less than Int32.MinValue or greater than Int32.MaxValue.");
-
             bool isNegative = word.StartsWith('-');
             if (isNegative)
             {
@@ -32,7 +27,29 @@
             int integer = word.Select(ToDigit).
                          Aggregate((total, number) => total * multiplier + number);
 
+            int ToDigit(char character) => char.IsDigit(character) ?
+            character - '0' : throw new OverflowException("Character represents a number less than Int32.MinValue or greater than Int32.MaxValue.");
+
             return isNegative ? -integer : integer;
+        }
+
+        public static List<string> GeneratePalindrome(string word)
+        {
+            List<string> result = new List<string>();
+            for (int i = 0; i < word.Length; i++)
+            {
+                for (var c = word[i..]; c.Length > 0; c = c.Substring(0, c.Length -1))
+                {
+                    if (IsPalindrom(c))
+                    {
+                        result.Add(c);
+                    }
+                }
+            }
+
+            bool IsPalindrom(string word) => word == word.Aggregate("", (rezult, character) => character + rezult);
+
+            return result;
         }
     }
 }
