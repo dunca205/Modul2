@@ -44,12 +44,12 @@
                 int letters = 0;
                 while (enumerator.MoveNext())
                 {
-                    IsPalindrom(substring.SkipLast(letters));
+                    AddPalindrom(substring.SkipLast(letters));
                     letters++;
                 }
             }
 
-            void IsPalindrom(IEnumerable<char> sequence)
+            void AddPalindrom(IEnumerable<char> sequence)
             {
                 var reversed = sequence.Reverse();
                 if (!sequence.SequenceEqual(reversed))
