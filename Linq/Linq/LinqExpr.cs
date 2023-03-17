@@ -42,9 +42,9 @@ namespace LinqExercise
 
             foreach (var sequence in Enumerable.Range(0, word.Length).Select(letters => word[letters..]))
             {
-                foreach (var letters in Enumerable.Range(0, sequence.Length))
+                foreach (var sequenceLength in Enumerable.Range(0, sequence.Length))
                 {
-                    AddPalindrom(sequence.SkipLast(letters));
+                    AddPalindrom(sequence.SkipLast(sequenceLength));
                 }
             }
 
