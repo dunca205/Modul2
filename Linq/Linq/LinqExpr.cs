@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Xml.Schema;
+using System.Linq;
 
 namespace LinqExercise
 {
@@ -39,21 +40,22 @@ namespace LinqExercise
         public static IEnumerable<string> PalindromeGenerator(string word)
         {
             List<string> words = new List<string>();
-
-            for (int i = 0; i < word.Length; i++)
+            foreach (var (sequence, letters) in from sequence in Enumerable.Range(0, word.Length).Select(letters => word[letters..])
+                                                from letters in Enumerable.Range(0, sequence.Length).Reverse()
+                                                select (sequence, letters))
             {
-                var substring = word.Skip(i).ToArray();
-
-                for (int j = 0; j < substring.Length; j++)
-                {
-                    if (IsPalindrom(substring.SkipLast(j)))
-                    {
-                        words.Add(new string(substring.SkipLast(j).ToArray()));
-                    }
-                }
+                AddPalindrom(sequence.SkipLast(letters));
             }
 
-            bool IsPalindrom(IEnumerable<char> sequence) => sequence.SequenceEqual(sequence.Reverse());
+            void AddPalindrom(IEnumerable<char> sequence)
+            {
+                if (!sequence.SequenceEqual(sequence.Reverse()))
+                {
+                    return;
+                }
+
+                words.Add(new string(sequence.ToArray()));
+            }
 
             return words;
         }

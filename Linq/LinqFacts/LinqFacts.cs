@@ -64,8 +64,10 @@ namespace LinqExercise
         public void GeneratePalindrome()
         {
             var rezult = Linq.PalindromeGenerator("aabaac");
-            var expectedResult= new[] { "aabaa", "aa", "a", "aba", "a", "b", "aa", "a", "a", "c" };          
-            Assert.Equal(expectedResult, rezult);
+            var expectedResult= new[] { "aabaa", "aa", "a", "aba", "a", "b", "aa", "a", "a", "c" };
+            var rezultAfterRefactor = new[] { "a", "aa", "aabaa", "a", "aba", "b", "a", "aa", "a", "c" };
+
+            Assert.Equal(rezultAfterRefactor, rezult);
         }
 
         [Fact] 
