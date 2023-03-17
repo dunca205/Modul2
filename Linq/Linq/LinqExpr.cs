@@ -1,4 +1,7 @@
-﻿namespace LinqExercise
+﻿using System.Collections.Concurrent;
+using System.Xml.Schema;
+
+namespace LinqExercise
 {
     public class Linq
     {
@@ -33,32 +36,24 @@
             return isNegative ? -integer : integer;
         }
 
-        public static List<string> GeneratePalindromes(string word)
+        public static IEnumerable<string> PalindromeGenerator(string word)
         {
             List<string> words = new List<string>();
 
             for (int i = 0; i < word.Length; i++)
             {
-                var substring = word.Skip(i);
-                var enumerator = substring.GetEnumerator();
-                int letters = 0;
-                while (enumerator.MoveNext())
+                var substring = word.Skip(i).ToArray();
+
+                for (int j = 0; j < substring.Length; j++)
                 {
-                    AddPalindrom(substring.SkipLast(letters));
-                    letters++;
+                    if (IsPalindrom(substring.SkipLast(j)))
+                    {
+                        words.Add(new string(substring.SkipLast(j).ToArray()));
+                    }
                 }
             }
 
-            void AddPalindrom(IEnumerable<char> sequence)
-            {
-                var reversed = sequence.Reverse();
-                if (!sequence.SequenceEqual(reversed))
-                {
-                    return;
-                }
-
-                words.Add(new string(sequence.ToArray()));
-            }
+            bool IsPalindrom(IEnumerable<char> sequence) => sequence.SequenceEqual(sequence.Reverse());
 
             return words;
         }

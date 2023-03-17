@@ -61,12 +61,21 @@ namespace LinqExercise
         }
 
         [Fact]
-        public void IsPalindromeGlobalFunction()
+        public void GeneratePalindrome()
         {
-            var rezult = Linq.GeneratePalindromes("aabaac");
-            Assert.True(rezult.Contains("aabaa"));
-
+            var rezult = Linq.PalindromeGenerator("aabaac");
+            var expectedResult= new[] { "aabaa", "aa", "a", "aba", "a", "b", "aa", "a", "a", "c" };          
+            Assert.Equal(expectedResult, rezult);
         }
+
+        [Fact] 
+        public void GeneratePalindromeWhenAllLettersAreDistinct()
+        {
+            var rezult = Linq.PalindromeGenerator("abc");
+            var expectedResult = new[] { "a", "b", "c" };
+            Assert.Equal(expectedResult, rezult);
+        }
+        
 
     }
 }
