@@ -76,15 +76,9 @@ namespace LinqExercise
             Assert.Equal(expectedResult, rezult);
         }
 
-        [Fact]
-        public void GeneratorOfSums()
-        {
-            //IEnumerable<IEnumerable<int>> expected = new[] { new[] { 1, 2, 3, 1 }, new[] { 1, 2, 3 }, new[] { 1, 2 }, new[] { 1 } };
-            //Assert.Equal(expected, Linq.SumGenerator(new[] { 1, 2, 3, 1, 5 }, 7));
-        }
 
         [Fact]
-        public void GenerateSums()
+        public void GenerateSumsForFiveConsecutiveNumbers()
         {
             var expected = new[] {
                 new[] { 1 }, new[] { 1, 2 },  new[] { 1, 2, 3 },
@@ -94,6 +88,19 @@ namespace LinqExercise
                 new[] { 5 }};
             
             Assert.Equal(expected, Linq.SumGenerator(new[] { 1, 2, 3, 4, 5 }, 7));
+        }
+
+        [Fact]
+        public void GenerateSumsWhenNegativeNumbersArePresent()
+        {
+            var rezult = Linq.SumGenerator(new[] { 1, 2, 3, 4, -5 }, 7);
+            var expected = new[] {
+                new[] { 1 }, new[] { 1, 2 },  new[] { 1, 2, 3 },new[] { 1, 2, 3, 4, -5 },
+                new[] { 2 }, new[] { 2, 3 }, new[] { 2, 3, 4, -5},
+                new[] { 3 }, new[] { 3, 4 }, new[] { 3, 4, -5},
+                new[] { 4 },new[] { 4, -5},
+                new[] {-5 }};
+
         }
 
 
