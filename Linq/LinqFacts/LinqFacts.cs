@@ -64,7 +64,7 @@ namespace LinqExercise
         public void GeneratePalindrome()
         {
             var rezult = Linq.PalindromeGenerator("aabaac");
-            var expectedResult = new[] { "a", "aa","aabaa", "a", "aba", "b", "a", "aa", "a", "c" };
+            var expectedResult = new[] { "a", "aa", "aabaa", "a", "aba", "b", "a", "aa", "a", "c" };
             Assert.Equal(expectedResult, rezult);
         }
 
@@ -79,8 +79,21 @@ namespace LinqExercise
         [Fact]
         public void GeneratorOfSums()
         {
-            IEnumerable<IEnumerable<int>> expected = new[] { new[] { 1, 2, 3, 1 }, new[] { 1, 2, 3 }, new[] { 1, 2 }, new[] { 1 } };
-            Assert.Equal(expected, Linq.SumGenerator(new[] { 1, 2, 3, 1, 5 }, 7));
+            //IEnumerable<IEnumerable<int>> expected = new[] { new[] { 1, 2, 3, 1 }, new[] { 1, 2, 3 }, new[] { 1, 2 }, new[] { 1 } };
+            //Assert.Equal(expected, Linq.SumGenerator(new[] { 1, 2, 3, 1, 5 }, 7));
+        }
+
+        [Fact]
+        public void GenerateSums()
+        {
+            var expected = new[] {
+                new[] { 1 }, new[] { 1, 2 },  new[] { 1, 2, 3 },
+                new[] { 2 }, new[] { 2, 3 },
+                new[] { 3 }, new[] { 3, 4 },
+                new[] { 4 }, 
+                new[] { 5 }};
+            
+            Assert.Equal(expected, Linq.SumGenerator(new[] { 1, 2, 3, 4, 5 }, 7));
         }
 
 
