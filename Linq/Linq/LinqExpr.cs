@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-
-namespace LinqExercise
+﻿namespace LinqExercise
 {
     public class Linq
     {
@@ -38,34 +35,22 @@ namespace LinqExercise
 
         public static IEnumerable<string> PalindromeGenerator(string word)
         {
-            List<string> words = new List<string>();
+            return Enumerable.Range(0, word.Length).
+             SelectMany((start, index) => Enumerable.Range(index + 1, word.Length - start).
+             Select(end => word[start..end])
+            .Where(IsPalindrom));
 
-            foreach (var sequence in Enumerable.Range(0, word.Length).Select(letters => word[letters..]))
+            bool IsPalindrom(IEnumerable<char> sequence)
             {
-                foreach (var sequenceLength in Enumerable.Range(0, sequence.Length))
-                {
-                    AddPalindrom(sequence.SkipLast(sequenceLength));
-                }
+                return sequence.SequenceEqual(sequence.Reverse());
             }
-
-            void AddPalindrom(IEnumerable<char> sequence)
-            {
-                if (!sequence.SequenceEqual(sequence.Reverse()))
-                {
-                    return;
-                }
-
-                words.Add(new string(sequence.ToArray()));
-            }
-
-            return words;
         }
 
         public static IEnumerable<IEnumerable<int>> SumGenerator(int[] numbers, int max)
         {
-           return Enumerable.Range(0, numbers.Length).
-                Select(index => numbers.SkipLast(index)).
-                Where(total => total.Sum() <= max);
+            return Enumerable.Range(0, numbers.Length).
+                 Select(index => numbers.SkipLast(index)).
+                 Where(total => total.Sum() <= max);
         }
     }
 }
