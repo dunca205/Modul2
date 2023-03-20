@@ -49,8 +49,8 @@
         public static IEnumerable<IEnumerable<int>> SumGenerator(int[] numbers, int max)
 
          => Enumerable.Range(0, numbers.Length).
-                         SelectMany(startIndex => Enumerable.Range(startIndex, numbers.Length - startIndex).
-                         Select(end => numbers.Take(end + 1).Skip(startIndex))).
+                         SelectMany(start => Enumerable.Range(start, numbers.Length - start).
+                         Select(end => numbers.Take(end + 1).Skip(start))).
                          Where(numbers => numbers.Sum() <= max);
     }
 }
