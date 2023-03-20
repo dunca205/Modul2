@@ -1,5 +1,5 @@
-﻿using System.Collections.Concurrent;
-using System.Xml.Schema;
+﻿using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace LinqExercise
 {
@@ -59,6 +59,13 @@ namespace LinqExercise
             }
 
             return words;
+        }
+
+        public static IEnumerable<IEnumerable<int>> SumGenerator(int[] numbers, int max)
+        {
+           return Enumerable.Range(0, numbers.Length).
+                Select(index => numbers.SkipLast(index)).
+                Where(total => total.Sum() <= max);
         }
     }
 }

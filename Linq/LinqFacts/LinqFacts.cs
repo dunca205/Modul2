@@ -64,18 +64,25 @@ namespace LinqExercise
         public void GeneratePalindrome()
         {
             var rezult = Linq.PalindromeGenerator("aabaac");
-            var expectedResult= new[] { "aabaa", "aa", "a", "aba", "a", "b", "aa", "a", "a", "c" };
+            var expectedResult = new[] { "aabaa", "aa", "a", "aba", "a", "b", "aa", "a", "a", "c" };
             Assert.Equal(expectedResult, rezult);
         }
 
-        [Fact] 
+        [Fact]
         public void GeneratePalindromeWhenAllLettersAreDistinct()
         {
             var rezult = Linq.PalindromeGenerator("abc");
             var expectedResult = new[] { "a", "b", "c" };
             Assert.Equal(expectedResult, rezult);
         }
-        
+
+        [Fact]
+        public void GeneratorOfSums()
+        {
+            IEnumerable<IEnumerable<int>> expected = new[] { new[] { 1, 2, 3, 1 }, new[] { 1, 2, 3 }, new[] { 1, 2 }, new[] { 1 } };
+            Assert.Equal(expected, Linq.SumGenerator(new[] { 1, 2, 3, 1, 5 }, 7));
+        }
+
 
     }
 }
