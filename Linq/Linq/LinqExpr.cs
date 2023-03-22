@@ -53,7 +53,7 @@
                          Select(end => numbers.Take(end + 1).Skip(start))).
                          Where(numbers => numbers.Sum() <= max);
 
-        public static IEnumerable<IEnumerable<int>> CombinationGenerator(int n, int max)
+        public static IEnumerable<IEnumerable<int>> CombinationsGenerator(int n, int max)
         {
             var seed = new[] { "" };
             return Enumerable.Range(1, n).

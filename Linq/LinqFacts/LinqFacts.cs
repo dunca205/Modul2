@@ -110,6 +110,5 @@ namespace LinqExercise
             Assert.Equal(expected, Linq.CombinationsGenerator(5, 3));
         }
 
-
     }
 }
