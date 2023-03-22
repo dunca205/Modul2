@@ -12,7 +12,7 @@
 
         public ICollection<Feature> Features { get; }
 
-        public static IEnumerable<Product> ProductsThatContainAtLeastOneFeature(ICollection<Product> products, IEnumerable<Feature> features)
+        public static IEnumerable<Product> ProductsThatContainAtLeastOneFeature(IEnumerable<Product> products, IEnumerable<Feature> features)
           => products.Where(product => FeatureMatch(product.Features, features) > 0);
 
         public static IEnumerable<Product> ProductsThatContainAllFeatures(IEnumerable<Product> products, IEnumerable<Feature> features)
