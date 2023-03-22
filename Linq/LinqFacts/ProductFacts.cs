@@ -49,10 +49,34 @@ namespace LinqExercise
             listOfProducts.Add(samsungS21);
             listOfProducts.Add(huawai);
             listOfProducts.Add(iPhone11);
+
             var expected = new List<Product>();
             expected.Add(iPhone11);
 
-            Assert.Equal(expected, Product.ProductsThatContainallFeatures(listOfProducts, featureList));
+            Assert.Equal(expected, Product.ProductsThatContainAllFeatures(listOfProducts, featureList));
+        }
+
+        [Fact]
+        public void ProductsThatDontContainAnyFeature()
+        {
+            var featureList = new List<Feature> {
+                new Feature(1000), 
+                new Feature(2021)
+            };
+
+            var samsungS21 = new Product("SamsungS21", new List<Feature> { new Feature(900), new Feature(2021) });
+            var huawai = new Product("Huawai", new List<Feature> { new Feature(850), new Feature(5) });
+            var iPhone11 = new Product("IPhone11", new List<Feature> { new Feature(1000), new Feature(2020), new Feature(5) });
+
+            var listOfProducts = new List<Product>();
+            listOfProducts.Add(samsungS21);
+            listOfProducts.Add(huawai);
+            listOfProducts.Add(iPhone11);
+
+            var expected = new List<Product>();
+            expected.Add(huawai);
+
+            Assert.Equal(expected, Product.ProductsThatDontContainAnyFeature(listOfProducts, featureList));
         }
 
         [Fact]
