@@ -103,6 +103,13 @@ namespace LinqExercise
 
         }
 
+        [Fact]
+        public void GenerateAllCombination()
+        {
+            var expected = new[] { new[] { 1, -2, 3, -4, 5 }, new[] { -1, 2, 3, 4, -5 }, new[] { -1, -2, -3, 4, 5 } };
+            Assert.Equal(expected, Linq.CombinationsGenerator(5, 3));
+        }
+
 
     }
 }

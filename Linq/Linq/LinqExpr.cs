@@ -48,9 +48,20 @@
 
         public static IEnumerable<IEnumerable<int>> SumGenerator(int[] numbers, int max)
 
-         => Enumerable.Range(0, numbers.Length).
+           => Enumerable.Range(0, numbers.Length).
                          SelectMany(start => Enumerable.Range(start, numbers.Length - start).
                          Select(end => numbers.Take(end + 1).Skip(start))).
                          Where(numbers => numbers.Sum() <= max);
+
+        public static IEnumerable<IEnumerable<int>> CombinationGenerator(int n, int max)
+        {
+            var seed = new[] { "" };
+            return Enumerable.Range(1, n).
+                Aggregate(seed, (expresion, _) => expresion.SelectMany(character => new[] { character + '+', character + '-' }).ToArray()).
+                Select(Transform).Where(numbers => numbers.Sum() == max);
+
+            IEnumerable<int> Transform(string input)
+                => input.Select((sign, index) => sign == '+' ? index + 1 : -(index + 1));
+        }
     }
 }
