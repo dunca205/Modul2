@@ -13,15 +13,15 @@
         public ICollection<Feature> Features { get; }
 
         public static IEnumerable<Product> ProductsThatContainAtLeastOneFeature(ICollection<Product> products, IEnumerable<Feature> features)
-          => products.Where(product => FeatureMatch(product.Features, features).Any());
+          => products.Where(product => FeatureMatch(product.Features, features) > 0);
 
         public static IEnumerable<Product> ProductsThatContainAllFeatures(IEnumerable<Product> products, IEnumerable<Feature> features)
-          => products.Where(product => FeatureMatch(product.Features, features).Count() == features.Count());
+          => products.Where(product => FeatureMatch(product.Features, features) == features.Count());
 
         public static IEnumerable<Product> ProductsThatDontContainAnyFeature(IEnumerable<Product> products, IEnumerable<Feature> features)
-         => products.Where(product => FeatureMatch(product.Features, features).Count() == 0);
+         => products.Where(product => FeatureMatch(product.Features, features) == 0);
 
-        public static IEnumerable<int> FeatureMatch(IEnumerable<Feature> features, IEnumerable<Feature> features2)
-            => features.Select(f => f.Id).Intersect(features2.Select(f => f.Id));
+        private static int FeatureMatch(IEnumerable<Feature> features, IEnumerable<Feature> features2)
+            => features.Select(f => f.Id).Intersect(features2.Select(f => f.Id)).Count();
     }
 }

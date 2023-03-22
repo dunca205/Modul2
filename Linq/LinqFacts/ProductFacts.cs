@@ -79,45 +79,45 @@ namespace LinqExercise
             Assert.Equal(expected, Product.ProductsThatDontContainAnyFeature(listOfProducts, featureList));
         }
 
-        [Fact]
-        public void CompareFeatureListWhenAtLeastOneFeatureIsMatching()
-        {
-            var featureList = new List<Feature> {
-                new Feature(900),  // pret 
-                new Feature(1000), // pret 
-                new Feature(2021), // an Fabricatie
-                new Feature(5)     // raiting
-            };
+        //[Fact]
+        //public void CompareFeatureListWhenAtLeastOneFeatureIsMatching()
+        //{
+        //    var featureList = new List<Feature> {
+        //        new Feature(900),  // pret 
+        //        new Feature(1000), // pret 
+        //        new Feature(2021), // an Fabricatie
+        //        new Feature(5)     // raiting
+        //    };
 
-            var featureList2 = new List<Feature> {
-                new Feature(900),  // pret 
-                new Feature(1000), // pret 
-                new Feature(2023), // an Fabricatie
-                new Feature(4)     // raiting
-            };
-            var a = Product.FeatureMatch(featureList, featureList2);
-            Assert.True(a.Count() > 0);
-        }
+        //    var featureList2 = new List<Feature> {
+        //        new Feature(900),  // pret 
+        //        new Feature(1000), // pret 
+        //        new Feature(2023), // an Fabricatie
+        //        new Feature(4)     // raiting
+        //    };
+        //    var a = Product.FeatureMatch(featureList, featureList2);
+        //    Assert.True(a.Count() > 0);
+        //}
 
-        [Fact]
-        public void CompareFeatureListsWhenNoFeatureIsMatching()
-        {
-            var featureList = new List<Feature> {
-                new Feature(1),
-                new Feature(2),
-                new Feature(3),
-                new Feature(5)
-            };
+        //[Fact]
+        //public void CompareFeatureListsWhenNoFeatureIsMatching()
+        //{
+        //    var featureList = new List<Feature> {
+        //        new Feature(1),
+        //        new Feature(2),
+        //        new Feature(3),
+        //        new Feature(5)
+        //    };
 
-            var featureList2 = new List<Feature> {
-                new Feature(900),
-                new Feature(1000),
-                new Feature(2023),
-                new Feature(4)
-            };
+        //    var featureList2 = new List<Feature> {
+        //        new Feature(900),
+        //        new Feature(1000),
+        //        new Feature(2023),
+        //        new Feature(4)
+        //    };
 
-            var a = Product.FeatureMatch(featureList, featureList2);
-            Assert.True(a.Count() == 0);
-        }
+        //    var a = Product.FeatureMatch(featureList, featureList2);
+        //    Assert.True(a.Count() == 0);
+        //}
     }
 }
