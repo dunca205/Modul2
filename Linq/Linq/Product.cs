@@ -1,5 +1,16 @@
 ﻿namespace Linq
 {
+    public struct ProductStruct
+    {
+        public string Name;
+        public int Quantity;
+
+        public static IEnumerable<ProductStruct> GroupProductsByName(IEnumerable<ProductStruct> list1, IEnumerable<ProductStruct> list2)
+           => list1.Concat(list2).
+              GroupBy(product => product.Name, (name, quantity) => new ProductStruct { Name = name, Quantity = quantity.Sum(eachProduct => eachProduct.Quantity) });
+
+    }
+
     public class Product
     {
         public Product(string name, ICollection<Feature> features)
