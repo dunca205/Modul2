@@ -110,5 +110,19 @@ namespace LinqExercise
             Assert.Equal(expected, Linq.CombinationsGenerator(5, 3));
         }
 
+        [Fact]
+        public void GetTopMostRepetedWordsInAText()
+        {
+            var expected = new[] { "ana", "are", "mere", "pere", "mure" };
+            Assert.Equal(expected, Linq.TopBasedOnWordsOccurrence("ana are mere ana are pere ana are mure ana"));
+        }
+
+        [Fact]
+        public void GetTopMostRepetedWordsWhenSameNamesAreWrittenWithLowerAndUpperCases()
+        {
+            var expected = new[] { "ana", "are", "mere", "pere", "mure" };
+            Assert.Equal(expected, Linq.TopBasedOnWordsOccurrence("Ana are meRe aNa are pere anA aRe mure Ana"));
+        }
+
     }
 }

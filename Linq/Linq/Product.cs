@@ -5,10 +5,9 @@
         public string Name;
         public int Quantity;
 
-        public static IEnumerable<ProductStruct> GroupProductsByName(IEnumerable<ProductStruct> list1, IEnumerable<ProductStruct> list2)
-           => list1.Concat(list2).
-              GroupBy(product => product.Name, (name, quantity) => new ProductStruct { Name = name, Quantity = quantity.Sum(eachProduct => eachProduct.Quantity) });
-
+        public static IEnumerable<ProductStruct> GroupProductsByName(IEnumerable<ProductStruct> productList1, IEnumerable<ProductStruct> productList2)
+           => productList1.Concat(productList2).
+              GroupBy(product => product.Name, (productName, quantity) => new ProductStruct { Name = productName, Quantity = quantity.Sum(product => product.Quantity) });
     }
 
     public class Product
