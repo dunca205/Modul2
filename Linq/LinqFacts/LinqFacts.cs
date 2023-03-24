@@ -114,14 +114,28 @@ namespace LinqExercise
         public void GetTopMostRepetedWordsInAText()
         {
             var expected = new[] { "ana", "are", "mere", "pere", "mure" };
-            Assert.Equal(expected, Linq.TopBasedOnWordsOccurrence("ana are mere ana are pere ana are mure ana"));
+            Assert.Equal(expected, Linq.TopWordsBasedOnOccurance("ana are mere ana are pere ana are mure ana", 5));
         }
 
         [Fact]
         public void GetTopMostRepetedWordsWhenSameNamesAreWrittenWithLowerAndUpperCases()
         {
             var expected = new[] { "ana", "are", "mere", "pere", "mure" };
-            Assert.Equal(expected, Linq.TopBasedOnWordsOccurrence("Ana are meRe aNa are pere anA aRe mure Ana"));
+            Assert.Equal(expected, Linq.TopWordsBasedOnOccurance("Ana are meRe aNa are pere anA aRe mure Ana", 5));
+        }
+
+        [Fact]
+        public void GetTop3MostRepetedWordsInAText()
+        {
+            var expected = new[] { "ana", "are", "mere" };
+            Assert.Equal(expected, Linq.TopWordsBasedOnOccurance("ana are mere ana are pere ana are mure ana", 3));
+        }
+
+        [Fact]
+        public void GetTop3MostRepetedWordsInATextWhenWordsAreSeparatedByPunctuationMarks()
+        {
+            var expected = new[] { "ana", "are", "mere" };
+            Assert.Equal(expected, Linq.TopWordsBasedOnOccurance("ana?are!mere'ana:are pere;ana.are mure;ana", 3));
         }
 
     }

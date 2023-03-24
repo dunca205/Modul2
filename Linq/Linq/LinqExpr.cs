@@ -64,10 +64,13 @@
                 => input.Select((sign, index) => sign == '+' ? index + 1 : -(index + 1));
         }
 
-        public static IEnumerable<string> TopBasedOnWordsOccurrence(string text)
+        public static IEnumerable<string> TopWordsBasedOnOccurance(string text, int top)
+        {
+            var separator = new[] { ' ', '”', '\'', '?', ',', ';', ':', '.', '!' };
 
-           => text.ToLower().Split(' ').GroupBy(word => word).
-              OrderByDescending(words => words.Count()).
-              Select(group => group.Key);
+            return text.ToLower().Split(separator).GroupBy(word => word).
+                OrderByDescending(words => words.Count()).
+                Select(group => group.Key).Take(top);
+        }
     }
 }

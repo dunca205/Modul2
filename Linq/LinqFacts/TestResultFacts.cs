@@ -22,7 +22,7 @@ namespace LinqFacts
             var expected = new[] { cristina, alex, andrei };
 
 
-         Assert.Equal(expected,  TestResult.GetFamilyRepresentantBasedOnScore(familiesMembers));
+            Assert.Equal(expected, TestResult.GetFamilyRepresentantBasedOnScore(familiesMembers));
         }
     }
 }
