@@ -2,41 +2,74 @@ global using Xunit;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using static System.Net.WebRequestMethods;
+using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.DevTools.V110.CSS;
+using Amazon.DynamoDBv2;
 
 namespace Selenium
 {
     public class UnitTest1
     {
-        [Fact]
-        public void SearchForThingsOnAmazon()
-        {
-            var driver = new ChromeDriver();
-            driver.Navigate().GoToUrl("http://amazon.com");
-            driver.FindElement(By.XPath("//*[@id=\"twotabsearchtextbox\"]")).SendKeys("Makeup");
-            driver.FindElement(By.XPath("//*[@id=\"nav-search-submit-button\"]")).Click();
-            driver.FindElement(By.XPath("//*[@id=\"p_89/NYX Professional Makeup\"]/span/a/div/label/i")).Click();
-            driver.Navigate().Back();
-            driver.Close();
-
-        }
 
         [Fact]
-        public void LogInOnNetflix()
+        public async void CreateNewAccountAccount()
         {
             var driver = new ChromeDriver();
-            driver.Navigate().GoToUrl("http://netflix.com");
-            var acceptCookiesButton = driver.FindElement(By.XPath("//*[@id=\"cookie-disclosure-accept\"]"));
-            acceptCookiesButton.Click();
-            Assert.Equal("https://www.netflix.com/ro-en/", driver.Url);
+            driver.Navigate().GoToUrl("https://www.timeanddate.com/");
+            driver.Manage().Window.Maximize();
+            var acceptCookies =  driver.FindElement(By.XPath("//*[@id=\"qc-cmp2-ui\"]/div[2]/div/button[2]"));
+            acceptCookies.Click();
+            driver.FindElement(By.XPath("//*[@id=\"site-nav\"]/li[11]/a/i")).Click();
+            driver.FindElement(By.XPath("//*[@id=\"article-fixed\"]/div/section[1]/aside/p/a[1]")).Click();
+            //  Assert.Equal("https://www.timeanddate.com/", driver.Url);
+            //driver.Url = "https://www.timeanddate.com/";
+            //driver.Manage().Window.Maximize();
+            //driver.Url = "https://www.timeanddate.com/";
+            //driver.FindElement(By.XPath("//*[@id=\"site-nav\"]/li[11]")).Click();
 
-            driver.FindElement(By.XPath("//*[@id=\"appMountPoint\"]/div/div/div/div/div/div/header/div/span[3]/a")).Click();
 
-            Assert.Equal("https://www.netflix.com/ro-en/login", driver.Url);
-            driver.FindElement(By.Id("id_userLoginId")).SendKeys("dunca205@gmail.com");
-            driver.FindElement(By.Id("id_password")).SendKeys("SighetuMarmaritiei");
-            driver.FindElement(By.XPath("//*[@id=\"appMountPoint\"]/div/div[3]/div/div/div[1]/form/button")).Click(); //profile
-            driver.Close();
-                                                                                                                   
+            //Assert.Equal("https://pomofocus.io/login", driver.Url);
+
+            //driver.FindElement(By.XPath("//*[@id=\"target\"]/div/div[1]/div/div[3]/button")).Click(); // create new account
+            //Assert.Equal("https://pomofocus.io/signup", driver.Url);
+
+            //driver.Url = "https://pomofocus.io/signup";
+            //driver.FindElement(By.XPath("//*[@id=\"target\"]/div/div[1]/div/div[2]/input")).SendKeys("dunca205@gmail.com");
+            //driver.FindElement(By.XPath("//*[@id=\"target\"]/div/div[1]/div/div[2]/div[4]/button")).Click();
+            //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(50));
+            //driver.Close();
+
         }
+    
+        //[Theory]
+        //[InlineData("dunca205@gmail.com", "dunca205")]
+        
+        public void SuccesfullyLoginWithExistingAccount(string accountEmail, string accountPassword)
+        { 
+            var driver = new ChromeDriver();
+            driver.Navigate().GoToUrl("https://pomofocus.io/");
+            driver.FindElement(By.XPath("//*[@id=\"target\"]/div/div[1]/div[1]/div/div/span/div/button/div")).Click();
+            driver.Url = "https://pomofocus.io/login";
+            var usernameBox = driver.FindElement(By.XPath("//*[@id=\"target\"]/div/div[1]/div/div[2]/input[1]"));
+            usernameBox.SendKeys(accountEmail);
+            var passwordBox = driver.FindElement(By.XPath("//*[@id=\"target\"]/div/div[1]/div/div[2]/input[2]"));
+            passwordBox.SendKeys(accountPassword);
+            var login = driver.FindElement(By.XPath("//*[@id=\"target\"]/div/div[1]/div/div[2]/div[5]/button"));
+            login.Click();
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+         
+            driver.FindElement(By.XPath("//*[@id=\"target\"]/div/div[1]/div[1]/div/div/span/div/button")).Click();
+            //var account = driver.FindElement(By.XPath("//*[@id=\"target\"]/div/div[1]/div[1]/div/div/span/div/button/img"));
+            //account.Click();
+            //driver.Close();
+        }
+
+        //[Theory]
+        //[InlineData("dunca205@gmail.com", "dunca205")]
+        //public void DeleteExistinAccount(string accountEmail, string accountPassword) 
+        //{
+
+        //}
+
     }
 }
