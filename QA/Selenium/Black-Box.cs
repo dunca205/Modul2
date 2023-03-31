@@ -21,24 +21,15 @@ namespace Selenium
             acceptCookies.Click();
             driver.FindElement(By.XPath("//*[@id=\"site-nav\"]/li[11]/a/i")).Click();
             driver.FindElement(By.XPath("//*[@id=\"article-fixed\"]/div/section[1]/aside/p/a[1]")).Click();
-            //  Assert.Equal("https://www.timeanddate.com/", driver.Url);
-            //driver.Url = "https://www.timeanddate.com/";
-            //driver.Manage().Window.Maximize();
-            //driver.Url = "https://www.timeanddate.com/";
-            //driver.FindElement(By.XPath("//*[@id=\"site-nav\"]/li[11]")).Click();
-
-
-            //Assert.Equal("https://pomofocus.io/login", driver.Url);
-
-            //driver.FindElement(By.XPath("//*[@id=\"target\"]/div/div[1]/div/div[3]/button")).Click(); // create new account
-            //Assert.Equal("https://pomofocus.io/signup", driver.Url);
-
-            //driver.Url = "https://pomofocus.io/signup";
-            //driver.FindElement(By.XPath("//*[@id=\"target\"]/div/div[1]/div/div[2]/input")).SendKeys("dunca205@gmail.com");
-            //driver.FindElement(By.XPath("//*[@id=\"target\"]/div/div[1]/div/div[2]/div[4]/button")).Click();
-            //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(50));
-            //driver.Close();
-
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            var emailBox = wait.Until(element => driver.FindElement(By.XPath("//*[@id=\"createform\"]/div[1]/div[2]/div[3]/input")));
+            emailBox.SendKeys("dunca205@gmai.com");
+            var passwordBox = wait.Until(element => driver.FindElement(By.XPath("//*[@id=\"password\"]")));
+            passwordBox.SendKeys("dunca205");
+            var passwordConfirmBox = wait.Until(element => driver.FindElement(By.XPath("//*[@id=\"password1\"]")));
+            passwordConfirmBox.SendKeys(("dunca205"));
+            driver.FindElement(By.Id("create")).Click();
+         //   driver.FindElement(By.ClassName("close")).Click();
         }
     
         //[Theory]
