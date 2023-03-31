@@ -11,31 +11,47 @@ namespace Selenium
     public class UnitTest1
     {
 
-        [Fact]
-        public async void CreateNewAccountAccount()
+      //  [Fact]
+        public async void CreateNewAccountAccount_UsingValidData()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.timeanddate.com/");
-            driver.Manage().Window.Maximize();
             var acceptCookies =  driver.FindElement(By.XPath("//*[@id=\"qc-cmp2-ui\"]/div[2]/div/button[2]"));
             acceptCookies.Click();
             driver.FindElement(By.XPath("//*[@id=\"site-nav\"]/li[11]/a/i")).Click();
             driver.FindElement(By.XPath("//*[@id=\"article-fixed\"]/div/section[1]/aside/p/a[1]")).Click();
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             var emailBox = wait.Until(element => driver.FindElement(By.XPath("//*[@id=\"createform\"]/div[1]/div[2]/div[3]/input")));
-            emailBox.SendKeys("dunca205@gmai.com");
+            emailBox.SendKeys("dunca_alexandra90@gmail.com");
             var passwordBox = wait.Until(element => driver.FindElement(By.XPath("//*[@id=\"password\"]")));
             passwordBox.SendKeys("dunca205");
             var passwordConfirmBox = wait.Until(element => driver.FindElement(By.XPath("//*[@id=\"password1\"]")));
             passwordConfirmBox.SendKeys(("dunca205"));
             driver.FindElement(By.Id("create")).Click();
-         //   driver.FindElement(By.ClassName("close")).Click();
+            driver.FindElement(By.ClassName("close")).Click();
+            driver.Close();
         }
-    
-        //[Theory]
-        //[InlineData("dunca205@gmail.com", "dunca205")]
-        
-        public void SuccesfullyLoginWithExistingAccount(string accountEmail, string accountPassword)
+
+        [Theory]
+        [InlineData("dunca_alexandra90@gmail.com", "dunca205")]
+        public void LogIn_UsingValidData(string email, string password)
+        {
+            var driver = new ChromeDriver();
+            driver.Navigate().GoToUrl("https://www.timeanddate.com/");
+            var acceptCookies = driver.FindElement(By.XPath("//*[@id=\"qc-cmp2-ui\"]/div[2]/div/button[2]"));
+            acceptCookies.Click();
+            driver.FindElement(By.XPath("//*[@id=\"site-nav\"]/li[11]/a/i")).Click();
+            driver.FindElement(By.XPath("//*[@id=\"article-fixed\"]/div/section[2]/div/p[2]/a[1]")).Click();
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            var emailBox = wait.Until(element => driver.FindElement(By.XPath("//*[@id=\"email\"]")));
+            emailBox.SendKeys(email);
+            var passwordBox = wait.Until(element => driver.FindElement(By.XPath("//*[@id=\"password\"]")));
+            passwordBox.SendKeys(password);
+            driver.FindElement(By.XPath("//*[@id=\"create\"]")).Click();
+
+        }
+
+        public void DeleteAccount(string accountEmail, string accountPassword)
         { 
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://pomofocus.io/");
@@ -55,12 +71,12 @@ namespace Selenium
             //driver.Close();
         }
 
-        //[Theory]
-        //[InlineData("dunca205@gmail.com", "dunca205")]
-        //public void DeleteExistinAccount(string accountEmail, string accountPassword) 
-        //{
+        [Theory]
+        [InlineData("dunca_alexandra90@gmail.com", "dunca205")]
+        public void DeleteExistinAccount(string accountEmail, string accountPassword)
+        {
 
-        //}
+        }
 
     }
 }
