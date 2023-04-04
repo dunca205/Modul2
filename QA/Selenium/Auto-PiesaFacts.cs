@@ -5,7 +5,7 @@ namespace Selenium
 {
     public class Auto_PiesaFacts
     {
-        // [Fact]
+        [Fact]////#1
         public void CreateNewAccount_ValidData()
         {
             var driver = new ChromeDriver();
@@ -26,20 +26,18 @@ namespace Selenium
             var passwordConfirm = driver.FindElement(By.Name("user_password_confirm"));
             passwordConfirm.SendKeys("dunca205");
 
-            var personalDataCollectorAgreement = driver.FindElement(By.Name("user_gdpr_formular"));
-            personalDataCollectorAgreement.Click(); // is mandatory
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
 
-            var termsConditionsAndConfidentialityPolicyAgreement = driver.FindElement(By.Name("user_gdpr"));
-            termsConditionsAndConfidentialityPolicyAgreement.Click(); // is mandatory
-
-            var continueButton = driver.FindElement(By.Name("submitContNou"));
-            continueButton.Click();
             Assert.Equal("https://www.auto-piesa.ro/cos", driver.Url);
-            driver.Close();
+            driver.FindElement(By.XPath("//*[@id=\"navbarNavDropdown\"]/ul/li[6]/a")).Click();
+            driver.FindElement(By.Id("sterge_dp")).Click();
+           // driver.Close();
         }
 
-        // [Fact]
-        public static void CreateNewAccount_NameFieldIsEmpty() // fail
+        [Fact]////#2
+        public static void CreateNewAccount_NameFieldIsEmpty()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -49,12 +47,22 @@ namespace Selenium
 
             var fullName = driver.FindElement(By.Name("user_firstname"));
             fullName.SendKeys(string.Empty);
+            var emailAdress = driver.FindElement(By.Name("user_email"));
+            emailAdress.SendKeys("dunca205@gmail.com");
+            var password = driver.FindElement(By.Name("user_password"));
+            password.SendKeys("dunca205");
+            var passwordConfirm = driver.FindElement(By.Name("user_password_confirm"));
+            passwordConfirm.SendKeys("dunca205");
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
+
             var nameFieldIsEmptyError = fullName.FindElement(By.XPath("//*[@id=\"register\"]/div[1]/div[1]/div/small[1]"));
-            Assert.False(nameFieldIsEmptyError.Displayed); // should be displayed
+            Assert.True(nameFieldIsEmptyError.Displayed); // should be displayed
             driver.Close();
         }
 
-        // [Fact]
+        [Fact]////#3
         public void CreateNewAccount_NameIsShorterThanExpected()
         {
             var driver = new ChromeDriver();
@@ -65,14 +73,28 @@ namespace Selenium
 
             var fullName = driver.FindElement(By.Name("user_firstname"));
             fullName.SendKeys("a");
+            var emailAdress = driver.FindElement(By.Name("user_email"));
+            emailAdress.SendKeys("dunca205@gmail.com");
+            var password = driver.FindElement(By.Name("user_password"));
+            password.SendKeys("dunca205");
+            var passwordConfirm = driver.FindElement(By.Name("user_password_confirm"));
+            passwordConfirm.SendKeys("dunca205");
+
+            var personalDataCollectorAgreement = driver.FindElement(By.Name("user_gdpr_formular"));
+            personalDataCollectorAgreement.Click();
+            var termsConditionsAndConfidentialityPolicyAgreement = driver.FindElement(By.Name("user_gdpr"));
+            termsConditionsAndConfidentialityPolicyAgreement.Click();
+
+            var continueButton = driver.FindElement(By.Name("submitContNou"));
+            continueButton.Click();
             var nameFieldIsTooShortError = fullName.FindElement(By.XPath("//*[@id=\"register\"]/div[1]/div[1]/div/small[2]"));
-            // //*[@id="register"]/div[1]/div[1]/div/small[1]
+
 
             Assert.True(nameFieldIsTooShortError.Displayed);
             driver.Close();
         }
 
-        // [Fact]
+        [Fact]////#4
         public async void CreateNewAccount_EmailEmpty()
         {
             var driver = new ChromeDriver();
@@ -81,11 +103,16 @@ namespace Selenium
             driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
 
 
-            var fullName = driver.FindElement(By.Name("user_firstname"));
-            fullName.SendKeys("Dunca Cristina Andreea");
+            driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina Andreea");
 
             var emailAdress = driver.FindElement(By.Name("user_email"));
             emailAdress.SendKeys("");
+
+            driver.FindElement(By.Name("user_password")).SendKeys("dunca205");
+            driver.FindElement(By.Name("user_password_confirm")).SendKeys("dunca205");
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
 
             var invalidEmail = emailAdress.FindElement(By.XPath("//*[@id=\"register\"]/div[1]/div[2]/div/div/input"));
             Assert.True(invalidEmail.Displayed);
@@ -93,7 +120,7 @@ namespace Selenium
 
         }
 
-        // [Fact]
+        [Fact] ////#5
         public async void CreateNewAccount_InvalidEmail_MissingEmailProvider()
         {
             var driver = new ChromeDriver();
@@ -101,11 +128,15 @@ namespace Selenium
             driver.FindElement(By.XPath("//*[@id=\"navbarNavDropdown\"]/ul/li[6]/a")).Click();
             driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
 
-            var fullName = driver.FindElement(By.Name("user_firstname"));
-            fullName.SendKeys("Dunca Cristina Andreea");
+            driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina Andreea");
 
             var emailAdress = driver.FindElement(By.Name("user_email"));
             emailAdress.SendKeys("dunca205");
+            driver.FindElement(By.Name("user_password")).SendKeys("dunca205");
+            driver.FindElement(By.Name("user_password_confirm")).SendKeys("dunca205");
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
 
             var invalidEmail = emailAdress.FindElement(By.XPath("//*[@id=\"register\"]/div[1]/div[2]/div/small[2]"));
             Assert.True(invalidEmail.Displayed);
@@ -113,7 +144,7 @@ namespace Selenium
 
         }
 
-        // [Fact]
+        [Fact] ////#6
         public async void CreateNewAccount_InvalidEmail_ValidEmailProvider_MissingEmailDomain()
         {
             var driver = new ChromeDriver();
@@ -121,11 +152,15 @@ namespace Selenium
             driver.FindElement(By.XPath("//*[@id=\"navbarNavDropdown\"]/ul/li[6]/a")).Click();
             driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
 
-            var fullName = driver.FindElement(By.Name("user_firstname"));
-            fullName.SendKeys("Dunca Cristina Andreea");
+            driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina Andreea");
 
             var emailAdress = driver.FindElement(By.Name("user_email"));
-            emailAdress.SendKeys("dunca205@gmail");
+            emailAdress.SendKeys("dunca204@gmail");
+            driver.FindElement(By.Name("user_password")).SendKeys("dunca205");
+            driver.FindElement(By.Name("user_password_confirm")).SendKeys("dunca205");
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
 
             var invalidEmail = emailAdress.FindElement(By.XPath("//*[@id=\"register\"]/div[1]/div[2]/div/small[2]"));
             Assert.True(invalidEmail.Displayed);
@@ -133,19 +168,45 @@ namespace Selenium
 
         }
 
-        //  [Fact]
-        public async void CreateNewAccount_InvalidEmail_InexistentEmailProvider_ExistentEmailDomain() // fail
+        [Fact] ////#7
+        public async void CreateNewAccount_ValidEmailHavingExtraWhiteSpaceAtTheEnd()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
             driver.FindElement(By.XPath("//*[@id=\"navbarNavDropdown\"]/ul/li[6]/a")).Click();
             driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
 
-            var fullName = driver.FindElement(By.Name("user_firstname"));
-            fullName.SendKeys("Dunca Cristina Andreea");
+            driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina Andreea");
+            var emailAdress = driver.FindElement(By.Name("user_email"));
+            emailAdress.SendKeys("dunca205@gmail.com ");
+            driver.FindElement(By.Name("user_password")).SendKeys("dunca205");
+            driver.FindElement(By.Name("user_password_confirm")).SendKeys("dunca205");
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
 
+            var invalidEmail = emailAdress.FindElement(By.XPath("//*[@id=\"register\"]/div[1]/div[2]/div/small[2]"));
+            Assert.True(invalidEmail.Displayed);
+            driver.Close();
+
+        }
+
+        //   [Fact]//// #8
+        public async void CreateNewAccount_InvalidEmail_InexistentEmailProvider_ExistentEmailDomain() //// fail
+        {
+            var driver = new ChromeDriver();
+            driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
+            driver.FindElement(By.XPath("//*[@id=\"navbarNavDropdown\"]/ul/li[6]/a")).Click();
+            driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
+
+            driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina Andreea");
             var emailAdress = driver.FindElement(By.Name("user_email"));
             emailAdress.SendKeys("dunca205@abcdefghij.com");
+            driver.FindElement(By.Name("user_password")).SendKeys("dunca205");
+            driver.FindElement(By.Name("user_password_confirm")).SendKeys("dunca205");
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
 
             var invalidEmail = emailAdress.FindElement(By.XPath("//*[@id=\"register\"]/div[1]/div[2]/div/small[2]"));
             Assert.True(invalidEmail.Displayed);
@@ -153,19 +214,24 @@ namespace Selenium
 
         }
 
-        // [Fact]
-        public async void CreateNewAccount_InvalidEmail_InvalidEmailProvider_InexistenEmailDomain() // fail
+        //  [Fact] ////#9
+        public async void CreateNewAccount_InvalidEmail_InvalidEmailProvider_InexistenEmailDomain() //// fail
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
             driver.FindElement(By.XPath("//*[@id=\"navbarNavDropdown\"]/ul/li[6]/a")).Click();
             driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
 
-            var fullName = driver.FindElement(By.Name("user_firstname"));
-            fullName.SendKeys("Dunca Cristina Andreea");
+            driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina Andreea");
 
             var emailAdress = driver.FindElement(By.Name("user_email"));
             emailAdress.SendKeys("dunca205@alabalaportocala.blabla");
+            driver.FindElement(By.Name("user_password")).SendKeys("dunca205");
+            driver.FindElement(By.Name("user_password_confirm")).SendKeys("dunca205");
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
+
 
             var missingEmailProviderErrorMessage = emailAdress.FindElement(By.XPath("//*[@id=\"register\"]/div[1]/div[2]/div/small[2]"));
             Assert.True(missingEmailProviderErrorMessage.Displayed);
@@ -173,29 +239,30 @@ namespace Selenium
 
         }
 
-        // [Fact]
-        public async void CreateNewAccount_EmailIsAlreadyRegistred() // fail
+        //   [Fact] ////#10
+        public async void CreateNewAccount_EmailIsAlreadyRegistred() //// fail review
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
             driver.FindElement(By.XPath("//*[@id=\"navbarNavDropdown\"]/ul/li[6]/a")).Click();
             driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
-            var fullName = driver.FindElement(By.Name("user_firstname"));
-            fullName.SendKeys("Dunca Cristina Andreea");
 
+            driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina Andreea");
             var emailAdress = driver.FindElement(By.Name("user_email"));
             emailAdress.SendKeys("dunca205@gmail.com");
-
-            var missingEmailProvider = emailAdress.FindElement(By.XPath("//*[@id=\"register\"]/div[1]/div[2]/div/small[2]")).Displayed;
-            Assert.False(missingEmailProvider);
+            driver.FindElement(By.Name("user_password")).SendKeys("dunca205");
+            driver.FindElement(By.Name("user_password_confirm")).SendKeys("dunca205");
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
 
             var existentEmail = emailAdress.FindElement(By.XPath("//*[@id=\"register\"]/div[1]/div[2]/div/small[3]"));
-            // Assert.True(existentEmail.Displayed); eroare ar trebui afisata(este oarecum afisata dar eu cand verific aici imi zice ca nu e , la restul erorilor functioneaza 
+            Assert.True(existentEmail.Displayed);
             driver.Close();
         }
 
-        // [Fact] 
-        public async void CreateNewAccount_PasswordIsShorterThanExpecter() // fail
+        [Fact]  ////#11
+        public async void CreateNewAccount_PasswordInEmpty()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -203,18 +270,20 @@ namespace Selenium
             driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
 
             driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina Andreea"); ;
-
             driver.FindElement(By.Name("user_email")).SendKeys("dunca204@gmail.com");
-
             var password = driver.FindElement(By.Name("user_password"));
             password.SendKeys(string.Empty);
+            driver.FindElement(By.Name("user_password_confirm")).SendKeys(string.Empty);
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
+
             var passwordIsMandatory = password.FindElement(By.XPath("//*[@id=\"register\"]/div[2]/div[1]/div/small[1]"));
             Assert.True(passwordIsMandatory.Displayed);
-            // nu arata right away ca si la mail sau la nume
-
+            driver.Close();
         }
 
-        // [Fact]
+        [Fact] //// #12
         public async void CreateNewAccount_PasswordIsShorter()
         {
             var driver = new ChromeDriver();
@@ -223,17 +292,43 @@ namespace Selenium
             driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
 
             driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina Andreea"); ;
-
             driver.FindElement(By.Name("user_email")).SendKeys("dunca204@gmail.com");
-
             var password = driver.FindElement(By.Name("user_password"));
-            password.SendKeys("Dun");
+            password.SendKeys("dun");
+            driver.FindElement(By.Name("user_password_confirm")).SendKeys("dun");
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
+
             var passwordIsTooShort = password.FindElement(By.XPath("//*[@id=\"register\"]/div[2]/div[1]/div/small[2]"));
             Assert.True(passwordIsTooShort.Displayed);
+            driver.Close();
 
         }
 
-        // [Fact]
+        [Fact] //// #13
+        public async void CreateNewAccount_PasswordIsWhitespace()
+        {
+            var driver = new ChromeDriver();
+            driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
+            driver.FindElement(By.XPath("//*[@id=\"navbarNavDropdown\"]/ul/li[6]/a")).Click();
+            driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
+
+            driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina Andreea"); ;
+            driver.FindElement(By.Name("user_email")).SendKeys("dunca204@gmail.com");
+            var password = driver.FindElement(By.Name("user_password"));
+            password.SendKeys("      ");
+            driver.FindElement(By.Name("user_password_confirm")).SendKeys("      ");
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
+
+            var passwordCantBeWhiteSpace = password.FindElement(By.XPath("//*[@id=\"register\"]/div[2]/div[1]/div/small[1]"));
+            Assert.True(passwordCantBeWhiteSpace.Displayed);
+            driver.Close();
+        }
+
+        [Fact] ////#14
         public async void CreateNewAccount_PasswordIsEqualWithTheName()
         {
             var driver = new ChromeDriver();
@@ -241,62 +336,83 @@ namespace Selenium
             driver.FindElement(By.XPath("//*[@id=\"navbarNavDropdown\"]/ul/li[6]/a")).Click();
             driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
 
-            driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina Andreea"); ;
-
+            driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina"); ;
             driver.FindElement(By.Name("user_email")).SendKeys("dunca204@gmail.com");
-
             var password = driver.FindElement(By.Name("user_password"));
-            password.SendKeys("Dunca Cristina Andreea");
+            password.SendKeys("Dunca Cristina");
+            driver.FindElement(By.Name("user_password_confirm")).SendKeys("Dunca Cristina");
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
             var passwordCantBeIdenticalWithTheName = password.FindElement(By.XPath("//*[@id=\"register\"]/div[2]/div[1]/div/small[3]"));
             Assert.True(passwordCantBeIdenticalWithTheName.Displayed);
-
+            driver.Close();
         }
 
-       // [Fact]
-        public async void CreateNewAccount_ConfirmationPasswordHasOneDifferentLetter()
+        // [Fact] ////14*
+        public async void CreateNewAccount_PasswordAndNameHasSameContentButDifferentCases() ////fail, it works
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
             driver.FindElement(By.XPath("//*[@id=\"navbarNavDropdown\"]/ul/li[6]/a")).Click();
             driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
 
-            driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina Andreea"); ;
-
+            driver.FindElement(By.Name("user_firstname")).SendKeys("DUNCA CRISTINA"); ;
             driver.FindElement(By.Name("user_email")).SendKeys("dunca204@gmail.com");
-
             var password = driver.FindElement(By.Name("user_password"));
-            password.SendKeys("dunca204");
-            var confirmationPassword = driver.FindElement(By.Name("user_password_confirm"));
-            confirmationPassword.SendKeys("dunca205");
-            var confirmationPasswordIsNotIdentical = driver.FindElement(By.XPath("//*[@id=\"register\"]/div[2]/div[2]/div/small[2]"));
-            Assert.True(confirmationPasswordIsNotIdentical.Displayed);
+            password.SendKeys("dunca cristina");
+            driver.FindElement(By.Name("user_password_confirm")).SendKeys("dunca cristina");
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
+            var passwordCantBeIdenticalWithTheName = password.FindElement(By.XPath("//*[@id=\"register\"]/div[2]/div[1]/div/small[3]"));
+            Assert.True(passwordCantBeIdenticalWithTheName.Displayed);
+            driver.Close();
         }
 
-      //  [Fact]
-        public async void CreateNewAccount_ConfirmationPasswordIsShorter()
+        // [Fact] ////#15
+        public async void CreateNewAccount_PasswordHasOneDifferentLetterFromTheName() //// fail, it works
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
             driver.FindElement(By.XPath("//*[@id=\"navbarNavDropdown\"]/ul/li[6]/a")).Click();
             driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
 
-            driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina Andreea"); ;
-
+            driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina"); ;
             driver.FindElement(By.Name("user_email")).SendKeys("dunca204@gmail.com");
-
             var password = driver.FindElement(By.Name("user_password"));
-            password.SendKeys("dunca204");
-            var confirmationPassword = driver.FindElement(By.Name("user_password_confirm"));
-            confirmationPassword.SendKeys("dun");
-
-            var confirmationPasswordIsNotIdentical = driver.FindElement(By.XPath("//*[@id=\"register\"]/div[2]/div[2]/div/small[2]"));
-            var confirmationPasswordIsShorter = driver.FindElement(By.XPath("//*[@id=\"register\"]/div[2]/div[2]/div/small[3]"));
-
-            Assert.True(confirmationPasswordIsNotIdentical.Displayed && confirmationPasswordIsShorter.Displayed);
+            password.SendKeys("Dunca Cristin");
+            driver.FindElement(By.Name("user_password_confirm")).SendKeys("Dunca Cristin");
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
+            var passwordCantBeSimilar = driver.FindElement(By.XPath("//*[@id=\"register\"]/div[2]/div[2]/div/small[2]"));
+            Assert.True(passwordCantBeSimilar.Displayed);
+            driver.Close();
         }
 
+        [Fact] ////#16
+        public async void CreateNewAccount_ConfirmationPasswordHasOneDifferentLetterFromPassword() 
+        {
+            var driver = new ChromeDriver();
+            driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
+            driver.FindElement(By.XPath("//*[@id=\"navbarNavDropdown\"]/ul/li[6]/a")).Click();
+            driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
 
-    //   [Fact]
+            driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina"); ;
+            driver.FindElement(By.Name("user_email")).SendKeys("dunca204@gmail.com");
+            var password = driver.FindElement(By.Name("user_password"));
+            password.SendKeys("DuncaCristina");
+            driver.FindElement(By.Name("user_password_confirm")).SendKeys("DuncaCristin");
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
+            var confirmationPasswordIsNotIdenticalWithThePassword = driver.FindElement(By.XPath("//*[@id=\"register\"]/div[2]/div[2]/div/small[2]"));
+            Assert.True(confirmationPasswordIsNotIdenticalWithThePassword.Displayed);
+            driver.Close();
+        }
+
+        [Fact] ////#17
         public async void CreateNewAccount_PersonalDataColectorAggrementNotMarked()
         {
             var driver = new ChromeDriver();
@@ -305,9 +421,7 @@ namespace Selenium
             driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
 
             driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina Andreea"); ;
-
             driver.FindElement(By.Name("user_email")).SendKeys("dunca204@gmail.com");
-
             driver.FindElement(By.Name("user_password")).SendKeys("dunca204");
             driver.FindElement(By.Name("user_password_confirm")).SendKeys("dunca204");
 
@@ -318,10 +432,10 @@ namespace Selenium
 
             driver.FindElement(By.Name("submitContNou")).Click();
             Assert.True(mandatoryFieldNotMaked.Displayed);
-           
+            driver.Close();
         }
 
-      //  [Fact]
+        [Fact] //#18
         public async void CreateNewAccount_TermsConditionsAndConfidentialityPolicyAgreementNotMarked()
         {
             var driver = new ChromeDriver();
@@ -330,9 +444,7 @@ namespace Selenium
             driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
 
             driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina Andreea"); ;
-
             driver.FindElement(By.Name("user_email")).SendKeys("dunca204@gmail.com");
-
             driver.FindElement(By.Name("user_password")).SendKeys("dunca204");
             driver.FindElement(By.Name("user_password_confirm")).SendKeys("dunca204");
 
@@ -343,7 +455,7 @@ namespace Selenium
 
             driver.FindElement(By.Name("submitContNou")).Click();
             Assert.True(mandatoryFieldNotMaked.Displayed);
-            
+            driver.Close();
         }
 
     }
