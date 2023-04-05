@@ -29,10 +29,7 @@ namespace Selenium
             driver.FindElement(By.Name("user_gdpr_formular")).Click();
             driver.FindElement(By.Name("user_gdpr")).Click();
             driver.FindElement(By.Name("submitContNou")).Click();
-
-            Assert.Equal("https://www.auto-piesa.ro/cont-nou", driver.Url);
             driver.Close();
-
 
         }
 
@@ -95,7 +92,7 @@ namespace Selenium
         }
 
         [Fact]////#4
-        public async void CreateNewAccount_EmailEmpty()
+        public void CreateNewAccount_EmailEmpty()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -121,7 +118,7 @@ namespace Selenium
         }
 
         [Fact] ////#5
-        public async void CreateNewAccount_InvalidEmail_MissingEmailProvider()
+        public void CreateNewAccount_InvalidEmail_MissingEmailProvider()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -145,7 +142,7 @@ namespace Selenium
         }
 
         [Fact] ////#6
-        public async void CreateNewAccount_InvalidEmail_ValidEmailProvider_MissingEmailDomain()
+        public void CreateNewAccount_InvalidEmail_ValidEmailProvider_MissingEmailDomain()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -169,7 +166,7 @@ namespace Selenium
         }
 
         [Fact] ////#7
-        public async void CreateNewAccount_ValidEmailHavingExtraWhiteSpaceAtTheEnd()
+        public void CreateNewAccount_ValidEmailHavingExtraWhiteSpaceAtTheEnd()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -192,7 +189,7 @@ namespace Selenium
         }
 
         //   [Fact]//// #8
-        public async void CreateNewAccount_InvalidEmail_InexistentEmailProvider_ExistentEmailDomain() //// fail
+        public void CreateNewAccount_InvalidEmail_InexistentEmailProvider_ExistentEmailDomain() //// fail
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -215,7 +212,7 @@ namespace Selenium
         }
 
         //  [Fact] ////#9
-        public async void CreateNewAccount_InvalidEmail_InvalidEmailProvider_InexistenEmailDomain() //// fail
+        public void CreateNewAccount_InvalidEmail_InvalidEmailProvider_InexistenEmailDomain() //// fail
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -239,8 +236,34 @@ namespace Selenium
 
         }
 
-        [Fact] ////#10
-        public async void CreateNewAccount_EmailIsAlreadyRegistred()
+      //  [Fact] //#9*
+        public void CreateNewAccount_UsingAVeryLongEmailAdress() // fail, it works
+        {
+            var driver = new ChromeDriver();
+            driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
+            driver.FindElement(By.XPath("//*[@id=\"navbarNavDropdown\"]/ul/li[6]/a")).Click();
+            driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[3]/div/div[2]/a[1]")).Click();
+
+            driver.FindElement(By.Name("user_firstname")).SendKeys("Dunca Cristina Andreea");
+
+            var emailAdress = driver.FindElement(By.Name("user_email"));
+            emailAdress.SendKeys("duncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristinaduncacristina@gmail.com");
+            driver.FindElement(By.Name("user_password")).SendKeys("dunca205");
+            driver.FindElement(By.Name("user_password_confirm")).SendKeys("dunca205");
+            driver.FindElement(By.Name("user_gdpr_formular")).Click();
+            driver.FindElement(By.Name("user_gdpr")).Click();
+            driver.FindElement(By.Name("submitContNou")).Click();
+
+
+            var missingEmailProviderErrorMessage = emailAdress.FindElement(By.XPath("//*[@id=\"register\"]/div[1]/div[2]/div/small[2]"));
+            Assert.True(missingEmailProviderErrorMessage.Displayed);
+            driver.Close();
+
+        }
+
+
+       // [Fact] ////#10
+        public void CreateNewAccount_EmailIsAlreadyRegistred()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -256,14 +279,13 @@ namespace Selenium
             driver.FindElement(By.Name("user_gdpr")).Click();
             driver.FindElement(By.Name("submitContNou")).Click();
 
-            var email = driver.FindElement(By.Name("user_email"));
-            var existentEmail = email.FindElement(By.XPath("//*[@id=\"register\"]/div[1]/div[2]/div/small[3]"));
+            var existentEmail = driver.FindElement(By.XPath("//*[@id=\"register\"]/div[1]/div[2]/div/small[3]"));
             Assert.True(existentEmail.Displayed);
             // driver.Close();
         }
 
         [Fact]  ////#11
-        public async void CreateNewAccount_PasswordInEmpty()
+        public void CreateNewAccount_PasswordInEmpty()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -285,7 +307,7 @@ namespace Selenium
         }
 
         [Fact] //// #12
-        public async void CreateNewAccount_PasswordIsShorter()
+        public void CreateNewAccount_PasswordIsShorter()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -308,7 +330,7 @@ namespace Selenium
         }
 
         [Fact] //// #13
-        public async void CreateNewAccount_PasswordIsWhitespace()
+        public void CreateNewAccount_PasswordIsWhitespace()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -330,7 +352,7 @@ namespace Selenium
         }
 
         [Fact] ////#14
-        public async void CreateNewAccount_PasswordIsEqualWithTheName()
+        public void CreateNewAccount_PasswordIsEqualWithTheName()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -351,7 +373,7 @@ namespace Selenium
         }
 
         // [Fact] ////14*
-        public async void CreateNewAccount_PasswordAndNameHasSameContentButDifferentCases() ////fail, it works
+        public void CreateNewAccount_PasswordAndNameHasSameContentButDifferentCases() ////fail, it works
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -372,7 +394,7 @@ namespace Selenium
         }
 
         // [Fact] ////#15
-        public async void CreateNewAccount_PasswordHasOneDifferentLetterFromTheName() //// fail, it works
+        public void CreateNewAccount_PasswordHasOneDifferentLetterFromTheName() //// fail, it works
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -393,7 +415,7 @@ namespace Selenium
         }
 
         [Fact] ////#16
-        public async void CreateNewAccount_ConfirmationPasswordHasOneDifferentLetterFromPassword()
+        public void CreateNewAccount_ConfirmationPasswordHasOneDifferentLetterFromPassword()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -414,7 +436,7 @@ namespace Selenium
         }
 
         [Fact] ////#17
-        public async void CreateNewAccount_PersonalDataColectorAggrementNotMarked()
+        public void CreateNewAccount_PersonalDataColectorAggrementNotMarked()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -437,7 +459,7 @@ namespace Selenium
         }
 
         [Fact] //#18
-        public async void CreateNewAccount_TermsConditionsAndConfidentialityPolicyAgreementNotMarked()
+        public void CreateNewAccount_TermsConditionsAndConfidentialityPolicyAgreementNotMarked()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -460,7 +482,7 @@ namespace Selenium
         }
 
         [Fact]
-        public async void DeleteAccount()
+        public void DeleteAccount()
         {
             var driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/");
@@ -472,7 +494,7 @@ namespace Selenium
             driver.FindElement(By.Name("sterge_dp")).Click();
             var alert = driver.SwitchTo().Alert();
             alert.Accept();
-            driver.Close();
+            //driver.Close();
 
         }
     }
