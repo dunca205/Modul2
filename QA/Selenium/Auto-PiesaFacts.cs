@@ -236,7 +236,7 @@ namespace Selenium
 
         }
 
-      //  [Fact] //#9*
+        //  [Fact] //#9*
         public void CreateNewAccount_UsingAVeryLongEmailAdress() // fail, it works
         {
             var driver = new ChromeDriver();
@@ -262,7 +262,7 @@ namespace Selenium
         }
 
 
-       // [Fact] ////#10
+        // [Fact] ////#10
         public void CreateNewAccount_EmailIsAlreadyRegistred()
         {
             var driver = new ChromeDriver();
@@ -494,8 +494,7 @@ namespace Selenium
             driver.FindElement(By.Name("sterge_dp")).Click();
             var alert = driver.SwitchTo().Alert();
             alert.Accept();
-            //driver.Close();
-
+            driver.Close();
         }
     }
 }
