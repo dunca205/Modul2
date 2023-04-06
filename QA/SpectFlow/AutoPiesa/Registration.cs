@@ -2,11 +2,11 @@
 using OpenQA.Selenium.Chrome;
 namespace AutoPiesa
 {
-    public class AutoPiesaRegistration
+    public class Registration
     {
         ChromeDriver driver;
         //https://www.auto-piesa.ro/cont-nou
-        public AutoPiesaRegistration()
+        public Registration()
         {
             driver = new ChromeDriver();
             driver.Navigate().GoToUrl("https://www.auto-piesa.ro/cont-nou");
@@ -18,38 +18,50 @@ namespace AutoPiesa
         By confirmationPassword = By.CssSelector("input[name=\"user_password_confirm\"");
         By personalDataCollectorAgreement = By.Id("user_gdpr_formular");
         By termsConditionsAndConfidentialityPolicyAgreement = By.Id("user_gdpr");
-        By loginButton = By.Id("submitContNou");
+        By continueButton = By.Id("submitContNou");
 
-        public void EnterFullName(string userFullName) 
+        public void EnterFullName(string userFullName)
         {
             driver.FindElement(fullName).SendKeys(userFullName);
         }
 
-        public void EnterEmail(string userEmail) 
+        public void EnterEmail(string userEmail)
         {
             driver.FindElement(email).SendKeys(userEmail);
         }
 
-        public void EnterPassword(string userPassword) 
+        public void EnterPassword(string userPassword)
         {
             driver.FindElement(password).SendKeys(userPassword);
         }
 
-        public void EnterConfirmationPasswordd(string userConfirmationPassword) 
+        public void EnterConfirmationPasswordd(string userConfirmationPassword)
         {
             driver.FindElement(confirmationPassword).SendKeys(userConfirmationPassword);
         }
-        public void AgreeWithPersonalDataCollector()
+
+        public void AgreeWithPersonalDataCollector(bool agree)
         {
-            driver.FindElement(personalDataCollectorAgreement).Clear();
+            if (!agree)
+            {
+                return;
+            }
+            driver.FindElement(personalDataCollectorAgreement).Click();
         }
-        public void AgreeWithConditionsAndConfindentialityPolicy()
+
+        public void AgreeWithConditionsAndConfindentialityPolicy(bool agree)
         {
+            if (!agree)
+            {
+                return;
+            }
+
             driver.FindElement(termsConditionsAndConfidentialityPolicyAgreement).Click();
         }
-        public void LogIn()
+
+        public void ContinueRegistration()
         {
-            driver.FindElement(loginButton).Click();
+            driver.FindElement(continueButton).Click();
         }
     }
 }
