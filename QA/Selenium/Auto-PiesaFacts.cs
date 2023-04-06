@@ -342,7 +342,7 @@ namespace Selenium
         }
 
 
-        //[Fact] ////#10
+        //[Fact] ////#10 fail
         public void CreateNewAccount_EmailIsAlreadyRegistred()
         {
             var driver = new ChromeDriver();
