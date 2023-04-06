@@ -5,7 +5,7 @@ namespace AutoPiesa
     public class Registration
     {
         ChromeDriver driver;
-        //https://www.auto-piesa.ro/cont-nou
+
         public Registration()
         {
             driver = new ChromeDriver();
@@ -22,21 +22,25 @@ namespace AutoPiesa
 
         public void EnterFullName(string userFullName)
         {
+            driver.FindElement(fullName).Clear();
             driver.FindElement(fullName).SendKeys(userFullName);
         }
 
         public void EnterEmail(string userEmail)
         {
+            driver.FindElement(email).Clear();
             driver.FindElement(email).SendKeys(userEmail);
         }
 
         public void EnterPassword(string userPassword)
         {
+            driver.FindElement(password).Clear();
             driver.FindElement(password).SendKeys(userPassword);
         }
 
         public void EnterConfirmationPasswordd(string userConfirmationPassword)
         {
+            driver.FindElement(confirmationPassword).Clear();
             driver.FindElement(confirmationPassword).SendKeys(userConfirmationPassword);
         }
 
@@ -46,6 +50,7 @@ namespace AutoPiesa
             {
                 return;
             }
+           // driver.FindElement(personalDataCollectorAgreement).Clear();
             driver.FindElement(personalDataCollectorAgreement).Click();
         }
 
@@ -55,7 +60,7 @@ namespace AutoPiesa
             {
                 return;
             }
-
+          //  driver.FindElement(termsConditionsAndConfidentialityPolicyAgreement).Clear();
             driver.FindElement(termsConditionsAndConfidentialityPolicyAgreement).Click();
         }
 

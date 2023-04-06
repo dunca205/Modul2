@@ -14,25 +14,25 @@ namespace AutoPiesaRegistration.Specs.StepDefinitions
             _scenarioContext = scenarioContext;
         }
 
-        [Given("the name (.*)")]
+        [Given("the name \"(.*)\"")]
         public void GivenTheName(string userFullName)
         {
             autoPiesaRegistration.EnterFullName(userFullName);
         }
 
-        [Given("the email adress (.*)")]
+        [Given("the email adress \"(.*)\"")]
         public void GivenTheEmailAdress(string userEmailAdress)
         {
             autoPiesaRegistration.EnterEmail(userEmailAdress);
         }
 
-        [Given("the password (.*)")]
+        [Given("the password \"(.*)\"")]
         public void GivenThePassword(string userPassword)
         {
             autoPiesaRegistration.EnterPassword(userPassword);
         }
 
-        [Given("the confirmation password (.*)")]
+        [Given("the confirmation password \"(.*)\"")]
         public void GivenTheConfirmationPassword(string userConfirmationPassword)
         {
             autoPiesaRegistration.EnterConfirmationPasswordd(userConfirmationPassword);
@@ -56,7 +56,7 @@ namespace AutoPiesaRegistration.Specs.StepDefinitions
             autoPiesaRegistration.ContinueRegistration();
         }
 
-        [Then("the displayed error should be (.*)")]
+        [Then("the displayed error should be  \"(.*)\"")]
         public void ThenTheResultShouldBe(string expected)
         {
             //TODO: implement assert (verification) logic
