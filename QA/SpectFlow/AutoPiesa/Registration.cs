@@ -50,7 +50,7 @@ namespace AutoPiesa
             {
                 return;
             }
-           // driver.FindElement(personalDataCollectorAgreement).Clear();
+
             driver.FindElement(personalDataCollectorAgreement).Click();
         }
 
@@ -60,8 +60,9 @@ namespace AutoPiesa
             {
                 return;
             }
-          //  driver.FindElement(termsConditionsAndConfidentialityPolicyAgreement).Clear();
+
             driver.FindElement(termsConditionsAndConfidentialityPolicyAgreement).Click();
+            driver.Close();
         }
 
         public void ContinueRegistration()

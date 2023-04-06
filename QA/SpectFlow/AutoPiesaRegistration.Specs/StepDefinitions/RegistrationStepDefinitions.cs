@@ -3,12 +3,12 @@ using AutoPiesa;
 namespace AutoPiesaRegistration.Specs.StepDefinitions
 {
     [Binding]
-    public sealed class AutoPiesaRegistrationStepDefinitions
+    public sealed class RegistrationStepDefinitions
     {
         // For additional details on SpecFlow step definitions see https://go.specflow.org/doc-stepdef
         private ScenarioContext _scenarioContext;
         private Registration autoPiesaRegistration;
-        public AutoPiesaRegistrationStepDefinitions(ScenarioContext scenarioContext)
+        public RegistrationStepDefinitions(ScenarioContext scenarioContext)
         {
             autoPiesaRegistration = new Registration();
             _scenarioContext = scenarioContext;
