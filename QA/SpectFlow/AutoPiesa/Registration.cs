@@ -18,7 +18,7 @@ namespace AutoPiesa
         By confirmationPassword = By.CssSelector("input[name=\"user_password_confirm\"");
         By personalDataCollectorAgreement = By.Id("user_gdpr_formular");
         By termsConditionsAndConfidentialityPolicyAgreement = By.Id("user_gdpr");
-        By continueButton = By.Id("submitContNou");
+        By continueButton = By.CssSelector("button[name=\"submitContNou\"");
 
         public void EnterFullName(string userFullName)
         {
@@ -62,12 +62,13 @@ namespace AutoPiesa
             }
 
             driver.FindElement(termsConditionsAndConfidentialityPolicyAgreement).Click();
-            driver.Close();
+            
         }
 
         public void ContinueRegistration()
         {
             driver.FindElement(continueButton).Click();
+            driver.Close();
         }
     }
 }
