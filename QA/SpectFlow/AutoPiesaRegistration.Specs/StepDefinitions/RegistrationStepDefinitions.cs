@@ -55,7 +55,7 @@ namespace AutoPiesaRegistration.Specs.StepDefinitions
             autoPiesaRegistration.ContinueRegistration();
         }
 
-        [Then("the displayed error should be  \"(.*)\"")]
+        [Then("the displayed error should be \"(.*)\"")]
         public void ThenTheResultShouldBe(string expected)
         {
             //TODO: implement assert (verification) logic
