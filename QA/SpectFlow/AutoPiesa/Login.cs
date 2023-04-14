@@ -27,14 +27,12 @@ namespace AutoPiesa
             driver.FindElement(password).Clear();
             driver.FindElement(password).SendKeys(userPassword);
         }
-        public void SubmitLogin()
+        public string SubmitLogin()
         {
             driver.FindElement(loginButton).Click();
+            return driver.Url;
         }
-        public bool SuccesfulyLoggedIn()
-        {
-            return driver.Url.Equals("https://www.auto-piesa.ro/");
-        }
+
         public void CloseChrome()
         {
             driver.Close();

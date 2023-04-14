@@ -1,11 +1,12 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
+
 namespace AutoPiesa
 {
     public class Registration
     {
         ChromeDriver driver;
-
         public Registration()
         {
             driver = new ChromeDriver();
@@ -20,7 +21,7 @@ namespace AutoPiesa
         By termsConditionsAndConfidentialityPolicyAgreement = By.Id("user_gdpr");
         By continueButton = By.CssSelector("button[name=\"submitContNou\"");
 
-       // erori nume
+        // erori nume
         By emptyName = By.CssSelector("small[data-bv-for=\"user_firstname\"][data-bv-validator=\"notEmpty\"]");
         By nameLength = By.CssSelector("small[data-bv-for=\"user_firstname\"][data-bv-validator=\"stringLength\"]");
         //erori email
@@ -35,6 +36,52 @@ namespace AutoPiesa
         By emptyConfirmationPassword = By.CssSelector("small[data-bv-for=\"user_password_confirm\"][data-bv-validator=\"notEmpty\"]");
         By identicalConfirmationPassword = By.CssSelector("small[data-bv-for=\"user_password_confirm\"][data-bv-validator=\"identical\"]");
         By confirmationPasswordLength = By.CssSelector("small[data-bv-for=\"user_password_confirm\"][data-bv-validator=\"stringLength\"]");
+
+        public string DisplayedNameErrors()
+        {
+            string errors = "";
+
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            var errorNameEmpty = wait.Until(error => EmptyNameFieldError);
+            var errorNameIsTooShort = wait.Until(error => NameIsTooShort);
+            if (errorNameEmpty.Displayed == true)
+            {
+                errors += errorNameEmpty.Text;
+            }
+
+            if (errorNameIsTooShort.Displayed == true)
+            { 
+                errors += errorNameIsTooShort.Text;
+            }
+
+            return errors;
+
+        }
+        public string DisplayedEmailErrors()
+        {
+            string errors = "";
+
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            var emailEmpty = wait.Until(error => EmptyEmailFieldError);
+            var invalidFormat = wait.Until(error => InvalidEmailFormat);
+            var emailAlreadyRegistred = wait.Until(error => EmailIsAlreadyRegistred);
+
+
+
+            return errors;
+
+        }
+        public IWebElement EmptyNameFieldError { get => driver.FindElement(emptyName); }
+        public IWebElement NameIsTooShort { get => driver.FindElement(nameLength); }
+        public IWebElement EmptyEmailFieldError { get => driver.FindElement(emptyEmail); }
+        public IWebElement InvalidEmailFormat { get => driver.FindElement(invalidFormat); }
+        public IWebElement EmailIsAlreadyRegistred { get => driver.FindElement(registredEmail); }
+        public string EmptyPassowrdFieldError { get => driver.FindElement(emptyPassword).Text; }
+        public string PasswordIsTooShort { get => driver.FindElement(passwordLength).Text; }
+        public string PassowrdIsIdenticalWithTheName { get => driver.FindElement(differentFromName).Text; }
+        public string EmptyConfirmationPassword { get => driver.FindElement(emptyConfirmationPassword).Text; }
+        public string ConfirmationPasswordIsIdenticalWithTheName { get => driver.FindElement(identicalConfirmationPassword).Text; }
+        public string ConfirmationPasswordIsTooShort { get => driver.FindElement(confirmationPasswordLength).Text; }
         public void EnterFullName(string userFullName)
         {
             driver.FindElement(fullName).Clear();
@@ -77,12 +124,15 @@ namespace AutoPiesa
             }
 
             driver.FindElement(termsConditionsAndConfidentialityPolicyAgreement).Click();
-            
+
         }
 
         public void ContinueRegistration()
         {
             driver.FindElement(continueButton).Click();
+        }
+        public void CloseDriver()
+        {
             driver.Close();
         }
     }

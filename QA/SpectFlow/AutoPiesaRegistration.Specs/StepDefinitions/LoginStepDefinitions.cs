@@ -8,7 +8,7 @@ namespace AutoPiesaRegistration.Specs.StepDefinitions
     {
         private ScenarioContext _scenarioContext;
         private Login loginPage;
-        private bool succes;
+        private string actualUrl;
         public LoginStepDefinitions(ScenarioContext scenarioContext)
         {
             loginPage = new Login();
@@ -30,14 +30,13 @@ namespace AutoPiesaRegistration.Specs.StepDefinitions
         [When("click on Autentificare")]
         public void LogIntoAccount()
         {
-            loginPage.SubmitLogin();
+            actualUrl = loginPage.SubmitLogin();
         }
 
-        [Then("the URL should change (.*)")]
-        public void SuccesfulyLoggedIn(bool pass)
+        [Then("the URL should be \"(.*)\"")]
+        public void SuccesfulyLoggedIn(string expectedUrl)
         {
-            succes = loginPage.SuccesfulyLoggedIn();
-            succes.Should().Be(pass);
+            actualUrl.Should().Be(expectedUrl);
             loginPage.CloseChrome();
         }
     }

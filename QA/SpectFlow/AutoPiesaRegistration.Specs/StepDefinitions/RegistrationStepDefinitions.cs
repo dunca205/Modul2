@@ -1,4 +1,5 @@
 using AutoPiesa;
+using FluentAssertions;
 
 namespace AutoPiesaRegistration.Specs.StepDefinitions
 {
@@ -7,6 +8,7 @@ namespace AutoPiesaRegistration.Specs.StepDefinitions
     {
         private ScenarioContext _scenarioContext;
         private Registration autoPiesaRegistration;
+        string displayedErrors;
         public RegistrationStepDefinitions(ScenarioContext scenarioContext)
         {
             autoPiesaRegistration = new Registration();
@@ -58,9 +60,9 @@ namespace AutoPiesaRegistration.Specs.StepDefinitions
         [Then("the displayed error should be \"(.*)\"")]
         public void ThenTheResultShouldBe(string expected)
         {
-            //TODO: implement assert (verification) logic
-            //https://www.auto-piesa.ro/cos//
-            throw new PendingStepException();
+            displayedErrors = autoPiesaRegistration.DisplayedNameErrors();
+            displayedErrors.Should().Be(expected);
+            autoPiesaRegistration.CloseDriver();
         }
     }
 }
