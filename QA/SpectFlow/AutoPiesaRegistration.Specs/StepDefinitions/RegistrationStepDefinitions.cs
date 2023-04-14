@@ -1,5 +1,6 @@
 using AutoPiesa;
 using FluentAssertions;
+using OpenQA.Selenium.DevTools.V109.Page;
 
 namespace AutoPiesaRegistration.Specs.StepDefinitions
 {
@@ -57,10 +58,41 @@ namespace AutoPiesaRegistration.Specs.StepDefinitions
             autoPiesaRegistration.ContinueRegistration();
         }
 
-        [Then("the displayed error should be \"(.*)\"")]
+        [Then("the displayed name error should be \"(.*)\"")]
         public void ThenTheResultShouldBe(string expected)
         {
             displayedErrors = autoPiesaRegistration.DisplayedNameErrors();
+            displayedErrors.Should().Be(expected);
+            autoPiesaRegistration.CloseDriver();
+        }
+
+        [Then("the displayed email error should be \"(.*)\"")]
+        public void EmailErrors(string expected)
+        {
+            displayedErrors = autoPiesaRegistration.DisplayedEmailErrors();
+            displayedErrors.Should().Be(expected);
+            autoPiesaRegistration.CloseDriver();
+        }
+
+        [Then("the displayed password error should be \"(.*)\"")]
+        public void PasswordErrors(string expected) 
+        {
+            displayedErrors = autoPiesaRegistration.DisplayedPasswordErrors();
+            displayedErrors.Should().Be(expected);
+            autoPiesaRegistration.CloseDriver();
+        }
+
+        [Then("the displayed confirmation password error should be \"(.*)\"")]
+        public void CondfirmationPasswordErrors(string expected)
+        {
+            displayedErrors = autoPiesaRegistration.DisplayedConfirmationPasswordErrors();
+            displayedErrors.Should().Be(expected);
+            autoPiesaRegistration.CloseDriver();
+        }
+        [Then("the displayed disagreement error should be \"(.*)\"")]
+        public void DisagreementErrors(string expected)
+        {
+            displayedErrors = autoPiesaRegistration.DisplayMandatoryAgreementsErrors();
             displayedErrors.Should().Be(expected);
             autoPiesaRegistration.CloseDriver();
         }
