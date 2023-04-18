@@ -25,13 +25,14 @@ var refitSettings = new RefitSettings()
 };
 
 var goRest = RestService.For<IUser>("https://gorest.co.in/public/v2", refitSettings);
-// create a new user 
+
+// create a new user
 await goRest.CreateUser(newUser);
 
 // get all users including the one we create
 var allUsers = await goRest.GetAllUsers();
 
-// get the Id for the user we added 
+// get the Id for the user we added
 var newUserId = allUsers.First().Id;
 
 Console.WriteLine("Id of new user {0} is : {1} ", allUsers.First().Name, newUserId);
@@ -39,21 +40,11 @@ Console.WriteLine("Id of new user {0} is : {1} ", allUsers.First().Name, newUser
 // get user by id
 var userById = await goRest.GetUserById(newUserId);
 
-//update new user 
+// update new user
 await goRest.UpdateUser(newData, newUserId);
 
-//delete user
+// delete user
 await goRest.DeleteUser(newUserId);
-
-public class User
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Email { get; set; }
-    public string Gender { get; set; }
-    public string Status { get; set; }
-
-}
 
 [Headers("Authorization: Bearer")]
 public interface IUser
@@ -62,14 +53,27 @@ public interface IUser
     Task<List<User>> GetAllUsers();
 
     [Get("/users/{id}")]
-    Task<User> GetUserById(int Id);
+    Task<User> GetUserById(int id);
 
     [Post("/users")]
-    Task CreateUser([Body]User User);
+    Task CreateUser([Body] User user);
 
     [Put("/users/{id}")]
-    Task UpdateUser([Body] User User, int Id);
+    Task UpdateUser([Body] User user, int id);
 
     [Delete("/users/{id}")]
-    Task DeleteUser(int Id);
+    Task DeleteUser(int id);
+}
+
+public class User
+{
+    public int Id { get; set; }
+
+    public string? Name { get; set; }
+
+    public string? Email { get; set; }
+
+    public string? Gender { get; set; }
+
+    public string? Status { get; set; }
 }
