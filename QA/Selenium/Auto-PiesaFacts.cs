@@ -61,13 +61,7 @@ namespace Selenium
             By emptyName = By.CssSelector("small[data-bv-for=\"user_firstname\"][data-bv-validator=\"notEmpty\"]");
             By nameLength = By.CssSelector("small[data-bv-for=\"user_firstname\"][data-bv-validator=\"stringLength\"]");
             driver.FindElement(By.Id("submitContNou")).Click();
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            var nameFieldErrors = new List<IWebElement>();
-            nameFieldErrors.Add(wait.Until(error => driver.FindElement(emptyName)));
-            nameFieldErrors.Add(wait.Until(error => driver.FindElement(nameLength)));
-            var displayedErrors = nameFieldErrors.Where(error => error.Displayed == true).
-                Select(error => error.Text);
-            
+
             ////  var wait = new WebDriverWait(driver, timeout: TimeSpan.FromSeconds(5));
             ////  var nameFieldIsEmptyError = wait.Until(element=>fullName.FindElement(By.CssSelector(".help-block[data-bv-for=\"user_firstname\"][data-bv-result=\"INVALID\"]")));
             //var nameFieldIsEmptyError = fullName.FindElement(By.XPath("//*[@id=\"register\"]/div[1]/div[1]/div/small[1]"));

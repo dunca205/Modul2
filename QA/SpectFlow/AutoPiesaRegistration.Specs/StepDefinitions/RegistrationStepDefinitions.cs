@@ -94,7 +94,7 @@ namespace AutoPiesaRegistration.Specs.StepDefinitions
         {
             displayedErrors = autoPiesaRegistration.DisplayMandatoryAgreementsErrors();
             displayedErrors.Should().Be(expected);
-            autoPiesaRegistration.CloseDriver();
+            autoPiesaRegistration.CloseDriver(
         }
     }
 }
