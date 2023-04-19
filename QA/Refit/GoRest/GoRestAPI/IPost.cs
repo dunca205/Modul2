@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace GoRestAPI
 {
     [Headers("Authorization: Bearer")]
-    public interface IPost
+    public interface IPostsApi
     {
         [Get("/posts")]
         Task<List<Post>> GetAllPosts();

@@ -10,7 +10,7 @@ using Refit;
 namespace GoRestAPI
 {
     [Headers("Authorization: Bearer")]
-    public interface IUser
+    public interface IUsersApi
     {
         [Get("/users")]
         Task<List<User>> GetAllUsers();
