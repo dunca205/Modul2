@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GoRestAPI
+﻿namespace GoRestAPI
 {
     public class Post
     {
-        public int Id{ get; set; }
+        public int Id { get; set; }
 
         public int user_id { get; set; }
 

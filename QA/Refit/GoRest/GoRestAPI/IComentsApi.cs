@@ -1,9 +1,4 @@
 ﻿using Refit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GoRestAPI
 {
@@ -19,8 +14,8 @@ namespace GoRestAPI
         [Post("/comments")]
         Task AddNewComment([Body] Comment comment);
 
-        [Delete("/comments/{Id}")]   
+        [Delete("/comments/{Id}")]
         Task DeleteComment(int id);
-        
+
     }
 }

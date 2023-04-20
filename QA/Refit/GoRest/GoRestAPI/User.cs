@@ -1,6 +1,6 @@
-﻿using System;
-using GoRestAPI;
+﻿using GoRestAPI;
 using Refit;
+using System.Text.Json.Serialization;
 
 namespace GoRest
 {
@@ -8,6 +8,7 @@ namespace GoRest
     {
         public int Id { get; set; }
 
+        [JsonPropertyName("name")]
         public string? Name { get; set; }
 
         public string? Email { get; set; }
@@ -18,6 +19,7 @@ namespace GoRest
 
         static async Task Main(string[] args)
         {
+           
             var token = "d4def2b2e62b4489f8b40995bd9201a8479a1be90fbcbf605b8a46e8a27dbb6c";
             var baseUrl = "https://gorest.co.in/public/v2";
             var refitSettings = new RefitSettings()
@@ -25,45 +27,9 @@ namespace GoRest
                 AuthorizationHeaderValueGetter = async () => await Task.FromResult(token)
             };
 
-            //var newUser = new User
-            //{
-            //    Id = 1,
-            //    Name = "Ana Maria",
-            //    Gender = "female",
-            //    Email = "testfemale@test.comm",
-            //    Status = "active"
-            //};
+          
+            var goRest = RestService.For<IUsersApi>(baseUrl, refitSettings);
 
-            //var newData = new User
-            //{
-            //    Id = 2,
-            //    Name = "Updated Ana Maria",
-            //    Gender = "female",
-            //    Email = "updadedEmail@test.com",
-            //    Status = "active"
-            //};
-
-
-            //var goRest = RestService.For<IUsersApi>(baseUrl, refitSettings);
-
-            //await goRest.CreateUser(newUser);
-
-            //// get all users including the one we create
-            //var allUsers = await goRest.GetAllUsers();
-
-            //// get the Id for the user we added
-            //var newUserId = allUsers.First().Id;
-
-            //Console.WriteLine("Id of new user {0} is : {1} ", allUsers.First().Name, newUserId);
-
-            //// get user by id
-            //var userById = await goRest.GetUserById(newUserId);
-
-            //// update new user
-            //await goRest.UpdateUser(newData, newUserId);
-
-            //// delete user
-            //await goRest.DeleteUser(newUserId);
             ///////////////////////////////////////////////////////posts
             // var postToAdd = new Post
             // {
@@ -104,24 +70,24 @@ namespace GoRest
             //     await goRest.DeleteCertainPost(post.Id);
             // }
 
-            var goRest = RestService.For<ICommentsApi>(baseUrl, refitSettings);
+            //var goRest = RestService.For<ICommentsApi>(baseUrl, refitSettings);
 
-            var anaMariaPost_Id = 13150;
-            await goRest.AddNewComment(new Comment 
-            { Id = 10,
-              post_id = anaMariaPost_Id,
-              Name = "AnaMaria",
-              Email = "anamaria@mail.test", 
-              Body = "this is the body of a comment VS" });
+            //var anaMariaPost_Id = 13150;
+            //await goRest.AddNewComment(new Comment 
+            //{ Id = 10,
+            //  post_id = anaMariaPost_Id,
+            //  Name = "AnaMaria",
+            //  Email = "anamaria@mail.test", 
+            //  Body = "this is the body of a comment VS" });
 
-            var allComents = await goRest.GetAllComments();
+            //var allComents = await goRest.GetAllComments();
 
-            var anaMariasComments = await goRest.GetCommentsFor("AnaMaria");
+            //var anaMariasComments = await goRest.GetCommentsFor("AnaMaria");
 
-            foreach ( var comment in anaMariasComments)
-            {
-                await goRest.DeleteComment(comment.Id);
-            }
+            //foreach ( var comment in anaMariasComments)
+            //{
+            //    await goRest.DeleteComment(comment.Id);
+            //}
         }
     }
 
